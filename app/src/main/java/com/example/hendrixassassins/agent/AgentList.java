@@ -35,7 +35,13 @@ public class AgentList {
         return agentList;
     }
 
-    // status/ score
+    public ArrayList<Agent> getAgentsInStatusList(ArrayList<AgentStatus> statusList){
+        ArrayList<Agent> agentList = new ArrayList<>();
+        for(AgentStatus status: statusList){
+            agentList.addAll(getAgentsWithStatus(status));
+        }
+        return agentList;
+    }
 
     // sort on amount of personal kills
 
