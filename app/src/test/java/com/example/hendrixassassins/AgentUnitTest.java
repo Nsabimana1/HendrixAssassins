@@ -1,7 +1,7 @@
 package com.example.hendrixassassins;
 
-import com.example.hendrixassassins.backend.Agent;
-import com.example.hendrixassassins.backend.AgentStatus;
+import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.agent.AgentStatus;
 
 import org.junit.Test;
 
