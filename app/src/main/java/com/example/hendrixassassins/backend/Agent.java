@@ -51,6 +51,10 @@ public class Agent {
         return personalKills;
     }
 
+    public int getPointsTotal(){
+        return pointsTotal;
+    }
+
     public void setPointsTotal(int pointsTotal){
         this.pointsTotal = pointsTotal;
     }
@@ -64,11 +68,21 @@ public class Agent {
     }
 
     public String getCurrentTarget(){
+        if(currentTarget == null){
+            return "NA";
+        }
         return currentTarget;
     }
 
     public Date getDeathTime(){
         return deathTime;
+    }
+
+    public String getDeathTimeString(){
+        if(deathTime==null){
+            return "NA";
+        }
+        return deathTime.toString();
     }
 
     public void setDeathTime(Date time){
@@ -85,7 +99,7 @@ public class Agent {
 
     public String getTableRow(){
         return String.valueOf(drawNumber) + "," + email +"," + status.toString()+"," +
-                deathTime.toString() + "," + currentTarget + "," + String.valueOf(personalKills) +
+                getDeathTimeString() + "," + currentTarget + "," + String.valueOf(personalKills) +
                 "," + String.valueOf(pointsTotal) + "," + getKillListAsString();
     }
 
