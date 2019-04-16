@@ -5,7 +5,8 @@ import java.util.Date;
 
 public class Agent {
     private int drawNumber, personalKills, pointsTotal;
-    private String email, name, currentTarget;
+    private String email, name;
+    private Agent currentTarget;
     private AgentStatus status;
     private Date deathTime;
     private ArrayList<Agent> killList;
@@ -77,14 +78,18 @@ public class Agent {
         pointsTotal += addedPoints;
     }
 
-    public void setCurrentTarget(String target){
+    public void setCurrentTarget(Agent target){
         currentTarget = target;
     }
 
-    public String getCurrentTarget(){
+    public String getCurrentTargetEmail(){
         if(currentTarget == null){
             return "NA";
         }
+        return currentTarget.email;
+    }
+
+    public Agent getCurrentTarget() {
         return currentTarget;
     }
 
@@ -112,9 +117,10 @@ public class Agent {
     }
 
     public String getTableRow(){
-        return getDrawNumberString()+"," + name + "," + email +"," + status.toString()+"," +
-                getDeathTimeString() + "," + currentTarget + "," + String.valueOf(personalKills) +
-                "," + String.valueOf(pointsTotal) + "," + getKillListAsString();
+        return getDrawNumberString()+"," + getName() + "," + getEmail() +"," +
+                getStatus().toString()+"," +  getDeathTimeString() + "," +
+                getCurrentTargetEmail() + "," + String.valueOf(getPersonalKills()) +
+                "," + String.valueOf(getPointsTotal()) + "," + getKillListAsString();
     }
 
     private String getKillListAsString(){

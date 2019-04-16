@@ -22,7 +22,8 @@ public class AgentUnitTest {
         assertEquals("NA", agent.getDrawNumberString());
         assertEquals("test@hendrix.edu", agent.getEmail());
         assertEquals("test", agent.getName());
-        assertEquals("NA", agent.getCurrentTarget());
+        assertEquals("NA", agent.getCurrentTargetEmail());
+        assertNull(agent.getCurrentTarget());
         assertNull(agent.getDeathTime());
         assertEquals(AgentStatus.ALIVE, agent.getStatus());
         assertEquals(0, agent.getPersonalKills());
@@ -100,9 +101,10 @@ public class AgentUnitTest {
 
     public void target_isCorrect(){
         Agent agent = new Agent("test@hendrix.edu", "test");
+        Agent target = new Agent("test1@hendrix.edu", "test1");
         assertNull(agent.getCurrentTarget());
-        agent.setCurrentTarget("test1@hendrix.edu");
-        assertEquals("test1@hendrix.edu", agent.getCurrentTarget());
+        agent.setCurrentTarget(target);
+        assertEquals("test1@hendrix.edu", agent.getCurrentTargetEmail());
     }
 
     @Test
@@ -110,11 +112,12 @@ public class AgentUnitTest {
         Agent agent = new Agent("test@hendrix.edu", "test");
         Agent agent1 = new Agent("test1@hendrix.edu", "test");
         Agent agent2 = new Agent("test2@hendrix.edu", "test");
+        Agent agent3 = new Agent("test3@hendrix.edu", "test");
         ArrayList<Agent> killList = new ArrayList<>();
         killList.add(agent1);
         killList.add(agent2);
         agent.setDrawNumber(0);
-        agent.setCurrentTarget("test3@hendrix.edu");
+        agent.setCurrentTarget(agent3);
         agent.setPersonalKills(5);
         agent.setPointsTotal(10);
         agent.addToKillList(killList);
