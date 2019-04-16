@@ -1,4 +1,4 @@
-package com.example.hendrixassassins.backend;
+package com.example.hendrixassassins.agent;
 
 public enum AgentStatus {
     ALIVE,
