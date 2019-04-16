@@ -11,6 +11,10 @@ public class AgentList {
         agents = new ArrayList<>();
     }
 
+    public int size(){
+        return agents.size();
+    }
+
     public void addAgent(Agent agent){
         agents.add(agent);
     }
@@ -19,28 +23,32 @@ public class AgentList {
         return agents;
     }
 
-    public ArrayList<String> getAgentEmails(ArrayList<Agent> agentList){
+    public ArrayList<String> getAgentEmails(){
         ArrayList<String> emails = new ArrayList<>();
-        for(Agent agent: agentList){
+        for(Agent agent: agents){
             emails.add(agent.getEmail());
         }
         return emails;
     }
 
-    public ArrayList<Agent> getAgentsWithStatus(AgentStatus status){
-        ArrayList<Agent> agentList = new ArrayList<>();
+    public AgentList filterAgentsByStatus(AgentStatus status){
+        AgentList agentList = new AgentList();
         for(Agent agent: agents){
             if(agent.getStatus() == status){
-                agentList.add(agent);
+                agentList.addAgent(agent);
             }
         }
         return agentList;
     }
 
-    public ArrayList<Agent> getAgentsInStatusList(ArrayList<AgentStatus> statusList){
-        ArrayList<Agent> agentList = new ArrayList<>();
+    public AgentList filterAgentsByStatusList(ArrayList<AgentStatus> statusList){
+        AgentList agentList = new AgentList();
         for(AgentStatus status: statusList){
-            agentList.addAll(getAgentsWithStatus(status));
+            for(Agent agent: agents){
+                if(agent.getStatus() == status){
+                    agentList.addAgent(agent);
+                }
+            }
         }
         return agentList;
     }
@@ -49,7 +57,7 @@ public class AgentList {
         Collections.sort(agents, new Comparator<Agent>() {
             @Override
             public int compare(Agent o1, Agent o2) {
-                return o1.getPersonalKills() - o2.getPersonalKills();
+                return o2.getPersonalKills() - o1.getPersonalKills();
             }
         });
     }
@@ -58,7 +66,7 @@ public class AgentList {
         Collections.sort(agents, new Comparator<Agent>() {
             @Override
             public int compare(Agent o1, Agent o2) {
-                return o1.getPointsTotal() - o2.getPointsTotal();
+                return o2.getPointsTotal() - o1.getPointsTotal();
             }
         });
     }
