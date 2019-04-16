@@ -49,6 +49,8 @@ public class AgentFileHelper {
         agent.setStatus(AgentStatus.valueOf(split[4]));
         agent.setDeathTime(Date.valueOf(split[5]));
         //TODO turn get Target Email into an Agent?
+
+        return agent;
     }
 
     public AgentList getAgentListFromFile(String fileName){
