@@ -1,6 +1,8 @@
 package com.example.hendrixassassins.agent;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class AgentList {
     private ArrayList<Agent> agents;
@@ -43,11 +45,46 @@ public class AgentList {
         return agentList;
     }
 
-    // sort on amount of personal kills
+    public void sortByPersonalKills(){
+        Collections.sort(agents, new Comparator<Agent>() {
+            @Override
+            public int compare(Agent o1, Agent o2) {
+                return o1.getPersonalKills() - o2.getPersonalKills();
+            }
+        });
+    }
 
-    // name alphebetically both ways
+    public void sortByPointsTotal(){
+        Collections.sort(agents, new Comparator<Agent>() {
+            @Override
+            public int compare(Agent o1, Agent o2) {
+                return o1.getPointsTotal() - o2.getPointsTotal();
+            }
+        });
+    }
 
-    // score both ways
+    public void sortNamesAlphabetically(){
+        Collections.sort(agents, new Comparator<Agent>() {
+            @Override
+            public int compare(final Agent o1, final Agent o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+    }
+
+    public void sortEmailsAlphabetically(){
+        Collections.sort(agents, new Comparator<Agent>() {
+            @Override
+            public int compare(final Agent o1, final Agent o2) {
+                return o1.getEmail().compareTo(o2.getEmail());
+            }
+        });
+    }
+
+    public void reverse(){
+        Collections.reverse(agents);
+    }
+
 
     //email, subject,content for emails
 
