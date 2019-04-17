@@ -94,6 +94,15 @@ public class AgentList {
     }
 
 
+    public Agent getAgentWithEmailAddress(String email){
+        for(Agent agent: agents){
+            if (agent.getEmail().equals(email)){
+                return agent;
+            }
+        }
+        return null; // I probably shouldn't do this
+    }
+
     //email, subject,content for emails
 
 }
