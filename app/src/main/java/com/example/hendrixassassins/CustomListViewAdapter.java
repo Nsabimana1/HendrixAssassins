@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class CustomListViewAdapter<E> extends ArrayAdapter<E> {
     }
 
     static class ViewHolder {
+        TextView name;
+        TextView status;
+        TextView score;
         /*
         Define any objects inside custom view
         this includes any TextViews or ImageViews
@@ -32,20 +36,31 @@ public class CustomListViewAdapter<E> extends ArrayAdapter<E> {
 
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
-
+        String name = (String) getItem(position);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
         ViewHolder viewHolder = new ViewHolder();
 
+        TextView person = convertView.findViewById(R.id.nameTest);
+        TextView status = convertView.findViewById(R.id.statusTest);
+        TextView score = convertView.findViewById(R.id.pointsTest);
+
+
+        viewHolder.name = person;
+        viewHolder.status = status;
+        viewHolder.score = score;
+        convertView.setTag(viewHolder);
+
+
+        person.setText(name);
+        status.setText("ALIVE");
+        score.setText("0");
         /*
         Set up TextViews here from convertView
         and assign them to the ViewHolder
          */
-
-
-        convertView.setTag(viewHolder);
 
         return convertView;
     }

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toListViewTestActivity() {
-        Intent forwardIntent = new Intent(MainActivity.this, GmailTestActivity.class);
+        Intent forwardIntent = new Intent(MainActivity.this, ListViewTestActivity.class);
         startActivity(forwardIntent);
     }
 
@@ -55,16 +55,7 @@ public class MainActivity extends AppCompatActivity {
         Intent forwardIntent = new Intent(MainActivity.this, GmailTestActivity.class);
         startActivity(forwardIntent);
     }
-    /*
-     private void createlistViewAdapter(){
-        ListView listView = findViewById(R.id.listView);
 
-        CustomListViewAdapter adapter = new CustomListViewAdapter(this,
-                R.layout.insertView, new ArrayList<String>());
-
-        listView.setAdapter(adapter);
-    }
-    */
 
 
 
