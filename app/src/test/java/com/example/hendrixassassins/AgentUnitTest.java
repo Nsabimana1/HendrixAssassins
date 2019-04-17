@@ -1,6 +1,7 @@
 package com.example.hendrixassassins;
 
 import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.agent.AgentStatus;
 
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class AgentUnitTest {
         assertEquals(AgentStatus.ALIVE, agent.getStatus());
         assertEquals(0, agent.getPersonalKills());
         assertEquals(0, agent.getPointsTotal());
-        assertEquals(new ArrayList<Agent>(), agent.getKillList());
+        assertEquals(new AgentList().size(), agent.getKillList().size());
     }
 
     @Test
@@ -54,19 +55,19 @@ public class AgentUnitTest {
         Agent agent3 = new Agent("test3@hendrix.edu", "test3");
         Agent agent4 = new Agent("test4@hendrix.edu", "test4");
         Agent agent5 = new Agent("test5@hendrix.edu", "test5");
-        ArrayList<Agent> killList = new ArrayList<>();
-        killList.add(agent1);
-        killList.add(agent2);
-        agent.addToKillList(killList);
-        assertEquals(agent.getKillList(), killList);
-        assertEquals("test1@hendrix.edu", agent.getKillList().get(0).getEmail());
-        ArrayList<Agent> killList2 = new ArrayList<>();
-        killList2.add(agent3);
-        killList2.add(agent4);
-        killList2.add(agent5);
-        agent.addToKillList(killList2);
+        AgentList killList = new AgentList();
+        killList.addAgent(agent1);
+        killList.addAgent(agent2);
+        agent.extendKillList(killList);
+        assertEquals(agent.getKillList().size(), killList.size());
+        assertEquals("test1@hendrix.edu", agent.getKillList().getAllAgents().get(0).getEmail());
+        AgentList killList2 = new AgentList();
+        killList2.addAgent(agent3);
+        killList2.addAgent(agent4);
+        killList2.addAgent(agent5);
+        agent.extendKillList(killList2);
         assertEquals(killList.size() + killList2.size(), agent.getKillList().size());
-        assertEquals("test5", agent.getKillList().get(agent.getKillList().size() - 1).getName());
+        assertEquals("test5", agent.getKillList().getAllAgents().get(agent.getKillList().size() - 1).getName());
     }
 
     @Test
@@ -113,14 +114,14 @@ public class AgentUnitTest {
         Agent agent1 = new Agent("test1@hendrix.edu", "test");
         Agent agent2 = new Agent("test2@hendrix.edu", "test");
         Agent agent3 = new Agent("test3@hendrix.edu", "test");
-        ArrayList<Agent> killList = new ArrayList<>();
-        killList.add(agent1);
-        killList.add(agent2);
+        AgentList killList = new AgentList();
+        killList.addAgent(agent1);
+        killList.addAgent(agent2);
         agent.setDrawNumber(0);
         agent.setCurrentTarget(agent3);
         agent.setPersonalKills(5);
         agent.setPointsTotal(10);
-        agent.addToKillList(killList);
+        agent.extendKillList(killList);
         String expected = "0,test,test@hendrix.edu,ALIVE,NA,test3@hendrix.edu,5,10,test1@hendrix.edu-test2@hendrix.edu";
         assertEquals(expected, agent.getTableRow());
         agent.setStatus(AgentStatus.DEAD);

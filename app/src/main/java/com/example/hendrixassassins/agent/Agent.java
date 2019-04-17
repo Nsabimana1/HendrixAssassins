@@ -9,7 +9,7 @@ public class Agent {
     private Agent currentTarget;
     private AgentStatus status;
     private Date deathTime;
-    private ArrayList<Agent> killList;
+    private AgentList killList;
 
     public Agent(String email, String name){
         this.email = email;
@@ -19,7 +19,7 @@ public class Agent {
         this.pointsTotal = 0;
         this.status = AgentStatus.ALIVE;
         this.deathTime = null;
-        this.killList = new ArrayList<Agent>();
+        this.killList = new AgentList();
         this.currentTarget = null;
     }
 
@@ -108,12 +108,18 @@ public class Agent {
         deathTime = time;
     }
 
-    public ArrayList<Agent> getKillList(){
+    public AgentList getKillList(){
         return killList;
     }
 
-    public void addToKillList(ArrayList<Agent> kills){
-        killList.addAll(kills);
+    public void addToKillList(Agent killed){
+        killList.addAgent(killed);
+    }
+
+    public void extendKillList(AgentList killed){
+        for(Agent k : killed.getAllAgents()){
+            killList.addAgent(k);
+        }
     }
 
     public String getTableRow(){
@@ -125,7 +131,7 @@ public class Agent {
 
     private String getKillListAsString(){
         StringBuilder builder = new StringBuilder();
-        for(Agent agent: killList){
+        for(Agent agent: killList.getAllAgents()){
             builder.append(agent.email);
             builder.append("-");
         }
