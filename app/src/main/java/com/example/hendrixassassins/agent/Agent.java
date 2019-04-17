@@ -126,10 +126,13 @@ public class Agent {
         return getDrawNumberString()+"," + getName() + "," + getEmail() +"," +
                 getStatus().toString()+"," +  getDeathTimeString() + "," +
                 getCurrentTargetEmail() + "," + String.valueOf(getPersonalKills()) +
-                "," + String.valueOf(getPointsTotal()) + "," + getKillListAsString();
+                "," + String.valueOf(getPointsTotal()) + "," + getKillListAsString() + "\n";
     }
 
     private String getKillListAsString(){
+        if(killList.size() == 0){
+            return "NA";
+        }
         StringBuilder builder = new StringBuilder();
         for(Agent agent: killList.getAllAgents()){
             builder.append(agent.email);

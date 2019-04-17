@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         findIDs();
         toGmailTestButton();
         toListViewTestButton();
+        new FileTestActivity(getBaseContext());
     }
 
     private void toListViewTestButton() {

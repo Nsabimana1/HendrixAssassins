@@ -1,6 +1,7 @@
 package com.example.hendrixassassins.agent;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -37,14 +38,28 @@ public class AgentFileHelper {
         return line.trim().split(splitChar);
     }
 
+    private int intFromString(String string){
+        if(string.equals("NA")){
+            return 0;
+        }
+        return Integer.parseInt(string);
+    }
+
+    private Date dateFromString(String string){
+        if(string.equals("NA")){
+            return null;
+        }
+        return Date.valueOf(string);
+    }
+
     private Agent setupAgent(String line){
         String[] split = splitLine(line, ",");
         Agent agent = new Agent(split[emailIndex], split[nameIndex]);
-        agent.setDrawNumber(Integer.parseInt(split[drawNumberIndex]));
+        agent.setDrawNumber(intFromString(split[drawNumberIndex]));
         agent.setStatus(AgentStatus.valueOf(split[statusIndex]));
-        agent.setDeathTime(Date.valueOf(split[deathTimeIndex]));
-        agent.setPersonalKills(Integer.parseInt(split[personalKillsIndex]));
-        agent.setPointsTotal(Integer.parseInt(split[pointsTotalIndex]));
+        agent.setDeathTime(dateFromString(split[deathTimeIndex]));
+        agent.setPersonalKills(intFromString(split[personalKillsIndex]));
+        agent.setPointsTotal(intFromString(split[pointsTotalIndex]));
         return agent;
     }
 
@@ -59,7 +74,9 @@ public class AgentFileHelper {
     private AgentList setupAgentsFromFile(ArrayList<String> file){
         AgentList agentList = new AgentList();
         for(String line: file){
-            agentList.addAgent(setupAgent(line));
+            if(line.trim().length() > 0) {
+                agentList.addAgent(setupAgent(line));
+            }
         }
         return agentList;
     }
@@ -67,9 +84,12 @@ public class AgentFileHelper {
     private AgentList connectAgentObjects(ArrayList<String> file, AgentList agentList){
         for(String line: file){
             String[] split = splitLine(line, ",");
-            Agent agent = agentList.getAgentWithEmailAddress(split[emailIndex]);
-            agent.setCurrentTarget(agentList.getAgentWithEmailAddress(split[currentTargetIndex]));
-            agent.extendKillList(getAgentKillList(splitLine(split[killListIndex], "-"), agentList));
+            if(line.trim().length() > 8) {
+                Log.e("AGENT:", line);
+                Agent agent = agentList.getAgentWithEmailAddress(split[emailIndex]);
+                agent.setCurrentTarget(agentList.getAgentWithEmailAddress(split[currentTargetIndex]));
+                agent.extendKillList(getAgentKillList(splitLine(split[killListIndex], "-"), agentList));
+            }
         }
         return agentList;
     }
