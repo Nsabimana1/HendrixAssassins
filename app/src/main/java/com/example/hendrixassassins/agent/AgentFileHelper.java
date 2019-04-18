@@ -60,6 +60,7 @@ public class AgentFileHelper {
     private Agent setupAgent(String line){
         String[] split = splitLine(line, ",");
         Agent agent = new Agent(split[emailIndex], split[nameIndex]);
+        // Log.e("AAA", split[drawNumberIndex]);
         agent.setDrawNumber(intFromString(split[drawNumberIndex]));
         agent.setStatus(AgentStatus.valueOf(split[statusIndex]));
         agent.setDeathTime(dateFromString(split[deathTimeIndex]));
@@ -90,7 +91,7 @@ public class AgentFileHelper {
         for(String line: file){
             String[] split = splitLine(line, ",");
             if(split.length > 8) {
-                Log.e("AGENT:", line);
+                //Log.e("AGENT:", line);
                 Agent agent = agentList.getAgentWithEmailAddress(split[emailIndex]);
                 agent.setCurrentTarget(agentList.getAgentWithEmailAddress(split[currentTargetIndex]));
                 agent.extendKillList(getAgentKillList(splitLine(split[killListIndex], ":"), agentList));
@@ -100,6 +101,6 @@ public class AgentFileHelper {
     }
 
     public AgentList testFileReading(ArrayList<String> file){
-        return setupAgentsFromFile(file);
+        return connectAgentObjects( file, setupAgentsFromFile(file));
     }
 }

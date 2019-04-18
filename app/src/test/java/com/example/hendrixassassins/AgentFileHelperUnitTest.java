@@ -25,11 +25,11 @@ public class AgentFileHelperUnitTest {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String strDate = dateFormat.format(date.getTime());
         file.add("0,zero,zero@hendrix.edu,DEAD,"+
-                strDate+ ",NA, 0,0,NA\n");
-        file.add("1,one,one@hendrix.edu,ALIVE,NA,four@hendrix.edu, 1,1,zero@hendrix.edu\n");
-        file.add("2,two,two@hendrix.edu,DEAD,"+strDate+",NA, 1,1,three@hendrix.edu\n");
-        file.add("3,three,three@hendrix.edu,DEAD,"+strDate+",NA, 0,0,NA\n");
-        file.add("4,four,four@hendrix.edu,ALIVE,NA,one@hendrix.edu, 1,2,three@hendrix.edu-two@hendrix.edu\n");
+                strDate+ ",NA,0,0,NA\n");
+        file.add("1,one,one@hendrix.edu,ALIVE,NA,four@hendrix.edu,1,1,zero@hendrix.edu\n");
+        file.add("2,two,two@hendrix.edu,DEAD,"+strDate+",NA,1,1,three@hendrix.edu\n");
+        file.add("3,three,three@hendrix.edu,DEAD,"+strDate+",NA,0,0,NA\n");
+        file.add("4,four,four@hendrix.edu,ALIVE,NA,one@hendrix.edu,1,2,three@hendrix.edu:two@hendrix.edu\n");
         AgentFileHelper fileHelper = new AgentFileHelper();
         AgentList agentList = fileHelper.testFileReading(file);
         assertEquals(5, agentList.size());
@@ -45,6 +45,8 @@ public class AgentFileHelperUnitTest {
         killList.add("three@hendrix.edu");
         killList.add("two@hendrix.edu");
         assertEquals("one@hendrix.edu", agentList.getAllAgents().get(4).getCurrentTargetEmail());
-        assertEquals(killList, agentList.getAllAgents().get(4).getTableRow());
+        assertEquals(killList, agentList.getAllAgents().get(4).getKillList().getAgentEmails());
+        assertEquals("1,one,one@hendrix.edu,ALIVE,NA,four@hendrix.edu,1,1,zero@hendrix.edu\n",
+                agentList.getAllAgents().get(1).getTableRow());
     }
 }
