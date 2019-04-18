@@ -3,8 +3,9 @@ package com.example.hendrixassassins.agent;
 import android.content.Context;
 import android.util.Log;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class AgentFileHelper {
 
@@ -42,14 +43,18 @@ public class AgentFileHelper {
         if(string.equals("NA")){
             return 0;
         }
-        return Integer.parseInt(string);
+        return Integer.parseInt(string.trim());
     }
 
-    private Date dateFromString(String string){
-        if(string.equals("NA")){
+    private GregorianCalendar dateFromString(String string){
+        if(string.equals("NA") || string.trim().length() == 0){
             return null;
         }
-        return Date.valueOf(string);
+        String[] split = string.split(" ");
+        String[] date = split[0].split("-");
+        String[] time = split[1].split(":");
+        return new GregorianCalendar(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]),
+                Integer.parseInt(time[0]), Integer.parseInt(time[1]), Integer.parseInt(time[2]));
     }
 
     private Agent setupAgent(String line){
@@ -94,5 +99,8 @@ public class AgentFileHelper {
         return agentList;
     }
 
+    public AgentList testFileReading(ArrayList<String> file){
+        return setupAgentsFromFile(file);
+    }
 
 }

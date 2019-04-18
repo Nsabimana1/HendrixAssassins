@@ -1,14 +1,17 @@
 package com.example.hendrixassassins.agent;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Agent {
     private int drawNumber, personalKills, pointsTotal;
     private String email, name;
     private Agent currentTarget;
     private AgentStatus status;
-    private Date deathTime;
+    private GregorianCalendar deathTime;
     private AgentList killList;
 
     public Agent(String email, String name){
@@ -93,7 +96,7 @@ public class Agent {
         return currentTarget;
     }
 
-    public Date getDeathTime(){
+    public GregorianCalendar getDeathTime(){
         return deathTime;
     }
 
@@ -101,10 +104,11 @@ public class Agent {
         if(deathTime==null){
             return "NA";
         }
-        return deathTime.toString();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return dateFormat.format(deathTime.getTime());
     }
 
-    public void setDeathTime(Date time){
+    public void setDeathTime(GregorianCalendar time){
         deathTime = time;
     }
 
