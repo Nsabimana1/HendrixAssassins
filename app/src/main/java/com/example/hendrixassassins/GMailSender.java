@@ -2,6 +2,7 @@ package com.example.hendrixassassins;
 
 //From https://medium.com/@ssaurel/how-to-send-an-email-with-javamail-api-in-android-2fc405441079
 
+
 import java.security.Security;
 import java.util.Properties;
 
