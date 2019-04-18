@@ -38,6 +38,10 @@ import com.example.hendrixassassins.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
+//HendrixAssassinApp@gmail.com
+//Password: AssassinsTest1
+
+
 /**
  * A login screen that offers login via email/password.
  */
