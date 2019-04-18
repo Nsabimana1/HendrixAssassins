@@ -35,21 +35,29 @@ public class GmailTestActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Log.e("testereceive", "about to try test receive");
+                    testReceive();
+                } catch (MessagingException e) {
+                    Log.e("testereceive", e.toString());
+                }
+            } }).start();
+
+    /*    new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
                     GMailSender sender = new GMailSender("HendrixAssassinsApp@gmail.com",
                             "AssassinsTest1");
-                    sender.sendMail("Hello from JavaMail", "Body from JavaMail",
-                            "HendrixAssassinsApp@gmail.com", "HendrixAssassinsApp@gmail.com");
+                    sender.sendMail("Hello from the Hendrix Assassins Chair", "Welcome to Hendrix Assassins",
+                            "HendrixAssassinsApp@gmail.com", "sandersKM@hendrix.edu");
                 } catch (Exception e) {
                     Log.e("SendMail", e.getMessage(), e);
                 }
             }
 
         }).start();
-        try {
-            testReceive();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+*/
     }
     private void findIDs(){
         setContentView(R.layout.activity_gmail_test);
@@ -81,6 +89,7 @@ public class GmailTestActivity extends AppCompatActivity {
     }
 
     private void testReceive() throws MessagingException {
+        Log.e("testereceive","started test receive");
         //From https://stackoverflow.com/questions/7146706/how-to-receive-email-from-gmail-android
         Properties props = new Properties();
         //IMAPS protocol
@@ -94,18 +103,23 @@ public class GmailTestActivity extends AppCompatActivity {
         props.setProperty("mail.imaps.socketFactory.fallback","false");
         //Setting IMAP session
         Session imapSession= Session.getInstance(props);
-
+        Log.e("testereceive","made a session");
         Store store = imapSession.getStore("imaps");
+        Log.e("testereceive","made a store");
         //Connect to server by sending username and password.
         //Example mailServer = imap.gmail.com, username = abc, password = abc
-        store.connect("imap.gmail.com","HenddrixAssassinsApp","AssassinTest1");
-        //Get all mails in Inbox Forlder
+        store.connect("imap.gmail.com","HendrixAssassinsApp","AssassinsTest1");
+        Log.e("testereceive","connected to store");
+        //Get all mails in Inbox Folder
         Folder inbox=store.getFolder("Inbox");
+        Log.e("testereceive","made an inbox");
         inbox.open(Folder.READ_ONLY);
         //Return result to array of message
         Message[]result=inbox.getMessages();
+        Log.e("testereceive","about to show message subjects");
         for (int i = 0 ; i<result.length; i++) {
-            Log.e("testereceive",Integer.toString(i));
+            Message current = result[i];
+            Log.e("testereceive",current.getSubject().toString());
             Log.e("testereceive",result[i].toString());
         }
     }
