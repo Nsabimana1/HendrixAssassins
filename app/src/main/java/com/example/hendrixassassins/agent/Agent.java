@@ -140,7 +140,7 @@ public class Agent {
         StringBuilder builder = new StringBuilder();
         for(Agent agent: killList.getAllAgents()){
             builder.append(agent.email);
-            builder.append("-");
+            builder.append(":");
         }
         builder.deleteCharAt(builder.length() - 1);
         return builder.toString();

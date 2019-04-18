@@ -125,7 +125,7 @@ public class AgentUnitTest {
         agent.setPersonalKills(5);
         agent.setPointsTotal(10);
         agent.extendKillList(killList);
-        String expected = "0,test,test@hendrix.edu,ALIVE,NA,test3@hendrix.edu,5,10,test1@hendrix.edu-test2@hendrix.edu\n";
+        String expected = "0,test,test@hendrix.edu,ALIVE,NA,test3@hendrix.edu,5,10,test1@hendrix.edu:test2@hendrix.edu\n";
         assertEquals(expected, agent.getTableRow());
         agent.setStatus(AgentStatus.DEAD);
         GregorianCalendar now = new GregorianCalendar();
@@ -133,7 +133,7 @@ public class AgentUnitTest {
         agent.setDeathTime(now);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String strDate = dateFormat.format(now.getTime());
-        expected = "0,test,test@hendrix.edu,DEAD,"+strDate+",test3@hendrix.edu,5,10,test1@hendrix.edu-test2@hendrix.edu\n";
+        expected = "0,test,test@hendrix.edu,DEAD,"+strDate+",test3@hendrix.edu,5,10,test1@hendrix.edu:test2@hendrix.edu\n";
         assertEquals(expected, agent.getTableRow());
     }
 

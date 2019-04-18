@@ -165,5 +165,17 @@ public class AgentListUnitTest {
         assertEquals("atest1", agentList.getAllAgents().get(agentList.size() - 1).getName());
     }
 
+    @Test
+    public void AgentListGetAgentFromEmail_isCorrect(){
+        AgentList agentList = new AgentList();
+        agentList.addAgent(new Agent("test@hendrix.edu", "test"));
+        agentList.addAgent(new Agent("atest1@hendrix.edu", "atest1"));
+        agentList.addAgent(new Agent("etest2@hendrix.edu", "etest2"));
+        agentList.addAgent(new Agent("ztest3@hendrix.edu", "ztest3"));
+        agentList.addAgent(new Agent("otest4@hendrix.edu", "otest4"));
+        agentList.addAgent(new Agent("ctest5@hendrix.edu", "ctest5"));
+        assertEquals("ctest5", agentList.getAgentWithEmailAddress("ctest5@hendrix.edu").getName());
+    }
+
 
 }

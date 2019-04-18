@@ -53,7 +53,7 @@ public class AgentFileHelper {
         String[] split = string.split(" ");
         String[] date = split[0].split("-");
         String[] time = split[1].split(":");
-        return new GregorianCalendar(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]),
+        return new GregorianCalendar(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
                 Integer.parseInt(time[0]), Integer.parseInt(time[1]), Integer.parseInt(time[2]));
     }
 
@@ -89,11 +89,11 @@ public class AgentFileHelper {
     private AgentList connectAgentObjects(ArrayList<String> file, AgentList agentList){
         for(String line: file){
             String[] split = splitLine(line, ",");
-            if(line.trim().length() > 8) {
+            if(split.length > 8) {
                 Log.e("AGENT:", line);
                 Agent agent = agentList.getAgentWithEmailAddress(split[emailIndex]);
                 agent.setCurrentTarget(agentList.getAgentWithEmailAddress(split[currentTargetIndex]));
-                agent.extendKillList(getAgentKillList(splitLine(split[killListIndex], "-"), agentList));
+                agent.extendKillList(getAgentKillList(splitLine(split[killListIndex], ":"), agentList));
             }
         }
         return agentList;
@@ -102,5 +102,4 @@ public class AgentFileHelper {
     public AgentList testFileReading(ArrayList<String> file){
         return setupAgentsFromFile(file);
     }
-
 }

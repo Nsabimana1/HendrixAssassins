@@ -24,7 +24,6 @@ public class AgentFileHelperUnitTest {
         GregorianCalendar date = new GregorianCalendar();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String strDate = dateFormat.format(date.getTime());
-        System.out.print(strDate);
         file.add("0,zero,zero@hendrix.edu,DEAD,"+
                 strDate+ ",NA, 0,0,NA\n");
         file.add("1,one,one@hendrix.edu,ALIVE,NA,four@hendrix.edu, 1,1,zero@hendrix.edu\n");
@@ -34,5 +33,18 @@ public class AgentFileHelperUnitTest {
         AgentFileHelper fileHelper = new AgentFileHelper();
         AgentList agentList = fileHelper.testFileReading(file);
         assertEquals(5, agentList.size());
+        assertEquals("zero@hendrix.edu", agentList.getAgentEmails().get(0));
+        assertEquals(AgentStatus.DEAD, agentList.getAllAgents().get(0).getStatus());
+        assertEquals(1, agentList.getAllAgents().get(1).getDrawNumber());
+        assertEquals("two", agentList.getAllAgents().get(2).getName());
+        assertEquals(strDate, agentList.getAllAgents().get(3).getDeathTimeString());
+        assertEquals("NA", agentList.getAllAgents().get(4).getDeathTimeString());
+        assertEquals(1, agentList.getAllAgents().get(4).getPersonalKills());
+        assertEquals(2, agentList.getAllAgents().get(4).getPointsTotal());
+        ArrayList<String> killList = new ArrayList<>();
+        killList.add("three@hendrix.edu");
+        killList.add("two@hendrix.edu");
+        assertEquals("one@hendrix.edu", agentList.getAllAgents().get(4).getCurrentTargetEmail());
+        assertEquals(killList, agentList.getAllAgents().get(4).getTableRow());
     }
 }
