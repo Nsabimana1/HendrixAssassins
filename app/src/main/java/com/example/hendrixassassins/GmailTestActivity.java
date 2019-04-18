@@ -30,6 +30,26 @@ public class GmailTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         findIDs();
         //sendListener();
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    GMailSender sender = new GMailSender("HendrixAssassinsApp@gmail.com",
+                            "AssassinsTest1");
+                    sender.sendMail("Hello from JavaMail", "Body from JavaMail",
+                            "HendrixAssassinsApp@gmail.com", "HendrixAssassinsApp@gmail.com");
+                } catch (Exception e) {
+                    Log.e("SendMail", e.getMessage(), e);
+                }
+            }
+
+        }).start();
+        try {
+            testReceive();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
     private void findIDs(){
         setContentView(R.layout.activity_gmail_test);
@@ -50,8 +70,9 @@ public class GmailTestActivity extends AppCompatActivity {
                     GMailSender sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
                     sender.sendMail("This is Subject",
                             "This is Body",
-                            "user@gmail.com",
-                            "user@yahoo.com");
+                            "HendrixAssassinsApp@gmail.com",
+                            "HendrixAssassinsApp@gmail.com");
+                            Log.e("Gmailtest","tried to send");
                 } catch (Exception e) {
                     Log.e("SendMail", e.getMessage(), e);
                 }
@@ -83,5 +104,9 @@ public class GmailTestActivity extends AppCompatActivity {
         inbox.open(Folder.READ_ONLY);
         //Return result to array of message
         Message[]result=inbox.getMessages();
+        for (int i = 0 ; i<result.length; i++) {
+            Log.e("testereceive",Integer.toString(i));
+            Log.e("testereceive",result[i].toString());
+        }
     }
 }
