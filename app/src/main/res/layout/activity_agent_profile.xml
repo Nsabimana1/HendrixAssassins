@@ -7,16 +7,101 @@
     tools:context=".AgentProfileActivity">
 
     <TextView
-        android:id="@+id/agentTest"
+        android:id="@+id/agentEmail"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="Agent Profile"
+        app:layout_constraintBottom_toTopOf="@+id/agentStatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="144dp"
+        android:layout_height="147dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/assassinslogo" />
+
+    <TextView
+        android:id="@+id/agentName"
+        android:layout_width="211dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="22dp"
+        android:text="AGENT NAME"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/agentEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/agentStatus"
+        android:layout_width="89dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="103dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="STATUS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/agentPoints"
+        app:layout_constraintTop_toBottomOf="@+id/agentEmail" />
+
+    <TextView
+        android:id="@+id/agentPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="146dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginBottom="566dp"
-        android:text="Agent Profile"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="28dp"
+        android:text="0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/agentEmail" />
+
+    <Button
+        android:id="@+id/agentSendMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="26dp"
+        android:text="email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ListView
+        android:id="@+id/agentHistoryList"
+        android:layout_width="256dp"
+        android:layout_height="441dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/agentSendMail" />
+
+    <TextView
+        android:id="@+id/agentHistoryTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="223dp"
+        android:layout_marginBottom="14dp"
+        android:text="History"
+        app:layout_constraintBottom_toTopOf="@id/agentHistoryList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/agentSendMail"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
 </android.support.constraint.ConstraintLayout>
