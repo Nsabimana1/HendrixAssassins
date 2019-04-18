@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.hendrixassassins.agent.Agent;
+
 import java.util.List;
 
 
@@ -30,14 +32,13 @@ public class CustomListViewAdapter<E> extends ArrayAdapter<E> {
         Define any objects inside custom view
         this includes any TextViews or ImageViews
          */
-
     }
 
 
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
-        String name = (String) getItem(position);
-
+//        String name = (String) getItem(position);
+        Agent agent = (Agent) getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
@@ -54,9 +55,9 @@ public class CustomListViewAdapter<E> extends ArrayAdapter<E> {
         convertView.setTag(viewHolder);
 
 
-        person.setText(name);
-        status.setText("ALIVE");
-        score.setText("0");
+        person.setText(agent.getName().toString());
+        status.setText(agent.getStatus().toString());
+        score.setText(String.valueOf(agent.getPointsTotal()));
         /*
         Set up TextViews here from convertView
         and assign them to the ViewHolder
