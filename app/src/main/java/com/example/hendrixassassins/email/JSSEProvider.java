@@ -1,4 +1,4 @@
-package com.example.hendrixassassins;
+package com.example.hendrixassassins.email;
 
 //From https://medium.com/@ssaurel/how-to-send-an-email-with-javamail-api-in-android-2fc405441079
 

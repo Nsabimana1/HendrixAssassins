@@ -25,7 +25,7 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".AgentProfileActivity" />
         <activity android:name=".ListViewTestActivity" />
-        <activity android:name=".GmailTestActivity" />
+        <activity android:name=".email.GmailTestActivity" />
         <activity android:name=".MainActivity">
 
         </activity>
