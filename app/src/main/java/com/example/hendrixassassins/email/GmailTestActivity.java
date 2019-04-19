@@ -18,14 +18,13 @@ import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.MessagingException;
 import javax.mail.Store;
-
-
+import javax.mail.internet.InternetAddress;
 
 
 public class GmailTestActivity extends AppCompatActivity {
     EditText userName, password, address, subject, message;
     TextView inboxMessages;
-    Button send, refreshInbox;
+    Button send, sendTeam, sendClass, refreshInbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +38,10 @@ public class GmailTestActivity extends AppCompatActivity {
         }
         refreshInboxListener();
         sendListener();
+        sendTeamListener();
+        sendClassListener();
 
 
-    /*    new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    GMailSender sender = new GMailSender("HendrixAssassinsApp@gmail.com",
-                            "AssassinsTest1");
-                    sender.sendMail("Hello from the Hendrix Assassins Chair", "Welcome to Hendrix Assassins",
-                            "HendrixAssassinsApp@gmail.com", "sandersKM@hendrix.edu");
-                } catch (Exception e) {
-                    Log.e("SendMail", e.getMessage(), e);
-                }
-            }
-
-        }).start();
-*/
     }
     private void findIDs(){
         setContentView(R.layout.activity_gmail_test);
@@ -68,9 +53,11 @@ public class GmailTestActivity extends AppCompatActivity {
         send = findViewById(R.id.send);
         refreshInbox = findViewById(R.id.refreshInbox);
         inboxMessages = findViewById(R.id.inboxMessages);
+        sendTeam = findViewById(R.id.sendTeam);
+        sendClass = findViewById(R.id.sendTeam);
     }
 
-    //From https://stackoverflow.com/questions/2020088/sending-email-in-android-using-javamail-api-without-using-the-default-built-in-a
+
     private void sendListener() {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,20 +65,52 @@ public class GmailTestActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            GMailSender sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
-                            try {
-                                sender.sendMail(subject.getText().toString(),
-                                        message.getText().toString(),
-                                        userName.getText().toString() + "@gmail.com",
-                                        address.getText().toString());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            Log.e("Gmailtest", "tried to send");
+                            sendEmail(address.getText().toString());
+
 
                         }}).start();
             }
         });
+    }
+
+
+    private void sendTeamListener() {
+        sendTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendEmail("Turner@hendrix.edu,PojunasDD@hendrix.edu,NsabimanaII@hendrix.edu,SandersKM@hendrix.edu");
+                    }}).start();
+            }
+        });
+    }
+
+    private void sendClassListener() {
+        sendClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendEmail("StoyanowAA@hendrix.edu,BellAW@hendrix.edu,HawkinsBA@hendrix.edu,Turner@hendrix.edu,PojunasDD@hendrix.edu,ferrer@hendrix.edu,SamoreGE@hendrix.edu,NsabimanaII@hendrix.edu,EarnestIA@hendrix.edu,JohnsonJW@hendrix.edu,SandersKM@hendrix.edu,FrancisRP@hendrix.edu");
+                    }}).start();
+            }
+        });
+    }
+
+    public void sendEmail(String recipients ) {
+        //From https://stackoverflow.com/questions/2020088/sending-email-in-android-using-javamail-api-without-using-the-default-built-in-a
+        GMailSender sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+        try {
+            sender.sendMail(subject.getText().toString(),
+                    message.getText().toString(),
+                    userName.getText().toString() + "@gmail.com",
+                    recipients);
+        } catch (Exception e) {
+            Log.e("sending","error sending "+e.toString());
+        }
     }
 
     private void refreshInboxListener() {
@@ -113,7 +132,6 @@ public class GmailTestActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String date, sender, subject, display;
-                    Log.e("testereceive", "started test receive");
                     //From https://stackoverflow.com/questions/7146706/how-to-receive-email-from-gmail-android
                     Properties props = new Properties();
                     //IMAPS protocol
@@ -127,25 +145,20 @@ public class GmailTestActivity extends AppCompatActivity {
                     props.setProperty("mail.imaps.socketFactory.fallback", "false");
                     //Setting IMAP session
                     Session imapSession = Session.getInstance(props);
-                    Log.e("testereceive", "made a session");
                     Store store = imapSession.getStore("imaps");
-                    Log.e("testereceive", "made a store");
-                    //Connect to server by sending username and password.
+                     //Connect to server by sending username and password.
                     //Example mailServer = imap.gmail.com, username = abc, password = abc
                     store.connect("imap.gmail.com", "HendrixAssassinsApp", "AssassinsTest1");
-                    Log.e("testereceive", "connected to store");
                     //Get all mails in Inbox Folder
                     Folder inbox = store.getFolder("Inbox");
-                    Log.e("testereceive", "made an inbox");
                     inbox.open(Folder.READ_ONLY);
                     //Return result to array of message
                     Message[] messages = inbox.getMessages();
-                    Log.e("testereceive", "about to show message subjects");
                     display = "";
-                    for (int i = 0; i < messages.length; i++) {
+                    for (int i = messages.length - 1; i >= 0 ; i--) {
                         Message currentMessage = messages[i];
                         date = currentMessage.getSentDate().toString();
-                        sender = currentMessage.getFrom().toString();
+                        sender = ((InternetAddress) (currentMessage.getFrom())[0]).getAddress();
                         subject = currentMessage.getSubject().toString();
                         display += date + "\n" + sender + "\n" + subject + "\n" + "----------------\n";
                     }
