@@ -54,7 +54,7 @@ public class GmailTestActivity extends AppCompatActivity {
         refreshInbox = findViewById(R.id.refreshInbox);
         inboxMessages = findViewById(R.id.inboxMessages);
         sendTeam = findViewById(R.id.sendTeam);
-        sendClass = findViewById(R.id.sendTeam);
+        sendClass = findViewById(R.id.sendClass);
     }
 
 
