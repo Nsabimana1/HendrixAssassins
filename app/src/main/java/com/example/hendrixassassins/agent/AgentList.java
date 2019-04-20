@@ -53,6 +53,15 @@ public class AgentList {
         return agentList;
     }
 
+    public void sortByDrawNumber(){
+        Collections.sort(agents, new Comparator<Agent>() {
+            @Override
+            public int compare(Agent o1, Agent o2) {
+                return o2.getDrawNumber() - o1.getDrawNumber();
+            }
+        });
+    }
+
     public void sortByPersonalKills(){
         Collections.sort(agents, new Comparator<Agent>() {
             @Override
@@ -103,6 +112,13 @@ public class AgentList {
         return null; // I probably shouldn't do this
     }
 
-    //email, subject,content for emails
+    public Agent getAgentAssignedToKill(Agent target){
+        for(Agent agent: agents){
+            if (agent.getCurrentTarget().equals(target)){
+                return agent;
+            }
+        }
+        return null;
+    }
 
 }
