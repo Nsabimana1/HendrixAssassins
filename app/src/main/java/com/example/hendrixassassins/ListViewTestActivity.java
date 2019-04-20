@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -29,6 +30,11 @@ public class ListViewTestActivity extends AppCompatActivity {
         allAgents = agentList.getAllAgents();
         createlistViewAdapter();
         setUpSortTestButtons();
+
+
+        AutoCompleteTextView autoCompleteTextView = findViewById(R.id.autoCompleteTest);
+        AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this, R.layout.auto_complete_list_test, allAgents);
+        autoCompleteTextView.setAdapter(adapter);
     }
 
     private void setUpSortTestButtons() {
