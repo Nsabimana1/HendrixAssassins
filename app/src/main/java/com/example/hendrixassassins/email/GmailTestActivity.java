@@ -105,8 +105,7 @@ public class GmailTestActivity extends AppCompatActivity {
         //From https://stackoverflow.com/questions/2020088/sending-email-in-android-using-javamail-api-without-using-the-default-built-in-a
         GMailSender sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
         try {
-            sender.sendMail(new Email(userName.getText().toString() + "@gmail.com",
-                    recipients,
+            sender.sendMail(new Email(recipients,
                     subject.getText().toString(),
                     message.getText().toString()
                     ));
