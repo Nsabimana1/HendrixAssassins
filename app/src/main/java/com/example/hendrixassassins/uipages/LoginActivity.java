@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask.execute((Void) null);
 
             // go to user listview
-            gotoMainIntent();
+            gotoHomeIntent();
         }
     }
 
@@ -218,6 +218,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         startActivity(userListView);
         finish();
     }
+
+    private void gotoHomeIntent(){
+        Intent userListView = new Intent(LoginActivity.this, HomeActivity.class);
+        startActivity(userListView);
+        finish();
+    }
+
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic

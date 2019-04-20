@@ -2,7 +2,6 @@ package com.example.hendrixassassins;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -11,7 +10,6 @@ import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AgentProfileActivity extends AppCompatActivity {
     private AgentList agentList = new AgentList();
@@ -35,7 +33,7 @@ public class AgentProfileActivity extends AppCompatActivity {
 
     private void buildAgentHistory(){
         agentHistory = findViewById(R.id.agentHistoryList);
-        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this,
+        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this,
                 R.layout.test_list_view, allAgents);
 
         agentHistory.setAdapter(adapter);
