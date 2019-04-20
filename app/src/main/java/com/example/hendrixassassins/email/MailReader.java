@@ -29,7 +29,7 @@ public class MailReader {
     private Store store;
 
 
-    public void MailReaser(String userName, String password) throws MessagingException {
+    public void MailReader(String userName, String password) throws MessagingException {
         props = new Properties();
         //IMAPS protocol
         props.setProperty("mail.store.protocol", "imaps");

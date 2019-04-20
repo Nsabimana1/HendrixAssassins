@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.hendrixassassins.R;
 
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.mail.Folder;
@@ -25,6 +26,7 @@ public class GmailTestActivity extends AppCompatActivity {
     EditText userName, password, address, subject, message;
     TextView inboxMessages;
     Button send, sendTeam, sendClass, refreshInbox;
+    GMailSender sender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class GmailTestActivity extends AppCompatActivity {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
         refreshInboxListener();
         sendListener();
         sendTeamListener();
@@ -65,10 +68,13 @@ public class GmailTestActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            sendEmail(address.getText().toString());
-
-
-                        }}).start();
+                    Email email = new Email(address.getText().toString(), subject.getText().toString(),message.getText().toString());
+                    try {
+                        sender.sendMail(email);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }}).start();
             }
         });
     }
@@ -81,7 +87,14 @@ public class GmailTestActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        sendEmail("Turner@hendrix.edu,PojunasDD@hendrix.edu,NsabimanaII@hendrix.edu,SandersKM@hendrix.edu");
+                        Log.e("GmailTestActivity","clicked team comma delemited button");
+                        String addresses = "Turner@hendrix.edu,PojunasDD@hendrix.edu,NsabimanaII@hendrix.edu,SandersKM@hendrix.edu";
+                        Email email = new Email(addresses, subject.getText().toString(),message.getText().toString());
+                        try {
+                            sender.sendMail(email);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }}).start();
             }
         });
@@ -94,25 +107,34 @@ public class GmailTestActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        sendEmail("StoyanowAA@hendrix.edu,BellAW@hendrix.edu,HawkinsBA@hendrix.edu,Turner@hendrix.edu,PojunasDD@hendrix.edu,ferrer@hendrix.edu,SamoreGE@hendrix.edu,NsabimanaII@hendrix.edu,EarnestIA@hendrix.edu,JohnsonJW@hendrix.edu,SandersKM@hendrix.edu,FrancisRP@hendrix.edu");
+                        Log.e("GmailTestActivity","clicked team arraylist button");
+                        ArrayList<String> addresses = new ArrayList<>();
+                        addresses.add("Turner@hendrix.edu");
+                        addresses.add("Turner@hendrix.edu");
+                        addresses.add("Turner@hendrix.edu");
+                        addresses.add("Turner@hendrix.edu");
+                        Email email = new Email(addresses, subject.getText().toString(),message.getText().toString());
+                        try {
+                            sender.sendMail(email);
+                        } catch (Exception e) {
+                            Log.e("sending","error sending "+e.toString());
+                        }
+                        //sendEmail("StoyanowAA@hendrix.edu,BellAW@hendrix.edu,HawkinsBA@hendrix.edu,Turner@hendrix.edu,PojunasDD@hendrix.edu,ferrer@hendrix.edu,SamoreGE@hendrix.edu,NsabimanaII@hendrix.edu,EarnestIA@hendrix.edu,JohnsonJW@hendrix.edu,SandersKM@hendrix.edu,FrancisRP@hendrix.edu");
                     }}).start();
             }
         });
     }
 
 
-    public void sendEmail(String recipients ) {
+  /*  public void sendEmail(Email email ) {
         //From https://stackoverflow.com/questions/2020088/sending-email-in-android-using-javamail-api-without-using-the-default-built-in-a
         GMailSender sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
         try {
-            sender.sendMail(new Email(recipients,
-                    subject.getText().toString(),
-                    message.getText().toString()
-                    ));
+            sender.sendMail(email);
         } catch (Exception e) {
             Log.e("sending","error sending "+e.toString());
         }
-    }
+    }*/
 
     private void refreshInboxListener() {
         refreshInbox.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +143,7 @@ public class GmailTestActivity extends AppCompatActivity {
                 try {
                     grabInbox();
                 } catch (MessagingException e) {
-                    Log.e("inbox", "could not diplay inbos "+e.toString());
+                    Log.e("inbox", "could not diplay inbo4x "+e.toString());
                 }
             }
         });

@@ -3,6 +3,8 @@ package com.example.hendrixassassins.email;
 //From https://medium.com/@ssaurel/how-to-send-an-email-with-javamail-api-in-android-2fc405441079
 
 
+import android.util.Log;
+
 import java.security.Security;
 import java.util.Properties;
 
@@ -24,8 +26,8 @@ public class GMailSender extends javax.mail.Authenticator {
         Security.addProvider(new JSSEProvider());
     }
 
-    public GMailSender(String user, String password) {
-        this.user = user;
+    public GMailSender(String userEmailAddress, String password) {
+        this.user = userEmailAddress;
         this.password = password;
 
         Properties props = new Properties();
@@ -46,12 +48,17 @@ public class GMailSender extends javax.mail.Authenticator {
     }
 
     public synchronized void sendMail(Email email) throws Exception {
-        MimeMessage message = new MimeMessage(session);
-        DataHandler handler = new DataHandler(new ByteArrayDataSource(email.getBody().getBytes(), "text/plain"));
-        message.setSender(new InternetAddress(email.getSender()));
-        message.setSubject(email.getSubject());
-        message.setDataHandler(handler);
-        message.setRecipient(Message.RecipientType.BCC, new InternetAddress(email.getRecipients().get(0)));
-        Transport.send(message);
-}
+        for (String address : email.getRecipients()) {
+            MimeMessage message = new MimeMessage(session);
+            DataHandler handler = new DataHandler(new ByteArrayDataSource(email.getBody().getBytes(), "text/plain"));
+            message.setSender(new InternetAddress(email.getSender()));
+            message.setSubject(email.getSubject());
+            message.setDataHandler(handler);
+            if (email.getRecipients().get(0).indexOf(',') > 0)
+                message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(address));
+            else
+                message.setRecipient(Message.RecipientType.BCC, new InternetAddress(address));
+            Transport.send(message);
+        }
+    }
 }
