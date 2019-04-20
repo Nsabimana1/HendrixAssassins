@@ -42,12 +42,6 @@ public class GameMethods {
         }
     }
 
-    public void reassignTargets(AgentList oldTargets){
-        for (Agent target: oldTargets.getAllAgents()){
-            reassignAgentWithTarget(target);
-        }
-    }
-
     public void reassignAgentWithTarget(Agent target){
         agentList.getAgentAssignedToKill(target).setCurrentTarget(target.getCurrentTarget());
         target.setCurrentTarget(null);
@@ -60,17 +54,24 @@ public class GameMethods {
         }
     }
 
-    public void thawAgents(AgentList frozenAgents){
-        for(Agent agent: frozenAgents.getAllAgents()){
-            thawAgent(agent);
-        }
-    }
-
     public void thawAgent(Agent frozenAgent){
         AgentList livingAgents = agentList.filterAgentsByStatus(AgentStatus.ALIVE);
         livingAgents.sortByDrawNumber();
-        // TODO loop through draw numbers to find the one right after frozenAgents' number
-        // TODO reassign Targets
+        if(frozenAgent.getDrawNumber() == 0){
+            thawAgentHelper(frozenAgent, livingAgents.size(), livingAgents);
+        }
+        else {
+            int index = 0;
+            while (livingAgents.getAllAgents().get(index).getDrawNumber() < frozenAgent.getDrawNumber())
+                index++;
+            thawAgentHelper(frozenAgent, index, livingAgents);
+        }
+    }
+
+    private void thawAgentHelper(Agent frozenAgent, int index, AgentList livingAgents){
+        frozenAgent.setCurrentTarget(livingAgents.getAllAgents().get(index).getCurrentTarget());
+        livingAgents.getAllAgents().get(index).setCurrentTarget(frozenAgent);
+        frozenAgent.setStatus(AgentStatus.ALIVE);
     }
 
 }

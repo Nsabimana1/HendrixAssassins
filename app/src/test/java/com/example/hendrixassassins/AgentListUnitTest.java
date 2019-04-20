@@ -118,6 +118,30 @@ public class AgentListUnitTest {
     }
 
     @Test
+    public void AgentListDrawNumberSort_isCorrect() {
+        AgentList agentList = new AgentList();
+        agentList.addAgent(new Agent("test@hendrix.edu", "test"));
+        agentList.addAgent(new Agent("atest1@hendrix.edu", "atest1"));
+        agentList.addAgent(new Agent("etest2@hendrix.edu", "etest2"));
+        agentList.addAgent(new Agent("ztest3@hendrix.edu", "ztest3"));
+        agentList.addAgent(new Agent("otest4@hendrix.edu", "otest4"));
+        agentList.addAgent(new Agent("ctest5@hendrix.edu", "ctest5"));
+        agentList.getAllAgents().get(0).setDrawNumber(20);
+        agentList.getAllAgents().get(2).setDrawNumber(10);
+        agentList.getAllAgents().get(1).setDrawNumber(100);
+        agentList.getAllAgents().get(4).setDrawNumber(2);
+        agentList.getAllAgents().get(5).setDrawNumber(9);
+        agentList.sortByDrawNumber();
+        assertEquals("atest1", agentList.getAllAgents().get(0).getName());
+        assertEquals(100, agentList.getAllAgents().get(0).getDrawNumber());
+        assertEquals("ztest3", agentList.getAllAgents().get(agentList.size() - 1).getName());
+        assertEquals(-1, agentList.getAllAgents().get(agentList.size() - 1).getDrawNumber());
+        agentList.reverse();
+        assertEquals("ztest3", agentList.getAllAgents().get(0).getName());
+        assertEquals("atest1", agentList.getAllAgents().get(agentList.size() - 1).getName());
+    }
+
+    @Test
     public void AgentListPersonalKillsSort_isCorrect() {
         AgentList agentList = new AgentList();
         agentList.addAgent(new Agent("test@hendrix.edu", "test"));
