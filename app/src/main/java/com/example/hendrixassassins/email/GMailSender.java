@@ -39,8 +39,7 @@ public class GMailSender extends javax.mail.Authenticator {
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "false");
         props.setProperty("mail.smtp.quitwait", "false");
-
-        session = Session.getDefaultInstance(props, this);
+        session = Session.getInstance(props, this);
     }
 
     protected PasswordAuthentication getPasswordAuthentication() {
@@ -54,7 +53,7 @@ public class GMailSender extends javax.mail.Authenticator {
             message.setSender(new InternetAddress(email.getSender()));
             message.setSubject(email.getSubject());
             message.setDataHandler(handler);
-            if (email.getRecipients().get(0).indexOf(',') > 0)
+            if (address.indexOf(',') > 0)
                 message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(address));
             else
                 message.setRecipient(Message.RecipientType.BCC, new InternetAddress(address));

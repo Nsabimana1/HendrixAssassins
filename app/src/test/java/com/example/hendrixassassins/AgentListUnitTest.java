@@ -1,5 +1,7 @@
 package com.example.hendrixassassins;
 
+import android.util.Log;
+
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.agent.AgentStatus;
@@ -9,6 +11,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class AgentListUnitTest {
 
@@ -200,6 +203,24 @@ public class AgentListUnitTest {
         agentList.addAgent(new Agent("ctest5@hendrix.edu", "ctest5"));
         assertEquals("ctest5", agentList.getAgentWithEmailAddress("ctest5@hendrix.edu").getName());
     }
+
+    @Test
+    public void AgentListGetAgentAssignedToKill_isCorrect(){
+        AgentList testList = new AgentList();
+        testList.addAgent(new Agent("person@hendrix.edu", "person"));
+        String[] abc = new String[]{"a", "b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+        for (String letter : abc) {
+            Agent agent = new Agent(letter + "person@hendrix.edu", letter + "person");
+            agent.setCurrentTarget(testList.getAllAgents().get(testList.size() - 1));
+            testList.addAgent(agent);
+        }
+        assertEquals("aperson@hendrix.edu", testList.getAgentAssignedToKill(
+                testList.getAllAgents().get(0)).getEmail());
+        assertEquals("zperson@hendrix.edu", testList.getAgentAssignedToKill(
+                testList.getAllAgents().get(testList.size() - 2)).getEmail());
+        assertNull(testList.getAgentAssignedToKill(new Agent("nope", "noe")));
+    }
+
 
 
 }

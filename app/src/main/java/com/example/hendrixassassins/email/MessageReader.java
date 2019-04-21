@@ -22,14 +22,14 @@ import javax.mail.MessagingException;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 
-public class MailReader {
+public class MessageReader {
     private String date, sender, subject, display;
     private Properties props;
     private Session imapSession;
     private Store store;
 
 
-    public void MailReader(String userName, String password) throws MessagingException {
+    public MessageReader(String userName, String password)  {
         props = new Properties();
         //IMAPS protocol
         props.setProperty("mail.store.protocol", "imaps");
@@ -42,8 +42,16 @@ public class MailReader {
         props.setProperty("mail.imaps.socketFactory.fallback", "false");
         //Setting IMAP session
         imapSession = Session.getInstance(props);
-        store = imapSession.getStore("imaps");
-        store.connect("imap.gmail.com", userName, password);
+        try {
+            store = imapSession.getStore("imaps");
+        } catch (NoSuchProviderException e) {
+            Log.e("MessageReader getstore", e.toString());
+        }
+        try {
+            store.connect("imap.gmail.com", userName, password);
+        } catch (MessagingException e) {
+            Log.e("Reader store connect", e.toString());
+        }
     }
 
     public ArrayList<Email> getInboxMessages() throws MessagingException, IOException {

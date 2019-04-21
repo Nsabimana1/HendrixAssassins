@@ -114,7 +114,7 @@ public class AgentList {
 
     public Agent getAgentAssignedToKill(Agent target){
         for(Agent agent: agents){
-            if (agent.getCurrentTarget().equals(target)){
+            if (agent.getCurrentTarget() != null && agent.getCurrentTarget().equals(target)){
                 return agent;
             }
         }
