@@ -1,6 +1,7 @@
 package com.example.hendrixassassins.uipages;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ public class NotificationListViewAdapter<E> extends ArrayAdapter<E> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.e("istViewAdapterCreated", "list view adapter Created");
+
         Notification notification = (Notification) getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -53,7 +56,7 @@ public class NotificationListViewAdapter<E> extends ArrayAdapter<E> {
         viewHolder.score = score;
         convertView.setTag(viewHolder);
 
-
+        Log.e("I just reached here", "I just reached herrrrrrr");
         person.setText(notification.getNotifier().getName().toString());
         status.setText(notification.getNotificationContent().toString());
 //        score.setText(String.valueOf(agent.getPointsTotal()));

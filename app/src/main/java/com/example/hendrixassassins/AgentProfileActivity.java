@@ -33,7 +33,7 @@ public class AgentProfileActivity extends AppCompatActivity {
 
     private void buildAgentHistory(){
         agentHistory = findViewById(R.id.agentHistoryList);
-        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this,
+        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this,
                 R.layout.test_list_view, allAgents);
 
         agentHistory.setAdapter(adapter);
