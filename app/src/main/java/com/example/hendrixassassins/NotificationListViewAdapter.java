@@ -37,6 +37,10 @@ public class NotificationListViewAdapter<E> extends ArrayAdapter<E> {
 
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
+        E d = getItem(position);
+        if(d.getClass() == Agent.class){
+
+        }
 //        String name = (String) getItem(position);
         Agent agent = (Agent) getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);

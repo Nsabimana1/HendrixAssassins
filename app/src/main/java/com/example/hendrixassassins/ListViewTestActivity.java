@@ -73,7 +73,7 @@ public class ListViewTestActivity extends AppCompatActivity {
 
     }
 
-    private void setUpItemClickListener(ListView listView){
+    private void setUpItemClickListener(final ListView listView){
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -81,6 +81,7 @@ public class ListViewTestActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String email = allAgents.get(position).getEmail();
                 toAgentProfileActivity(email);
+
             }
 
         });
