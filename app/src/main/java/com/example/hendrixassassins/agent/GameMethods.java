@@ -20,9 +20,7 @@ public class GameMethods {
     public void assignDrawNumbers(){
         ArrayList<Agent> agents = agentList.getAllAgents();
         Collections.shuffle(agents);
-        for(int i = 0; i < agents.size() - 1; i++){
-            assignDrawNumbersHelper(i, i + 1, agents);
-        }
+        for(int i = 0; i < agents.size() - 1; i++) assignDrawNumbersHelper(i, i + 1, agents);
         assignDrawNumbersHelper(agents.size(), 0, agents);
     }
 

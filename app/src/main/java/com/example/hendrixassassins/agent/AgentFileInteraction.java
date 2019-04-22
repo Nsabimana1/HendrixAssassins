@@ -40,9 +40,7 @@ public class AgentFileInteraction {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String receiveString = "";
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    lines.add(receiveString);
-                }
+                while ( (receiveString = bufferedReader.readLine()) != null ) lines.add(receiveString);
                 inputStream.close();
             }
         }

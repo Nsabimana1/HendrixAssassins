@@ -25,18 +25,14 @@ public class AgentList {
 
     public ArrayList<String> getAgentEmails(){
         ArrayList<String> emails = new ArrayList<>();
-        for(Agent agent: agents){
-            emails.add(agent.getEmail());
-        }
+        for(Agent agent: agents) emails.add(agent.getEmail());
         return emails;
     }
 
     public AgentList filterAgentsByStatus(AgentStatus status){
         AgentList agentList = new AgentList();
         for(Agent agent: agents){
-            if(agent.getStatus() == status){
-                agentList.addAgent(agent);
-            }
+            if(agent.getStatus() == status) agentList.addAgent(agent);
         }
         return agentList;
     }
@@ -45,9 +41,7 @@ public class AgentList {
         AgentList agentList = new AgentList();
         for(AgentStatus status: statusList){
             for(Agent agent: agents){
-                if(agent.getStatus() == status){
-                    agentList.addAgent(agent);
-                }
+                if(agent.getStatus() == status) agentList.addAgent(agent);
             }
         }
         return agentList;
@@ -105,9 +99,7 @@ public class AgentList {
 
     public Agent getAgentWithEmailAddress(String email){
         for(Agent agent: agents){
-            if (agent.getEmail().equals(email)){
-                return agent;
-            }
+            if (agent.getEmail().equals(email)) return agent;
         }
         return null; // I probably shouldn't do this
     }

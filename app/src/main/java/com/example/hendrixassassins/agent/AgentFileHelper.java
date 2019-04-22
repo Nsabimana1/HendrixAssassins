@@ -13,13 +13,13 @@ public class AgentFileHelper {
     deathTimeIndex = 4, currentTargetIndex = 5, personalKillsIndex = 6, pointsTotalIndex = 7,
     killListIndex = 8;
 
+    private final static String dateSplitChar = "-", spaceSplitChar = " ", timeSplitChar = ":";
+
     public AgentFileHelper(){}
 
     public String getAgentListFileString(AgentList agentList){
         StringBuilder builder = new StringBuilder();
-        for(Agent agent: agentList.getAllAgents()){
-            builder.append(agent.getTableRow());
-        }
+        for(Agent agent: agentList.getAllAgents()) builder.append(agent.getTableRow());
         return builder.toString();
     }
 
@@ -40,27 +40,23 @@ public class AgentFileHelper {
     }
 
     private int intFromString(String string){
-        if(string.equals("NA")){
-            return 0;
-        }
+        if(string.equals("NA")) return 0;
         return Integer.parseInt(string.trim());
     }
 
     private GregorianCalendar dateFromString(String string){
-        if(string.equals("NA") || string.trim().length() == 0){
-            return null;
-        }
-        String[] split = string.split(" ");
-        String[] date = split[0].split("-");
-        String[] time = split[1].split(":");
-        return new GregorianCalendar(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]),
-                Integer.parseInt(time[0]), Integer.parseInt(time[1]), Integer.parseInt(time[2]));
+        if(string.equals("NA") || string.trim().length() == 0) return null;
+        String[] split = string.split(spaceSplitChar);
+        String[] date = split[0].split(dateSplitChar);
+        String[] time = split[1].split(timeSplitChar);
+        return new GregorianCalendar(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1,
+                Integer.parseInt(date[2]),  Integer.parseInt(time[0]), Integer.parseInt(time[1]),
+                Integer.parseInt(time[2]));
     }
 
     private Agent setupAgent(String line){
         String[] split = splitLine(line, ",");
         Agent agent = new Agent(split[emailIndex], split[nameIndex]);
-        // Log.e("AAA", split[drawNumberIndex]);
         agent.setDrawNumber(intFromString(split[drawNumberIndex]));
         agent.setStatus(AgentStatus.valueOf(split[statusIndex]));
         agent.setDeathTime(dateFromString(split[deathTimeIndex]));
@@ -71,18 +67,14 @@ public class AgentFileHelper {
 
     private AgentList getAgentKillList(String[] killed, AgentList agentList){
         AgentList killedList = new AgentList();
-        for(String k: killed){
-            killedList.addAgent( agentList.getAgentWithEmailAddress(k));
-        }
+        for(String k: killed)  killedList.addAgent( agentList.getAgentWithEmailAddress(k));
         return killedList;
     }
 
     private AgentList setupAgentsFromFile(ArrayList<String> file){
         AgentList agentList = new AgentList();
         for(String line: file){
-            if(line.trim().length() > 0) {
-                agentList.addAgent(setupAgent(line));
-            }
+            if(line.trim().length() > 0) agentList.addAgent(setupAgent(line));
         }
         return agentList;
     }
@@ -91,7 +83,6 @@ public class AgentFileHelper {
         for(String line: file){
             String[] split = splitLine(line, ",");
             if(split.length > 8) {
-                //Log.e("AGENT:", line);
                 Agent agent = agentList.getAgentWithEmailAddress(split[emailIndex]);
                 agent.setCurrentTarget(agentList.getAgentWithEmailAddress(split[currentTargetIndex]));
                 agent.extendKillList(getAgentKillList(splitLine(split[killListIndex], ":"), agentList));
