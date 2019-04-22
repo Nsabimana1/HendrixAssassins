@@ -65,7 +65,7 @@ public class ListViewTestActivity extends AppCompatActivity {
 
     private void createlistViewAdapter(){
         ListView listView = findViewById(R.id.customListView_Test);
-        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this,
+        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this,
                 R.layout.test_list_view, allAgents);
 
         listView.setAdapter(adapter);

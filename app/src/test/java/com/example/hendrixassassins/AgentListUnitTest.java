@@ -1,5 +1,7 @@
 package com.example.hendrixassassins;
 
+import android.util.Log;
+
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.agent.AgentStatus;
@@ -9,6 +11,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class AgentListUnitTest {
 
@@ -118,6 +121,30 @@ public class AgentListUnitTest {
     }
 
     @Test
+    public void AgentListDrawNumberSort_isCorrect() {
+        AgentList agentList = new AgentList();
+        agentList.addAgent(new Agent("test@hendrix.edu", "test"));
+        agentList.addAgent(new Agent("atest1@hendrix.edu", "atest1"));
+        agentList.addAgent(new Agent("etest2@hendrix.edu", "etest2"));
+        agentList.addAgent(new Agent("ztest3@hendrix.edu", "ztest3"));
+        agentList.addAgent(new Agent("otest4@hendrix.edu", "otest4"));
+        agentList.addAgent(new Agent("ctest5@hendrix.edu", "ctest5"));
+        agentList.getAllAgents().get(0).setDrawNumber(20);
+        agentList.getAllAgents().get(2).setDrawNumber(10);
+        agentList.getAllAgents().get(1).setDrawNumber(100);
+        agentList.getAllAgents().get(4).setDrawNumber(2);
+        agentList.getAllAgents().get(5).setDrawNumber(9);
+        agentList.sortByDrawNumber();
+        assertEquals("atest1", agentList.getAllAgents().get(0).getName());
+        assertEquals(100, agentList.getAllAgents().get(0).getDrawNumber());
+        assertEquals("ztest3", agentList.getAllAgents().get(agentList.size() - 1).getName());
+        assertEquals(-1, agentList.getAllAgents().get(agentList.size() - 1).getDrawNumber());
+        agentList.reverse();
+        assertEquals("ztest3", agentList.getAllAgents().get(0).getName());
+        assertEquals("atest1", agentList.getAllAgents().get(agentList.size() - 1).getName());
+    }
+
+    @Test
     public void AgentListPersonalKillsSort_isCorrect() {
         AgentList agentList = new AgentList();
         agentList.addAgent(new Agent("test@hendrix.edu", "test"));
@@ -176,6 +203,24 @@ public class AgentListUnitTest {
         agentList.addAgent(new Agent("ctest5@hendrix.edu", "ctest5"));
         assertEquals("ctest5", agentList.getAgentWithEmailAddress("ctest5@hendrix.edu").getName());
     }
+
+    @Test
+    public void AgentListGetAgentAssignedToKill_isCorrect(){
+        AgentList testList = new AgentList();
+        testList.addAgent(new Agent("person@hendrix.edu", "person"));
+        String[] abc = new String[]{"a", "b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+        for (String letter : abc) {
+            Agent agent = new Agent(letter + "person@hendrix.edu", letter + "person");
+            agent.setCurrentTarget(testList.getAllAgents().get(testList.size() - 1));
+            testList.addAgent(agent);
+        }
+        assertEquals("aperson@hendrix.edu", testList.getAgentAssignedToKill(
+                testList.getAllAgents().get(0)).getEmail());
+        assertEquals("zperson@hendrix.edu", testList.getAgentAssignedToKill(
+                testList.getAllAgents().get(testList.size() - 2)).getEmail());
+        assertNull(testList.getAgentAssignedToKill(new Agent("nope", "noe")));
+    }
+
 
 
 }

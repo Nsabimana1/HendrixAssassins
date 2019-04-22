@@ -25,18 +25,14 @@ public class AgentList {
 
     public ArrayList<String> getAgentEmails(){
         ArrayList<String> emails = new ArrayList<>();
-        for(Agent agent: agents){
-            emails.add(agent.getEmail());
-        }
+        for(Agent agent: agents) emails.add(agent.getEmail());
         return emails;
     }
 
     public AgentList filterAgentsByStatus(AgentStatus status){
         AgentList agentList = new AgentList();
         for(Agent agent: agents){
-            if(agent.getStatus() == status){
-                agentList.addAgent(agent);
-            }
+            if(agent.getStatus() == status) agentList.addAgent(agent);
         }
         return agentList;
     }
@@ -45,12 +41,19 @@ public class AgentList {
         AgentList agentList = new AgentList();
         for(AgentStatus status: statusList){
             for(Agent agent: agents){
-                if(agent.getStatus() == status){
-                    agentList.addAgent(agent);
-                }
+                if(agent.getStatus() == status) agentList.addAgent(agent);
             }
         }
         return agentList;
+    }
+
+    public void sortByDrawNumber(){
+        Collections.sort(agents, new Comparator<Agent>() {
+            @Override
+            public int compare(Agent o1, Agent o2) {
+                return o2.getDrawNumber() - o1.getDrawNumber();
+            }
+        });
     }
 
     public void sortByPersonalKills(){
@@ -96,13 +99,18 @@ public class AgentList {
 
     public Agent getAgentWithEmailAddress(String email){
         for(Agent agent: agents){
-            if (agent.getEmail().equals(email)){
-                return agent;
-            }
+            if (agent.getEmail().equals(email)) return agent;
         }
         return null; // I probably shouldn't do this
     }
 
-    //email, subject,content for emails
+    public Agent getAgentAssignedToKill(Agent target){
+        for(Agent agent: agents){
+            if (agent.getCurrentTarget() != null && agent.getCurrentTarget().equals(target)){
+                return agent;
+            }
+        }
+        return null;
+    }
 
 }

@@ -12,14 +12,23 @@ import javax.mail.internet.InternetAddress;
 
 public class Email {
     private String sender, subject, body;
+    private final String gameEmail = "HendrixAssassinsApp@gmail.com";
     private ArrayList<String> recipients;
     private Date date;
 
 
-    public Email(String sender, String recipient, String subject, String body){
-        this.sender = sender;
+    public Email(String recipient, String subject, String body){
+        this.sender = gameEmail;
         recipients = new ArrayList<>();
         this.recipients.add(recipient);
+        this.subject = subject;
+        this.body = body;
+        this.date = Calendar.getInstance().getTime();
+    }
+
+    public Email(ArrayList<String> recipients, String subject, String body){
+        this.sender = gameEmail;
+        this.recipients = recipients;
         this.subject = subject;
         this.body = body;
         this.date = Calendar.getInstance().getTime();

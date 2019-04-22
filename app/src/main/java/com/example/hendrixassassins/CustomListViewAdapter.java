@@ -2,6 +2,7 @@ package com.example.hendrixassassins;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,12 @@ import com.example.hendrixassassins.agent.Agent;
 import java.util.List;
 
 
-public class NotificationListViewAdapter<E> extends ArrayAdapter<E> {
+public class CustomListViewAdapter<E> extends ArrayAdapter<E> {
 
     private Context mContext;
     private int mResource;
 
-    public NotificationListViewAdapter(Context context, int resource, List<E> objects) {
+    public CustomListViewAdapter(Context context, int resource, List<E> objects) {
         super(context, resource, objects);
         this.mContext = context;
         this.mResource =resource;
@@ -62,6 +63,9 @@ public class NotificationListViewAdapter<E> extends ArrayAdapter<E> {
         person.setText(agent.getName().toString());
         status.setText(agent.getStatus().toString());
         score.setText(String.valueOf(agent.getPointsTotal()));
+
+        Log.e("NotificationListViewAdapter", "CustomListView Adapter made");
+
         /*
         Set up TextViews here from convertView
         and assign them to the ViewHolder

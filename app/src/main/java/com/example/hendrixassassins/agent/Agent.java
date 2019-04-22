@@ -134,9 +134,7 @@ public class Agent {
     }
 
     private String getKillListAsString(){
-        if(killList.size() == 0){
-            return "NA";
-        }
+        if(killList.size() == 0)  return "NA";
         StringBuilder builder = new StringBuilder();
         for(Agent agent: killList.getAllAgents()){
             builder.append(agent.email);

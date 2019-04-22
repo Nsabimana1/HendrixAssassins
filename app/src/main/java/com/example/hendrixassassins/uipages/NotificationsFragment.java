@@ -4,17 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.hendrixassassins.AgentProfileActivity;
-import com.example.hendrixassassins.NotificationListViewAdapter;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.email.Notification;
@@ -41,6 +40,8 @@ public class NotificationsFragment extends Fragment{
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private View fragView;
+    private Button showListView;
 
 //    private ListView notificationListView;
     private NotificationList notificationList;
@@ -50,11 +51,10 @@ public class NotificationsFragment extends Fragment{
     public NotificationsFragment() {
         // Required empty public constructor
         notificationList = new NotificationList();
-        notificationList.addNotification(new Notification(new Agent("Patrick@gmial.com", "Patrick"), "Iwant to dodd"));
-        notificationList.addNotification(new Notification(new Agent("hakaka@gmial.com", "kakanana"), "Iwant to dodd"));
-        notificationList.addNotification(new Notification(new Agent("hamana@gmial.com", "kamnana"), "Iwant to dodd"));
+        notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "Patrick"), "Iwant to dodd"));
+        notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kakanana"), "Iwant to dodd"));
+        notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kamnana"), "Iwant to dodd"));
         allNotifications = notificationList.getAllNotifications();
-
     }
 
     /**
@@ -82,15 +82,27 @@ public class NotificationsFragment extends Fragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        createListViewAdapter();
+
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View V = inflater.inflate(R.layout.fragment_notifications, container, false);
-        return inflater.inflate(R.layout.fragment_notifications, container, false);
+        fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
+//        createListViewAdapter();
+//        return inflater.inflate(R.layout.fragment_notifications, container, false);
+        showListView = fragView.findViewById(R.id.showListView_Button);
+        showListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createListViewAdapter();
+            }
+        });
+        return fragView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -135,12 +147,17 @@ public class NotificationsFragment extends Fragment{
 //    }
 
     private void createListViewAdapter(){
-        ListView notificationListView = (ListView) getActivity().findViewById(R.id.notifications_ListView);
-        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(getActivity(),
+        ListView notificationListView = fragView.findViewById(R.id.notifications_ListView);
+        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
                 R.layout.test_list_view, allNotifications);
+//
+//        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(fragView.getContext(),
+//                R.layout.test_list_view, allNotifications);
         notificationListView.setAdapter(adapter);
         setUpItemClickListener(notificationListView);
 
+        Log.e("size of notifarray", Integer.toString(allNotifications.size()));
+        Log.e("createdlistViewAdapter", "Created list view adapter");
     }
 
     private void setUpItemClickListener(ListView listView){
@@ -150,22 +167,22 @@ public class NotificationsFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String email = allNotifications.get(position).getNotifier().getEmail();
-                toAgentProfileActivity(email);
+                toNotificationContentActivity(email);
             }
 
         });
     }
 
-    private void toAgentProfileActivity(String email) {
-        Intent forwardIntent = new Intent(getActivity(), AgentProfileActivity.class);
+    private void toNotificationContentActivity(String email) {
+        Intent forwardIntent = new Intent(getActivity(), NotificationTemplateViewActivity.class);
         forwardIntent.putExtra("clickedUserEmail", email);
         startActivity(forwardIntent);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-//        notificationListView = (ListView) view.findViewById(R.id.notifications_ListView);
-    }
+//    @Override
+//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+////        notificationListView = (ListView) view.findViewById(R.id.notifications_ListView);
+//    }
 
 }

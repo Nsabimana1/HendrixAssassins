@@ -14,7 +14,16 @@
     <ListView
         android:id="@+id/notifications_ListView"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         />
+
+
+    <Button
+        android:id="@+id/showListView_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+
 
 </FrameLayout>
