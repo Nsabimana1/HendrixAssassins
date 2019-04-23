@@ -16,7 +16,7 @@ public class AgentList {
     }
 
     public void addAgent(Agent agent){
-        agents.add(agent);
+        if(getAgentWithEmailAddress(agent.getEmail()) == null)  agents.add(agent);
     }
 
     public ArrayList<Agent> getAllAgents(){
