@@ -12,20 +12,28 @@ public class GameMethods {
         this.agentList = agentList;
     }
 
+    public AgentList getAgentList(){
+        return agentList;
+    }
+
     private void assignDrawNumbersHelper(int agentIndex, int targetIndex, ArrayList<Agent> agents){
         agents.get(agentIndex).setDrawNumber(agentIndex);
         agents.get(agentIndex).setCurrentTarget(agents.get(targetIndex));
     }
 
-    public void assignDrawNumbers(){
+    private void assignDrawNumbers(){
         ArrayList<Agent> agents = agentList.getAllAgents();
         Collections.shuffle(agents);
         for(int i = 0; i < agents.size() - 1; i++) assignDrawNumbersHelper(i, i + 1, agents);
-        assignDrawNumbersHelper(agents.size(), 0, agents);
+        assignDrawNumbersHelper(agents.size() - 1, 0, agents);
     }
 
-    public AgentList getAgentList(){
-        return agentList;
+    public void initializeTargets(){
+        assignDrawNumbers();
+        agentList.sortByDrawNumber();
+        ArrayList<Agent> agents = agentList.getAllAgents();
+        for(int i = 0; i < agents.size() - 1; i++) agents.get(i).setCurrentTarget(agents.get(i + 1));
+        agents.get(agents.size() - 1).setCurrentTarget(agents.get(0));
     }
 
     public void purge(GregorianCalendar purgeTime){
@@ -40,16 +48,14 @@ public class GameMethods {
         }
     }
 
-    public void reassignAgentWithTarget(Agent target){
+    private void reassignAgentWithTarget(Agent target){
         agentList.getAgentAssignedToKill(target).setCurrentTarget(target.getCurrentTarget());
         target.setCurrentTarget(null);
     }
 
-    public void freezeAgents(AgentList agentsToFreeze){
-        for(Agent agent: agentsToFreeze.getAllAgents()){
-            reassignAgentWithTarget(agent);
-            agent.setStatus(AgentStatus.FROZEN);
-        }
+    public void freezeAgent(Agent agentToFreeze){
+        reassignAgentWithTarget(agentToFreeze);
+        agentToFreeze.setStatus(AgentStatus.FROZEN);
     }
 
     public void thawAgent(Agent frozenAgent){
