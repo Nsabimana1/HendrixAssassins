@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
 
     private void createlistViewAdapter(){
         ListView listView = fragView.findViewById(R.id.agentList);
-        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
+        CustomListViewAdapter<Agent> adapter = new CustomListViewAdapter<>(this.getContext(),
                 R.layout.test_list_view, allAgents);
         listView.setAdapter(adapter);
 
@@ -91,16 +91,16 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         fragView = inflater.inflate(R.layout.fragment_home, container, false);
-        listView = fragView.findViewById(R.id.agentList);
 
         agentList = agentFileHelper.getAgentListFromFile("testFile.csv", this.getContext());
         allAgents = new ArrayList<>(agentList.getAllAgents());
+
 
         createlistViewAdapter();
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return fragView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
