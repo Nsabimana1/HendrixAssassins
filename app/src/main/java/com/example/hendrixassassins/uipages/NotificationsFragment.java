@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,12 @@ import android.widget.ListView;
 import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.email.Email;
+import com.example.hendrixassassins.email.MessageReader;
 import com.example.hendrixassassins.email.Notification;
 import com.example.hendrixassassins.email.NotificationList;
 
+import java.io.EOFException;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +33,7 @@ import java.util.ArrayList;
  * Use the {@link NotificationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotificationsFragment extends Fragment{
+public class NotificationsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,6 +51,9 @@ public class NotificationsFragment extends Fragment{
     private NotificationList notificationList;
     private ArrayList<Notification> allNotifications = new ArrayList<>();
 
+    private ArrayList<Email> inboxEmails = new ArrayList<>();
+    private MessageReader messageReader;
+
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -55,6 +62,7 @@ public class NotificationsFragment extends Fragment{
         notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kakanana"), "Iwant to dodd"));
         notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kamnana"), "Iwant to dodd"));
         allNotifications = notificationList.getAllNotifications();
+        updateMessages();
     }
 
     /**
@@ -82,6 +90,20 @@ public class NotificationsFragment extends Fragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+//        mySwipeRefreshLayout.setOnRefreshListener(
+//                new SwipeRefreshLayout.OnRefreshListener() {
+//                    @Override
+//                    public void onRefresh() {
+//                        Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
+//
+//                        // This method performs the actual data-refresh operation.
+//                        // The method calls setRefreshing(false) when it's finished.
+//                        myUpdateOperation();
+//                    }
+//                }
+//        );
     }
 
     @Override
@@ -153,7 +175,7 @@ public class NotificationsFragment extends Fragment{
         notificationListView.setAdapter(adapter);
         setUpItemClickListener(notificationListView);
 
-        Log.e("size of notifarray", Integer.toString(allNotifications.size()));
+        Log.e("size of notifarray", Integer.toString(inboxEmails.size()));
         Log.e("createdlistViewAdapter", "Created list view adapter");
     }
 
@@ -174,6 +196,15 @@ public class NotificationsFragment extends Fragment{
         Intent forwardIntent = new Intent(getActivity(), NotificationTemplateViewActivity.class);
         forwardIntent.putExtra("clickedUserEmail", email);
         startActivity(forwardIntent);
+    }
+
+    public void updateMessages(){
+        messageReader = new MessageReader("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+        try {
+            inboxEmails = messageReader.getInboxMessages();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 //    @Override

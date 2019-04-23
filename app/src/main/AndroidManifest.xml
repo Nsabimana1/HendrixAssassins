@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".uipages.NotificationTemplateViewActivity"></activity>
+        <activity android:name=".NofiticationListView"></activity>
+        <activity android:name=".uipages.NotificationTemplateViewActivity" />
         <activity
             android:name=".uipages.HomeActivity"
             android:label="@string/title_activity_home" />
