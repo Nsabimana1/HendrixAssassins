@@ -27,14 +27,25 @@ public class ListViewTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview_test_activity);
         agentList = agentFileHelper.getAgentListFromFile("testFile.csv", this);
-        allAgents = agentList.getAllAgents();
+        allAgents = new ArrayList<>(agentList.getAllAgents());
         createlistViewAdapter();
         setUpSortTestButtons();
 
+        ArrayList<Agent> allAgents2 = new ArrayList<>(allAgents);
 
         AutoCompleteTextView autoCompleteTextView = findViewById(R.id.autoCompleteTest);
-        AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this, R.layout.auto_complete_list_test, allAgents);
+        AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this, R.layout.auto_complete_list_test, allAgents2);
         autoCompleteTextView.setAdapter(adapter);
+    }
+
+    private void createlistViewAdapter(){
+        ListView listView = findViewById(R.id.customListView_Test);
+        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this,
+                R.layout.test_list_view, allAgents);
+
+        listView.setAdapter(adapter);
+        setUpItemClickListener(listView);
+
     }
 
     private void setUpSortTestButtons() {
@@ -63,15 +74,7 @@ public class ListViewTestActivity extends AppCompatActivity {
     }
 
 
-    private void createlistViewAdapter(){
-        ListView listView = findViewById(R.id.customListView_Test);
-        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this,
-                R.layout.test_list_view, allAgents);
 
-        listView.setAdapter(adapter);
-        setUpItemClickListener(listView);
-
-    }
 
     private void setUpItemClickListener(final ListView listView){
         listView.setClickable(true);

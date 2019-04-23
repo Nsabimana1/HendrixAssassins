@@ -10,8 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.hendrixassassins.CustomListViewAdapter;
 import com.example.hendrixassassins.R;
+import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.agent.AgentFileHelper;
+import com.example.hendrixassassins.agent.AgentList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +41,9 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private AgentList agentList = new AgentList();
+    private AgentFileHelper agentFileHelper = new AgentFileHelper();
+    private ArrayList<Agent> allAgents;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -70,11 +78,25 @@ public class HomeFragment extends Fragment {
 
     }
 
+    private void createlistViewAdapter(){
+        ListView listView = fragView.findViewById(R.id.agentList);
+        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
+                R.layout.test_list_view, allAgents);
+        listView.setAdapter(adapter);
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+        fragView = inflater.inflate(R.layout.fragment_home, container, false);
         listView = fragView.findViewById(R.id.agentList);
+
+        agentList = agentFileHelper.getAgentListFromFile("testFile.csv", this.getContext());
+        allAgents = new ArrayList<>(agentList.getAllAgents());
+
+        createlistViewAdapter();
 
 
         // Inflate the layout for this fragment
