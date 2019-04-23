@@ -4,23 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".uipages.NotificationTemplateViewActivity">
 
     <View
         android:id="@+id/divider"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="242dp" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="492dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.991"
+        tools:layout_editor_absoluteX="6dp" />
 
     <View
         android:id="@+id/divider2"
-        android:layout_width="395dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="152dp" />
+        android:layout_marginTop="156dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="16dp" />
 
     <TextureView
         android:id="@+id/content_view"
@@ -30,12 +39,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.707" />
+        app:layout_constraintVertical_bias="0.731" />
 
     <TextureView
         android:id="@+id/header_view"
@@ -43,6 +53,7 @@
         android:layout_height="65dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -59,6 +70,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.044"
@@ -73,6 +85,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.873"
@@ -88,6 +101,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.146"
@@ -105,6 +119,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.873"
@@ -122,7 +137,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/content_view"
         app:layout_constraintEnd_toEndOf="@+id/content_view"
         app:layout_constraintStart_toStartOf="@+id/content_view"
-        app:layout_constraintTop_toTopOf="@+id/content_view" />
+        app:layout_constraintTop_toTopOf="@+id/content_view"
+        app:layout_constraintVertical_bias="0.465" />
 
     <TextView
         android:id="@+id/notication_header"
