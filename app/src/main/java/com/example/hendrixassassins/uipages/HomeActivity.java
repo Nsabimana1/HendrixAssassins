@@ -52,9 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.main_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-
-
+        setFragment(homeFragment);
     }
 
 

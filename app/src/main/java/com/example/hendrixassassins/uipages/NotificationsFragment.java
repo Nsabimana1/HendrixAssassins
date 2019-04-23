@@ -57,11 +57,14 @@ public class NotificationsFragment extends Fragment {
 
     public NotificationsFragment() {
         // Required empty public constructor
+
+
         notificationList = new NotificationList();
         notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "Patrick"), "Iwant to dodd"));
         notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kakanana"), "Iwant to dodd"));
         notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kamnana"), "Iwant to dodd"));
         allNotifications = notificationList.getAllNotifications();
+        Log.e("Im in here", "I am called11");
         updateMessages();
     }
 
@@ -169,13 +172,10 @@ public class NotificationsFragment extends Fragment {
         ListView notificationListView = fragView.findViewById(R.id.notifications_ListView);
         NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
                 R.layout.test_list_view, allNotifications);
-//
-//        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(fragView.getContext(),
-//                R.layout.test_list_view, allNotifications);
         notificationListView.setAdapter(adapter);
         setUpItemClickListener(notificationListView);
 
-        Log.e("size of notifarray", Integer.toString(inboxEmails.size()));
+        Log.e("size of inbox message", Integer.toString(inboxEmails.size()));
         Log.e("createdlistViewAdapter", "Created list view adapter");
     }
 
@@ -199,10 +199,15 @@ public class NotificationsFragment extends Fragment {
     }
 
     public void updateMessages(){
-        messageReader = new MessageReader("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+        Log.e("Im in here", "I am called11");
         try {
+            messageReader = new MessageReader("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+            Log.e("connedted", "I connected");
+
             inboxEmails = messageReader.getInboxMessages();
+            Log.e("sise of messagelist", String.valueOf(inboxEmails.size()));
         }catch (Exception e){
+            Log.e("messea fil", "message Reder failed");
             e.printStackTrace();
         }
     }
