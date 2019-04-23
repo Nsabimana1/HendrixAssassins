@@ -115,15 +115,7 @@ public class NotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
         createListViewAdapter();
-//        createListViewAdapter();
-//        return inflater.inflate(R.layout.fragment_notifications, container, false);
-        showListView = fragView.findViewById(R.id.showListView_Button);
-//        showListView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                createListViewAdapter();
-//            }
-//        });
+//        showListView = fragView.findViewById(R.id.showListView_Button);
         return fragView;
     }
 
@@ -173,6 +165,7 @@ public class NotificationsFragment extends Fragment {
         NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
                 R.layout.test_list_view, allNotifications);
         notificationListView.setAdapter(adapter);
+
         setUpItemClickListener(notificationListView);
 
         Log.e("size of inbox message", Integer.toString(inboxEmails.size()));
@@ -200,16 +193,20 @@ public class NotificationsFragment extends Fragment {
 
     public void updateMessages(){
         Log.e("Im in here", "I am called11");
-        try {
-            messageReader = new MessageReader("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
-            Log.e("connedted", "I connected");
-
-            inboxEmails = messageReader.getInboxMessages();
-            Log.e("sise of messagelist", String.valueOf(inboxEmails.size()));
-        }catch (Exception e){
-            Log.e("messea fil", "message Reder failed");
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    messageReader = new MessageReader("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+                    Log.e("connedted", "I connected");
+                    inboxEmails = messageReader.getInboxMessages();
+                    Log.e("sise of messagelist", String.valueOf(inboxEmails.size()));
+                }catch (Exception e){
+                    Log.e("messea fil", "message Reder failed");
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 //    @Override

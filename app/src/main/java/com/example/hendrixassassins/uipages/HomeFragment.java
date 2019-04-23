@@ -74,33 +74,19 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-    }
-
-    private void createlistViewAdapter(){
-        ListView listView = fragView.findViewById(R.id.agentList);
-        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
-                R.layout.test_list_view, allAgents);
-        listView.setAdapter(adapter);
+        agentList = agentFileHelper.getAgentListFromFile("testFile.csv", this.getContext());
+        allAgents = new ArrayList<>(agentList.getAllAgents());
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         fragView = inflater.inflate(R.layout.fragment_home, container, false);
-        listView = fragView.findViewById(R.id.agentList);
-
-        agentList = agentFileHelper.getAgentListFromFile("testFile.csv", this.getContext());
-        allAgents = new ArrayList<>(agentList.getAllAgents());
-
-        createlistViewAdapter();
-
-
+        createListViewAdapter();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return fragView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -145,4 +131,13 @@ public class HomeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
+    private void createListViewAdapter(){
+        ListView listView = fragView.findViewById(R.id.agentList);
+        Log.e("all agents", String.valueOf(allAgents.size()));
+        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
+                R.layout.test_list_view, allAgents);
+        listView.setAdapter(adapter);
+
+    }
 }
