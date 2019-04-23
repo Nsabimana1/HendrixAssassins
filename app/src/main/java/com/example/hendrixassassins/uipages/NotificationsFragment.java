@@ -82,10 +82,6 @@ public class NotificationsFragment extends Fragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-
-
     }
 
     @Override
@@ -93,15 +89,16 @@ public class NotificationsFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
+        createListViewAdapter();
 //        createListViewAdapter();
 //        return inflater.inflate(R.layout.fragment_notifications, container, false);
         showListView = fragView.findViewById(R.id.showListView_Button);
-        showListView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createListViewAdapter();
-            }
-        });
+//        showListView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                createListViewAdapter();
+//            }
+//        });
         return fragView;
     }
 
