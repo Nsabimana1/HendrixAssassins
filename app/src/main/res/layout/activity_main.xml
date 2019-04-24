@@ -27,4 +27,16 @@
         app:layout_constraintBottom_toTopOf="@+id/toGmailTest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/toStartGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="252dp"
+        android:layout_marginEnd="260dp"
+        android:layout_marginBottom="37dp"
+        android:text="TostartGame"
+        app:layout_constraintBottom_toTopOf="@+id/to_listview_test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>
