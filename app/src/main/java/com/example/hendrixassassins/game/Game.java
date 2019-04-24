@@ -20,6 +20,7 @@ public class Game {
     private String fileName;
     private GameStatus status;
     private GregorianCalendar purgeTime;
+    private GameMethods gameMethods;
 
     private final static String dateSplitChar = "-", spaceSplitChar = " ", timeSplitChar = ":";
 
@@ -28,7 +29,7 @@ public class Game {
         this.email = email;
         this.password = password;
         this.fileName = this.email.split("@")[0];
-        this.status = GameStatus.SIGNUP;
+        this.purgeTime = null;
     }
 
     public void setPurgeTime(GregorianCalendar date){
@@ -124,7 +125,11 @@ public class Game {
             }
         }
         catch (FileNotFoundException e) {
-            Log.e("Exception", "File not found: " + e.toString());
+            // TODO create a new game
+            // TODO get the purge time - perhaps when startGame is pressed
+            // TODO make a GameMethods object with AgentList
+            status = GameStatus.SIGNUP;
+
         } catch (IOException e) {
             Log.e("Exception", "Can not read file: " + e.toString());
         }
