@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NofiticationListView"></activity>
+        <activity android:name=".CreateGameActivity"></activity>
+        <activity android:name=".NofiticationListView" />
         <activity android:name=".uipages.NotificationTemplateViewActivity" />
         <activity
             android:name=".uipages.HomeActivity"
@@ -31,7 +32,7 @@
             android:name=".uipages.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".AgentProfileActivity" />
-        <activity android:name=".ListViewTestActivity" />
+        <activity android:name=".UItestcompnents.ListViewTestActivity" />
         <activity android:name=".email.GmailTestActivity" />
         <activity android:name=".MainActivity" />
     </application>

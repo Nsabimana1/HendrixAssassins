@@ -1,4 +1,4 @@
-package com.example.hendrixassassins;
+package com.example.hendrixassassins.UItestcompnents;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 
+import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
 
 import java.util.ArrayList;
