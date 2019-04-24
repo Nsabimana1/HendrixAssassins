@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hendrixassassins.R;
 
@@ -123,7 +124,7 @@ public class GmailTestActivity extends AppCompatActivity {
         refreshInbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grabInbox();
+                grabSent();
             }
         });
     }
@@ -158,58 +159,37 @@ public class GmailTestActivity extends AppCompatActivity {
                     Log.e("inbox", "could not read inbox "+ e.toString());
                 }
             }    }).start();
+    }
 
-
+    private void grabSent() {
+        try {
+            String date, sender, subject, display;
+            boolean read;
+            ArrayList<Email> sent = new ArrayList<>();
+            MessageReader reader = new MessageReader("HendrixAssassinsApp", "AssassinsTest1");
+            sent = reader.getInboxMessages();
+            display="";
+            for (Email currentMessage : sent ) {
+                date = currentMessage.getDate().toString();
+                sender = currentMessage.getSender();
+                subject = currentMessage.getSubject();
+                read = currentMessage.getRead();
+                display += date + "\n" + sender + "\n" + subject + "\n" + read + "\n----------------\n";
+            }
+            final String showMessages = display;
+            GmailTestActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    inboxMessages.setText(showMessages);
+                }
+            });
+        } catch (MessagingException | IOException e){
+            Log.e("GmailTestActivity", "Failure getting mail: "+ e.toString());
+            Toast toast = Toast.makeText(this, "Failed to read Sent Emails", Toast.LENGTH_SHORT);
+        }
     }
 
 
 
-    /*private void grabInbox() throws MessagingException {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String date, sender, subject, display;
-                    //From https://stackoverflow.com/questions/7146706/how-to-receive-email-from-gmail-android
-                    Properties props = new Properties();
-                    //IMAPS protocol
-                    props.setProperty("mail.store.protocol", "imaps");
-                    //Set host address
-                    props.setProperty("mail.imaps.host", "imaps.gmail.com");
-                    //Set specified port
-                    props.setProperty("mail.imaps.port", "993");
-                    //Using SSL
-                    props.setProperty("mail.imaps.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-                    props.setProperty("mail.imaps.socketFactory.fallback", "false");
-                    //Setting IMAP session
-                    Session imapSession = Session.getInstance(props);
-                    Store store = imapSession.getStore("imaps");
-                     //Connect to server by sending username and password.
-                    //Example mailServer = imap.gmail.com, username = abc, password = abc
-                    store.connect("imap.gmail.com", "HendrixAssassinsApp", "AssassinsTest1");
-                    //Get all mails in Inbox Folder
-                    Folder inbox = store.getFolder("Inbox");
-                    inbox.open(Folder.READ_ONLY);
-                    //Return result to array of message
-                    Message[] messages = inbox.getMessages();
-                    display = "";
-                    for (int i = messages.length - 1; i >= 0 ; i--) {
-                        Message currentMessage = messages[i];
-                        date = currentMessage.getSentDate().toString();
-                        sender = ((InternetAddress) (currentMessage.getFrom())[0]).getAddress();
-                        subject = currentMessage.getSubject().toString();
-                        display += date + "\n" + sender + "\n" + subject + "\n" + "----------------\n";
-                    }
-                    final String showMessages = display;
-                    GmailTestActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            inboxMessages.setText(showMessages);
-                        }
-                    });
-                } catch (MessagingException e){
-                    Log.e("inbox", "could not read inbox "+ e.toString());
-                }
-                }    }).start();
-    } */
+
 }

@@ -1,16 +1,19 @@
 package com.example.hendrixassassins.email;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -78,4 +81,29 @@ public class MessageReader {
         return emailList;
     }
 
+    public ArrayList<Email> getSentMessages()  {
+        ArrayList<Email> emailList = new ArrayList<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Folder sent = store.getFolder("Sent");
+                    sent.open(Folder.READ_ONLY);
+                    Message[] messages = sent.getMessages();
+                    ArrayList<Email> emailList = new ArrayList<>();
+                    for (int i = 0; i < messages.length; i++) {
+                        emailList.add(new Email(messages[i]));
+                    }
+                } catch (MessagingException | IOException e) {
+                    Log.e("MessageReader", "Failed to read Sent email folder");
+               //     CharSequence text = "Failed to read Sent email folder";
+               //     Toast toast = Toast.makeText(context  , text, Toast.LENGTH_SHORT);
+               //     toast.show();
+
+                }
+            }}).start();
+        return emailList;
+    }
 }
+
+
