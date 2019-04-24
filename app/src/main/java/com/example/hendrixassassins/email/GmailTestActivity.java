@@ -135,6 +135,7 @@ public class GmailTestActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String date, sender, subject, display;
+                    boolean read;
                     ArrayList<Email> inbox = new ArrayList<>();
                     MessageReader reader = new MessageReader("HendrixAssassinsApp", "AssassinsTest1");
                     inbox = reader.getInboxMessages();
@@ -143,7 +144,8 @@ public class GmailTestActivity extends AppCompatActivity {
                          date = currentMessage.getDate().toString();
                         sender = currentMessage.getSender();
                         subject = currentMessage.getSubject();
-                        display += date + "\n" + sender + "\n" + subject + "\n" + "----------------\n";
+                        read = currentMessage.getRead();
+                        display += date + "\n" + sender + "\n" + subject + "\n" + read + "\n----------------\n";
                     }
                     final String showMessages = display;
                     GmailTestActivity.this.runOnUiThread(new Runnable() {
