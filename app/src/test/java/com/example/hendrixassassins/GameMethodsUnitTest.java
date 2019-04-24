@@ -3,13 +3,11 @@ package com.example.hendrixassassins;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.agent.AgentStatus;
-import com.example.hendrixassassins.agent.GameMethods;
+import com.example.hendrixassassins.game.GameMethods;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;

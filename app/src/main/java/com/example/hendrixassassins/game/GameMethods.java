@@ -1,4 +1,8 @@
-package com.example.hendrixassassins.agent;
+package com.example.hendrixassassins.game;
+
+import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.agent.AgentStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
