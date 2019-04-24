@@ -14,9 +14,7 @@ import com.example.hendrixassassins.R;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
 
 
 public class GmailTestActivity extends AppCompatActivity {
@@ -30,6 +28,7 @@ public class GmailTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         findIDs();
         //sendListener();
+        GmailLogin login = new GmailLogin("HendrixAssassinsApp","AssassinsTest1");
         grabInbox();
         sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
         refreshInboxListener();
@@ -160,6 +159,8 @@ public class GmailTestActivity extends AppCompatActivity {
 
 
     }
+
+
 
     /*private void grabInbox() throws MessagingException {
         new Thread(new Runnable() {
