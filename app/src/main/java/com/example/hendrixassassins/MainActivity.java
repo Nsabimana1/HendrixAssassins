@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.hendrixassassins.UItestcompnents.ListViewTestActivity;
 import com.example.hendrixassassins.email.GmailTestActivity;
 
 public class MainActivity extends AppCompatActivity {
-    Button toGmailTest, toListViewTest;
+    Button toGmailTest, toListViewTest, toCreateGame;
+
 
 
     @Override
@@ -18,7 +20,22 @@ public class MainActivity extends AppCompatActivity {
         findIDs();
         toGmailTestButton();
         toListViewTestButton();
+        toCreateGameButton();
         new FileTestActivity(getBaseContext());
+    }
+
+    private void toCreateGameButton() {
+        toCreateGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toCreateGameActivity();
+            }
+        });
+    }
+
+    private void toCreateGameActivity() {
+        Intent forwardIntent = new Intent(MainActivity.this, CreateGameActivity.class);
+        startActivity(forwardIntent);
     }
 
     private void toListViewTestButton() {
@@ -40,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toGmailTest = findViewById(R.id.toGmailTest);
         toListViewTest = findViewById(R.id.to_listview_test);
+        toCreateGame = findViewById(R.id.toStartGame);
     }
 
     private void toGmailTestButton() {
