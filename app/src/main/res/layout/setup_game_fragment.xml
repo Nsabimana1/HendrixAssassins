@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    tools:context=".CreateGameActivity" >
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/refresh_emails_1"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Refresh" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="668dp">
+        android:layout_height="613dp">
 
         <ListView
             android:id="@+id/listofIncomingEmails"
@@ -24,7 +28,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="155dp" >
+        android:layout_height="155dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,18 +43,12 @@
                 android:text=" verify" />
 
             <Button
-                android:id="@+id/addSelectedToGame"
-                android:layout_width="wrap_content"
-                android:layout_height="155dp"
-                android:layout_weight="1"
-                android:text="add selected to game" />
-
-            <Button
-                android:id="@+id/CreateGame"
+                android:id="@+id/createGame"
                 android:layout_width="wrap_content"
                 android:layout_height="155dp"
                 android:layout_weight="1"
                 android:text="create game" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
+
 </LinearLayout>

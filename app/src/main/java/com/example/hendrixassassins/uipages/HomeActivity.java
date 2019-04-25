@@ -24,8 +24,12 @@ public class HomeActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private NotificationsFragment notificationsFragment;
     private EmailFragment emailFragment;
+
+    private SetUpGameFragment setUpGameFragment;
+
     private Game game;
     private Context context;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -42,8 +46,10 @@ public class HomeActivity extends AppCompatActivity {
                     setFragment(emailFragment);
                     return true;
                 case R.id.navigation_notifications:
+                    //TODO: add if else statements for the different game states
                     mTextMessage.setText(R.string.title_notifications);
                     setFragment(notificationsFragment);
+                    //setFragment(setUpGameFragment);
                     return true;
             }
             return false;
@@ -67,9 +73,13 @@ public class HomeActivity extends AppCompatActivity {
         Log.e("AAA", "We've initialized");
         setupGame(email);
         initializeFragments();
+
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.main_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //sets initial fragment
+        //TODO: do logic to filter the game states
+
         setFragment(homeFragment);
     }
 
@@ -84,6 +94,7 @@ public class HomeActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         notificationsFragment = new NotificationsFragment();
         emailFragment = new EmailFragment();
+        setUpGameFragment  = new SetUpGameFragment();
     }
 
     private void setFragment(Fragment fragment){

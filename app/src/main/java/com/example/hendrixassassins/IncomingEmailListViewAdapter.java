@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.email.Email;
 
 import java.util.List;
 
@@ -29,7 +30,6 @@ public class IncomingEmailListViewAdapter<E> extends ArrayAdapter<E> {
     public static class ViewHolder {
         TextView email;
         TextView subject;
-        CheckBox addPlayer;
         /*
         Define any objects inside custom view
         this includes any TextViews or ImageViews
@@ -39,7 +39,9 @@ public class IncomingEmailListViewAdapter<E> extends ArrayAdapter<E> {
 
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
-
+        Email email = (Email) getItem(position);
+        String emailName = email.getSender();
+        String emailDate = email.getDate().toString();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -48,17 +50,14 @@ public class IncomingEmailListViewAdapter<E> extends ArrayAdapter<E> {
 
         TextView person = convertView.findViewById(R.id.emailName);
         TextView subject = convertView.findViewById(R.id.emailSubject);
-        CheckBox score = convertView.findViewById(R.id.isPlaying);
 
 
         viewHolder.email = person;
         viewHolder.subject = subject;
-        viewHolder.addPlayer = score;
         convertView.setTag(viewHolder);
 
-        /*
-        Set up TextViews here from convertView
-         */
+        person.setText(emailName);
+        subject.setText(emailDate);
 
         return convertView;
     }

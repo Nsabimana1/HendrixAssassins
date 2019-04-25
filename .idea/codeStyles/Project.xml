@@ -24,6 +24,7 @@
         <option name="ITERATION_ELEMENTS_WRAPPING" value="chop_down_if_not_single" />
       </formatting-settings>
     </DBN-SQL>
+<<<<<<< HEAD
     <Objective-C-extensions>
       <file>
         <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Import" />
@@ -49,5 +50,7 @@
         <pair source="c" header="h" fileNamingConvention="NONE" />
       </extensions>
     </Objective-C-extensions>
+=======
+>>>>>>> bba4ae57f70eab64d15bc89927e9c6a6108cb37b
   </code_scheme>
 </component>
