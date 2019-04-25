@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.hendrixassassins.UItestcompnents.CustomListViewAdapter;
@@ -34,6 +35,7 @@ public class HomeFragment extends Fragment {
 
     private View fragView;
     private ListView listView;
+    private Button statusFilter, killsFilter, pointsFilter, alphabeticalFilter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -42,7 +44,6 @@ public class HomeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private AgentList agentList = new AgentList();
     private AgentFileHelper agentFileHelper = new AgentFileHelper();
-    private ArrayList<Agent> allAgents;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -74,16 +75,75 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
-        allAgents = new ArrayList<>(agentList.getAllAgents());
 
     }
 
+    private void findButtons(){
+        statusFilter = fragView.findViewById(R.id.statusButton);
+        killsFilter = fragView.findViewById(R.id.KillsButton);
+        pointsFilter = fragView.findViewById(R.id.PointsButton);
+        alphabeticalFilter = fragView.findViewById(R.id.AlphabetButton);
+    }
+
+    private void setupButtons() {
+        findButtons();
+        setButtonListeners();
+    }
+
+    private void setButtonListeners() {
+        setStatusFilterListener();
+        setKillsFilterListener();
+        setPointsFilterListener();
+        setAlphabeticalFilterListener();
+    }
+
+    private void setAlphabeticalFilterListener(){
+        alphabeticalFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                agentList.sortNamesAlphabetically();
+                agentList.reverse();
+                createListViewAdapter();
+            }
+        });
+    }
+
+    private void setStatusFilterListener(){
+        statusFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    private void setKillsFilterListener(){
+        statusFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                agentList.sortByPersonalKills();
+
+                createListViewAdapter();
+            }
+        });
+    }
+
+    private void setPointsFilterListener(){
+        statusFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                agentList.sortByPointsTotal();
+                createListViewAdapter();
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragView = inflater.inflate(R.layout.fragment_home, container, false);
         createListViewAdapter();
+        setupButtons();
         // Inflate the layout for this fragment
         return fragView;
     }
@@ -133,10 +193,9 @@ public class HomeFragment extends Fragment {
 
     private void createListViewAdapter(){
         ListView listView = fragView.findViewById(R.id.agentList);
-        Log.e("all agents", String.valueOf(allAgents.size()));
+        Log.e("all agents", String.valueOf(agentList.getAllAgents().size()));
         CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
-                R.layout.test_list_view, allAgents);
+                R.layout.test_list_view, agentList.getAllAgents());
         listView.setAdapter(adapter);
-
     }
 }

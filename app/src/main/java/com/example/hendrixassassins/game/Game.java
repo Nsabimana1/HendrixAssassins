@@ -68,7 +68,7 @@ public class Game {
     }
 
     private String getFileContents(){
-        return getEmail() + getPassword() + getStatus().toString() + getPurgeTimeString();
+        return getEmail() + "," + getPassword() + "," + getStatus().toString() + "," + getPurgeTimeString();
     }
 
     private String getPurgeTimeString(){
@@ -112,7 +112,7 @@ public class Game {
     // https://stackoverflow.com/questions/14376807/how-to-read-write-string-from-a-file-in-android
     public void readGameFromFile(Context context){
         try {
-            InputStream inputStream = context.openFileInput(fileName);
+            InputStream inputStream = context.openFileInput(getGameFileName());
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -128,6 +128,7 @@ public class Game {
             // TODO get the purge time - perhaps when startGame is pressed
             // TODO make a GameMethods object with AgentList
             status = GameStatus.SIGNUP;
+            Log.e("AAA", "ERROR file not found");
 
         } catch (IOException e) {
             Log.e("Exception", "Can not read file: " + e.toString());
