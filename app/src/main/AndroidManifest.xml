@@ -15,11 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateGameActivity"></activity>
-        <activity android:name=".NofiticationListView" />
+        <activity android:name=".uipages.EmailSenderActivity"></activity>
+        <activity android:name=".CreateGameActivity" />
         <activity android:name=".uipages.NotificationTemplateViewActivity" />
         <activity
             android:name=".uipages.HomeActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:label="@string/title_activity_home" />
         <activity android:name=".uipages.OpenScreenActivity">
             <intent-filter>

@@ -156,20 +156,15 @@ public class NotificationsFragment extends Fragment {
     }
 
 
-//    public void createViewAdapter(){
-//        notificationListView = getView().findViewById(R.id.notifications_ListView);
-//    }
-
     private void createListViewAdapter(){
         ListView notificationListView = fragView.findViewById(R.id.notifications_ListView);
+//        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
+//                R.layout.test_list_view, allNotifications);
+
         NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
-                R.layout.test_list_view, allNotifications);
+                R.layout.test_list_view, inboxEmails);
         notificationListView.setAdapter(adapter);
-
         setUpItemClickListener(notificationListView);
-
-        Log.e("size of inbox message", Integer.toString(inboxEmails.size()));
-        Log.e("createdlistViewAdapter", "Created list view adapter");
     }
 
     private void setUpItemClickListener(ListView listView){
@@ -178,16 +173,17 @@ public class NotificationsFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String email = allNotifications.get(position).getNotifier().getEmail();
-                toNotificationContentActivity(email);
+                Log.e("I am clicked", "I was clicked");
+                String emailBody = inboxEmails.get(position).getSubject();
+                toNotificationContentActivity(emailBody);
             }
 
         });
     }
 
-    private void toNotificationContentActivity(String email) {
+    private void toNotificationContentActivity(String emailBody) {
         Intent forwardIntent = new Intent(getActivity(), NotificationTemplateViewActivity.class);
-        forwardIntent.putExtra("clickedUserEmail", email);
+        forwardIntent.putExtra("clickedUserEmail", emailBody);
         startActivity(forwardIntent);
     }
 
