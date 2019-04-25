@@ -25,9 +25,8 @@ public class Game {
     private final static String dateSplitChar = "-", spaceSplitChar = " ", timeSplitChar = ":";
 
 
-    public Game(String email, String Password){
+    public Game(String email){
         this.email = email;
-        this.password = password;
         this.fileName = this.email.split("@")[0];
         this.purgeTime = null;
     }

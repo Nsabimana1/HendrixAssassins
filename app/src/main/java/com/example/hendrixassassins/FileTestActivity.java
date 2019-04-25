@@ -2,13 +2,10 @@ package com.example.hendrixassassins;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
-
-import java.util.ArrayList;
 
 public class FileTestActivity {
 
@@ -24,7 +21,7 @@ public class FileTestActivity {
     }
 
     private void test2() {
-        AgentList agentList = fileHelper.getAgentListFromFile("testFile.csv", context);
+        AgentList agentList = fileHelper.readFromFile("testFile.csv", context);
         for(Agent agent: agentList.getAllAgents()){
             Log.e("AGENT: ", String.valueOf(agent.getKillList().size()));
         }
@@ -42,7 +39,7 @@ public class FileTestActivity {
             }
             Log.e("AAA",testList.getAllAgents().get(testList.size() - 1).getTableRow());
         }
-        fileHelper.writeAgentListToFile("testFile.csv", testList, context);
+        fileHelper.writeToFile("testFile.csv", testList, context);
     }
 
 

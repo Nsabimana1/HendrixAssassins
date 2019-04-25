@@ -28,7 +28,7 @@ public class ListViewTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview_test_activity);
-        agentList = agentFileHelper.getAgentListFromFile("testFile.csv", this);
+        agentList = agentFileHelper.readFromFile("testFile.csv", this);
         allAgents = new ArrayList<>(agentList.getAllAgents());
         createlistViewAdapter();
         setUpSortTestButtons();

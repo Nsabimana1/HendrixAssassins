@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        agentList = agentFileHelper.getAgentListFromFile("testFile.csv", this.getContext());
+        agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
         allAgents = new ArrayList<>(agentList.getAllAgents());
 
     }

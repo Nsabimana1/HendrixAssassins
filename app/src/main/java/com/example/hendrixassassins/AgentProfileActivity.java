@@ -55,7 +55,7 @@ public class AgentProfileActivity extends AppCompatActivity {
 
 
     private void roadAgents(String userEmail){
-        agentList = agentFileHelper.getAgentListFromFile("testFile.csv", this);
+        agentList = agentFileHelper.readFromFile("testFile.csv", this);
         allAgents = agentList.getAllAgents();
         thisAgent = agentList.getAgentWithEmailAddress(userEmail);
     }

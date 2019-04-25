@@ -37,7 +37,6 @@ import java.util.List;
 
 import com.example.hendrixassassins.MainActivity;
 import com.example.hendrixassassins.R;
-import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.game.Game;
@@ -212,12 +211,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private Game setupGame(String email, String password) {
         Log.e("AAA", "Method was called");
-        Game game = new Game(email, password);
+        Game game = new Game(email);
+        game.resetPassword(password);
         game.readGameFromFile(context);
         game.writeGameToFile(context);
         Log.e("AAA", game.getGameFileName());
         AgentFileHelper helper = new AgentFileHelper();
-        helper.writeAgentListToFile(game.getAgentFileName(), new AgentList(), context);
+        helper.writeToFile(game.getAgentFileName(), new AgentList(), context);
         return game;
         // TODO set next screen based on game status
     }

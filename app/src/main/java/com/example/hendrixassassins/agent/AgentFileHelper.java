@@ -3,6 +3,7 @@ package com.example.hendrixassassins.agent;
 import android.content.Context;
 import android.util.Log;
 
+
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -23,12 +24,12 @@ public class AgentFileHelper {
         return builder.toString();
     }
 
-    public void writeAgentListToFile(String fileName, AgentList agentList, Context context){
+    public void writeToFile(String fileName, AgentList agentList, Context context){
         AgentFileInteraction interaction = new AgentFileInteraction(context);
         interaction.writeAgentFile(getAgentListFileString(agentList), fileName);
     }
 
-    public AgentList getAgentListFromFile(String fileName, Context context){
+    public AgentList readFromFile(String fileName, Context context){
         AgentFileInteraction interaction = new AgentFileInteraction(context);
         ArrayList<String> file = interaction.readAgentFile(fileName);
         AgentList agentList = setupAgentsFromFile(file);
@@ -46,9 +47,9 @@ public class AgentFileHelper {
 
     private GregorianCalendar dateFromString(String string){
         if(string.equals("NA") || string.trim().length() == 0) return null;
-        String[] split = string.split(spaceSplitChar);
-        String[] date = split[0].split(dateSplitChar);
-        String[] time = split[1].split(timeSplitChar);
+        String[] split = splitLine(string, spaceSplitChar);
+        String[] date = splitLine(split[0], dateSplitChar);
+        String[] time = splitLine(split[1], dateSplitChar);
         return new GregorianCalendar(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1,
                 Integer.parseInt(date[2]),  Integer.parseInt(time[0]), Integer.parseInt(time[1]),
                 Integer.parseInt(time[2]));
