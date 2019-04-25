@@ -15,12 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
         <activity android:name=".uipages.EmailSenderActivity"></activity>
         <activity android:name=".CreateGameActivity" />
-=======
         <activity android:name=".NofiticationListView" />
->>>>>>> bba4ae57f70eab64d15bc89927e9c6a6108cb37b
         <activity android:name=".uipages.NotificationTemplateViewActivity" />
         <activity
             android:name=".uipages.HomeActivity"
