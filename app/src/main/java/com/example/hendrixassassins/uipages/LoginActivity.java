@@ -205,17 +205,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask.execute((Void) null);
             Game game = setupGame(email, password);
             // go to user listview
-            gotoHomeIntent();
+            gotoHomeIntent(game.getEmail());
         }
     }
 
     private Game setupGame(String email, String password) {
-        Log.e("AAA", "Method was called");
         Game game = new Game(email);
         game.resetPassword(password);
         game.readGameFromFile(context);
         game.writeGameToFile(context);
-        Log.e("AAA", game.getGameFileName());
+        Game game2 = new Game(email);
+        game2.readGameFromFile(context);
         AgentFileHelper helper = new AgentFileHelper();
         helper.writeToFile(game.getAgentFileName(), new AgentList(), context);
         return game;
@@ -228,8 +228,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         finish();
     }
 
-    private void gotoHomeIntent(){
+    private void gotoHomeIntent(String email){
         Intent userListView = new Intent(LoginActivity.this, HomeActivity.class);
+        userListView.putExtra("email", email);
         startActivity(userListView);
         finish();
     }
