@@ -50,7 +50,6 @@ public class Email {
             recipients.add(((InternetAddress) (addresses[i])).getAddress());
         }
         this.date = message.getSentDate();
-        Log.e("make email",message.getFlags().toString());
         read = message.isSet(Flags.Flag.SEEN);
     }
 

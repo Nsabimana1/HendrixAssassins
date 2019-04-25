@@ -17,6 +17,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.NoSuchProviderException;
@@ -68,7 +69,46 @@ public class MessageReader {
         return emailList;
     }
 
-    public ArrayList<Email> getAgentMessages(Agent agent) throws MessagingException, IOException {
+
+    public ArrayList<Email> getSentMessages() throws MessagingException, IOException {
+        Folder inbox = store.getFolder("[Gmail]/Sent Mail");
+        inbox.open(Folder.READ_ONLY);
+        Message[] messages = inbox.getMessages();
+        ArrayList<Email> emailList = new ArrayList<>();
+        for (int i = 0; i < messages.length; i++) {
+            emailList.add(new Email(messages[i]));
+        }
+        return emailList;
+    }
+
+    public ArrayList<Email> getUnreadMessages() throws MessagingException, IOException {
+        Folder inbox = store.getFolder("Inbox");
+        inbox.open(Folder.READ_ONLY);
+        Message[] messages = inbox.getMessages();
+        ArrayList<Email> emailList = new ArrayList<>();
+        for (Message current : messages) {
+            if (current.isSet(Flags.Flag.SEEN)) {
+                emailList.add(new Email(current));
+            }
+        }
+        return emailList;
+    }
+
+    public ArrayList<Email> getReadMessages() throws MessagingException, IOException {
+        Folder inbox = store.getFolder("Inbox");
+        inbox.open(Folder.READ_ONLY);
+        Message[] messages = inbox.getMessages();
+        ArrayList<Email> emailList = new ArrayList<>();
+        for (Message current : messages) {
+            if (!current.isSet(Flags.Flag.SEEN)) {
+                emailList.add(new Email(current));
+            }
+        }
+        return emailList;
+    }
+
+
+    public ArrayList<Email> getMessagesFromAgent(Agent agent) throws MessagingException, IOException {
         Folder inbox = store.getFolder("Inbox");
         inbox.open(Folder.READ_ONLY);
         Message[] messages = inbox.getMessages();
@@ -81,29 +121,19 @@ public class MessageReader {
         return emailList;
     }
 
-    public ArrayList<Email> getSentMessages()  {
+    public ArrayList<Email> getMessagesToAgent(Agent agent) throws MessagingException, IOException {
+        Folder inbox = store.getFolder("Inbox");
+        inbox.open(Folder.READ_ONLY);
+        Message[] messages = inbox.getMessages();
         ArrayList<Email> emailList = new ArrayList<>();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Folder sent = store.getFolder("Sent");
-                    sent.open(Folder.READ_ONLY);
-                    Message[] messages = sent.getMessages();
-                    ArrayList<Email> emailList = new ArrayList<>();
-                    for (int i = 0; i < messages.length; i++) {
-                        emailList.add(new Email(messages[i]));
-                    }
-                } catch (MessagingException | IOException e) {
-                    Log.e("MessageReader", "Failed to read Sent email folder");
-               //     CharSequence text = "Failed to read Sent email folder";
-               //     Toast toast = Toast.makeText(context  , text, Toast.LENGTH_SHORT);
-               //     toast.show();
-
-                }
-            }}).start();
+        for (int i = 0; i < messages.length; i++) {
+            if (agent.getEmail().equals(((InternetAddress) (messages[i].getFrom())[0]).getAddress()) ) {
+                emailList.add(new Email(messages[i]));
+            }
+        }
         return emailList;
     }
+
 }
 
 

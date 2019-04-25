@@ -162,33 +162,43 @@ public class GmailTestActivity extends AppCompatActivity {
     }
 
     private void grabSent() {
-        try {
-            String date, sender, subject, display;
-            boolean read;
-            ArrayList<Email> sent = new ArrayList<>();
-            MessageReader reader = new MessageReader("HendrixAssassinsApp", "AssassinsTest1");
-            sent = reader.getInboxMessages();
-            display="";
-            for (Email currentMessage : sent ) {
-                date = currentMessage.getDate().toString();
-                sender = currentMessage.getSender();
-                subject = currentMessage.getSubject();
-                read = currentMessage.getRead();
-                display += date + "\n" + sender + "\n" + subject + "\n" + read + "\n----------------\n";
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String date, sender, subject, display;
+                    boolean read;
+                    ArrayList<Email> sent = new ArrayList<>();
+                    MessageReader reader = new MessageReader("HendrixAssassinsApp", "AssassinsTest1");
+                    sent = reader.getUnreadMessages();
+                    display = "";
+                    for (Email currentMessage : sent) {
+                        date = currentMessage.getDate().toString();
+                        sender = currentMessage.getSender();
+                        subject = currentMessage.getSubject();
+                        read = currentMessage.getRead();
+                        display += date + "\n" + sender + "\n" + subject + "\n" + read + "\n----------------\n";
+                    }
+                    final String showMessages = display;
+                    GmailTestActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            inboxMessages.setText(showMessages);
+                        }
+                    });
+                } catch (MessagingException | IOException e) {
+                    Log.e("GmailTestActivity", "Failure getting mail: " + e.toString());
+                    GmailTestActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "Failed to read Sent Emails", Toast.LENGTH_SHORT);
+                        }
+                    });
+               }
             }
-            final String showMessages = display;
-            GmailTestActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    inboxMessages.setText(showMessages);
-                }
-            });
-        } catch (MessagingException | IOException e){
-            Log.e("GmailTestActivity", "Failure getting mail: "+ e.toString());
-            Toast toast = Toast.makeText(this, "Failed to read Sent Emails", Toast.LENGTH_SHORT);
-        }
+        }).start();
     }
-
 
 
 
