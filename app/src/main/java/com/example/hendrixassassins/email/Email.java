@@ -3,7 +3,12 @@ package com.example.hendrixassassins.email;
 
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,17 +18,16 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
-public class Email {
+public class Email implements Serializable {
     private String sender, subject, body;
     private final String gameEmail = "HendrixAssassinsApp@gmail.com";
-    private ArrayList<String> recipients;
+    private ArrayList<String> recipients = new ArrayList<String>();
     private Date date;
     private boolean read;
 
 
     public Email(String recipient, String subject, String body){
         this.sender = gameEmail;
-        recipients = new ArrayList<>();
         this.recipients.add(recipient);
         this.subject = subject;
         this.body = body;
@@ -45,9 +49,8 @@ public class Email {
         this.subject = message.getSubject();
         this.body = message.getContent().toString();
         Address[] addresses = message.getAllRecipients();
-        recipients = new ArrayList<>();
-        for (int i = 0; i< addresses.length; i++) {
-            recipients.add(((InternetAddress) (addresses[i])).getAddress());
+        for (Address address : addresses) {
+            recipients.add(((InternetAddress) (address)).getAddress());
         }
         this.date = message.getSentDate();
         read = message.isSet(Flags.Flag.SEEN);
@@ -65,4 +68,6 @@ public class Email {
     public Date getDate() {return date;}
 
     public boolean getRead() {return read;}
+
+
 }

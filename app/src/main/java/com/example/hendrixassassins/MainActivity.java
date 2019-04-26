@@ -3,11 +3,18 @@ package com.example.hendrixassassins;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.hendrixassassins.UItestcompnents.ListViewTestActivity;
+import com.example.hendrixassassins.email.Email;
+import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.email.GmailTestActivity;
+
+import java.io.IOException;
+
+import javax.mail.MessagingException;
 
 public class MainActivity extends AppCompatActivity {
     Button toGmailTest, toListViewTest, toCreateGame;
@@ -21,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         toGmailTestButton();
         toListViewTestButton();
         new FileTestActivity(getBaseContext());
+        grabInbox();
     }
 
 
@@ -57,7 +65,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void toGmailTestActivity() {
         Intent forwardIntent = new Intent(MainActivity.this, GmailTestActivity.class);
+        // passing the first email in the inbox to the next activity
+        // this is ONLY possible because the Email class implements serializable
+        forwardIntent.putExtra("FirstEmail", EmailServer.get().getInboxList().get(0));
         startActivity(forwardIntent);
     }
+
+    private void grabInbox() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    boolean read;
+                    EmailServer.get().refreshInboxMessages();
+                    } catch (MessagingException | IOException e){
+                    Log.e("inbox", "could not read inbox "+ e.toString());
+                }
+            }    }).start();
+    }
+
 
 }

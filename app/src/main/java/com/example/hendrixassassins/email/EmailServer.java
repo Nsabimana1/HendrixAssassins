@@ -1,5 +1,7 @@
 package com.example.hendrixassassins.email;
 
+import android.util.Log;
+
 import com.example.hendrixassassins.agent.Agent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class EmailServer {
         return inboxList;
     }
 
-    public ArrayList<Email> getsentList() {
+    public ArrayList<Email> getSentList() {
         return sentList;
     }
 
@@ -60,7 +62,7 @@ public class EmailServer {
         for (Message message : messages) {
             emailList.add(new Email(message));
         }
-        inbox.close(true);
+        Log.e("EmailServer","Finished reading inbox");
         inboxList =  emailList;
     }
 
@@ -69,7 +71,7 @@ public class EmailServer {
         store = imapSession.getStore("imaps");
         store.connect("imap.gmail.com", username, password);
         sent = store.getFolder("[Gmail]/Sent Mail");
-        inbox.open(Folder.READ_ONLY);
+        sent.open(Folder.READ_ONLY);
         Message[] messages = sent.getMessages();
         ArrayList<Email> emailList = new ArrayList<>();
         for (Message message : messages) {
