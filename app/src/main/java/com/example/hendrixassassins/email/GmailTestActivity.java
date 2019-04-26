@@ -243,7 +243,7 @@ public class GmailTestActivity extends AppCompatActivity {
     }
 
     private void displayEMails(ArrayList<Email> list){
-        String date, sender, subject, display;
+        String date, sender, subject, body, display;
         boolean read;
         display="";
         for (Email currentMessage : list) {
@@ -251,7 +251,9 @@ public class GmailTestActivity extends AppCompatActivity {
             sender = currentMessage.getSender();
             subject = currentMessage.getSubject();
             read = currentMessage.getRead();
-            display += date + "\n" + sender + "\n" + subject + "\n" + read + "\n----------------\n";
+            body = currentMessage.getBody();
+            display += date + "\n" + sender + "\n" + subject + "\n" + read + "\n"
+                    +body+"\n----------------\n";
         }
         final String showMessages = display;
         GmailTestActivity.this.runOnUiThread(new Runnable() {
