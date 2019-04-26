@@ -69,6 +69,7 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
     }
 
     private void setupComponents(){
