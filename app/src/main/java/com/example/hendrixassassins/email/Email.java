@@ -74,7 +74,7 @@ public class Email implements Serializable {
 
 
 
-    // https://javaee.github.io/javamail/FAQ#mainbody
+    // Modified from https://javaee.github.io/javamail/FAQ#mainbody
     /**
      * Return the primary text content of the message.
      */
@@ -93,9 +93,9 @@ public class Email implements Serializable {
             for (int i = 0; i < mp.getCount(); i++) {
                 Part bp = mp.getBodyPart(i);
                 if (bp.isMimeType("text/plain")) {
-                    if (text == null)
-                        text = getText(bp);
-                    continue;
+                    //if (text == null)
+                    text = getText(bp);
+                    return text;
                 } else if (bp.isMimeType("text/html")) {
                     String s = getText(bp);
                     if (s != null)
