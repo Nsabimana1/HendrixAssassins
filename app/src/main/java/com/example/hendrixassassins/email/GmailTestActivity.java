@@ -28,7 +28,6 @@ public class GmailTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findIDs();
-        //sendListener();
         GmailLogin login = new GmailLogin("HendrixAssassinsApp","AssassinsTest1");
         grabInbox();
         sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
@@ -36,9 +35,8 @@ public class GmailTestActivity extends AppCompatActivity {
         sendListener();
         sendTeamCSVListener();
         sendClassArrayListListener();
-
-
     }
+
     private void findIDs(){
         setContentView(R.layout.activity_gmail_test);
         userName = findViewById(R.id.userName);
@@ -137,12 +135,13 @@ public class GmailTestActivity extends AppCompatActivity {
                 try {
                     String date, sender, subject, display;
                     boolean read;
-                    ArrayList<Email> inbox = new ArrayList<>();
-                    MessageReader reader = new MessageReader("HendrixAssassinsApp", "AssassinsTest1");
-                    inbox = reader.getInboxMessages();
+                    Log.e("grabinbox: ",Integer.toString(EmailServer.get().getInboxList().size()));
+                    Log.e("grabinbox: ",Integer.toString(EmailServer.get().getInboxList().size()));
+                    EmailServer.get().refreshInboxMessages();
+                    Log.e("grabinbox: ",Integer.toString(EmailServer.get().getInboxList().size()));
                     display="";
-                    for (Email currentMessage : inbox ) {
-                         date = currentMessage.getDate().toString();
+                    for (Email currentMessage : EmailServer.get().getInboxList()) {
+                        date = currentMessage.getDate().toString();
                         sender = currentMessage.getSender();
                         subject = currentMessage.getSubject();
                         read = currentMessage.getRead();
