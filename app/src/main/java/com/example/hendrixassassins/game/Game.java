@@ -118,7 +118,9 @@ public class Game {
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String receiveString = "";
                 if ( (receiveString = bufferedReader.readLine()) != null ){
-                    updateGameFromFile(receiveString);
+                    Log.e("AAA", receiveString);
+                    if(receiveString.split(",").length > 1) updateGameFromFile(receiveString);
+                    else throw new FileNotFoundException();
                 }
                 inputStream.close();
             }
