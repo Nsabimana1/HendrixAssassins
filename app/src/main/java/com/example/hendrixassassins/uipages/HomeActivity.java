@@ -12,10 +12,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.game.Game;
 import com.example.hendrixassassins.uipages.*;
 
 import com.example.hendrixassassins.R;
+
+import java.io.IOException;
+
+import javax.mail.MessagingException;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -74,7 +79,6 @@ public class HomeActivity extends AppCompatActivity {
         Log.e("AAA", "We've initialized");
         setupGame(email);
         initializeFragments();
-
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.main_navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -99,10 +103,23 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setFragment(Fragment fragment){
-//        HomeFragment.OnFragmentInteractionListener.class.cast()
-
+        loadEmails();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
+    }
+    private void loadEmails(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EmailServer.get().refreshInboxMessages();
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

@@ -16,8 +16,8 @@
         android:background="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.991"
-        tools:layout_editor_absoluteX="6dp" />
+        app:layout_constraintVertical_bias="0.982"
+        tools:layout_editor_absoluteX="0dp" />
 
     <View
         android:id="@+id/divider2"
@@ -31,35 +31,35 @@
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="16dp" />
 
-    <TextureView
-        android:id="@+id/content_view"
-        android:layout_width="393dp"
-        android:layout_height="383dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.731" />
+    <!--<TextureView-->
+        <!--android:id="@+id/content_view"-->
+        <!--android:layout_width="393dp"-->
+        <!--android:layout_height="383dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintVertical_bias="0.731" />-->
 
-    <TextureView
-        android:id="@+id/header_view"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.106" />
+    <!--<TextureView-->
+        <!--android:id="@+id/header_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="65dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintVertical_bias="0.106" />-->
 
     <TextView
         android:id="@+id/sender_name_view"
@@ -131,26 +131,32 @@
         android:id="@+id/notification_body"
         android:layout_width="321dp"
         android:layout_height="325dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:inputType="textMultiLine"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/content_view"
-        app:layout_constraintEnd_toEndOf="@+id/content_view"
-        app:layout_constraintStart_toStartOf="@+id/content_view"
-        app:layout_constraintTop_toTopOf="@+id/content_view"
-        app:layout_constraintVertical_bias="0.465" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.378"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.72" />
 
     <TextView
         android:id="@+id/notication_header"
-        android:layout_width="303dp"
+        android:layout_width="370dp"
         android:layout_height="39dp"
-        android:layout_marginEnd="184dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/header_view"
-        app:layout_constraintEnd_toEndOf="@+id/header_view"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/header_view"
-        app:layout_constraintTop_toTopOf="@+id/header_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.086"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!--<ImageView-->
         <!--android:id="@+id/imageView2"-->
@@ -19,37 +16,48 @@
 
     <TextView
         android:id="@+id/sender_email"
-        android:layout_width="149dp"
-        android:layout_height="33dp"
+        android:layout_width="116dp"
+        android:layout_height="38dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="139dp"
-        android:text="User Name"
-        android:textSize="25sp" />
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="16dp"
+        android:text="User Name" />
 
     <TextView
         android:id="@+id/sent_date"
         android:layout_width="115dp"
-        android:layout_height="wrap_content"
+        android:layout_height="33dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="19dp"
-        android:text="Date"
-        android:textSize="25sp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="14dp"
+        android:text="Date" />
 
     <TextView
         android:id="@+id/email_subject"
-        android:layout_width="257dp"
-        android:layout_height="31dp"
+        android:layout_width="127dp"
+        android:layout_height="33dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="66dp"
-        android:layout_marginEnd="34dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="23dp"
         android:layout_marginBottom="479dp"
-        android:text="Email Title"
-        android:textSize="25sp" />
+        android:layout_toStartOf="@+id/sent_date"
+        android:text="Email Title" />
+
+
+    <!--<Button-->
+        <!--android:id="@+id/sender_Initials"-->
+        <!--android:layout_width="78dp"-->
+        <!--android:layout_height="78dp"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginStart="12dp"-->
+        <!--android:layout_marginTop="166dp"-->
+        <!--android:background="@drawable/custom_button"-->
+        <!--android:clickable="false"-->
+        <!--android:text="Button"-->
+        <!--android:textAllCaps="false" />-->
 
     <Button
         android:id="@+id/sender_Initials"
@@ -65,5 +73,6 @@
         android:text="Button"
         android:textAllCaps="false"
         android:textSize="25sp" />
+>>>>>>> cd98db8cd006beecfcc03e988867ea98fa53eb0c
 
 </RelativeLayout>

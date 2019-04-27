@@ -166,6 +166,7 @@ public class GmailTestActivity extends AppCompatActivity {
                     public void run() {
                         setEmailStatusTest(0, true);
                     }}).start();
+
             }
         });
 

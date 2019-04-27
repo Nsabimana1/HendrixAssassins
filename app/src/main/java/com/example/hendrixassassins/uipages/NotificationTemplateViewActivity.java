@@ -21,7 +21,7 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
 
     private Email emailToBeReplayed;
     private ArrayList<Email> inboxEmails = new ArrayList<>();
-    private String currentEmailSubject;
+    private Email currentEmail;
     private MessageReader messageReader;
 
     @Override
@@ -31,13 +31,12 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         setupComponents();
         getAllEmails();
         getPassedEmailBody();
-        setCurrentEmail();
         displayContent();
 
         replayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoSendEmail();
+                gotoSendEmailPage();
             }
         });
 
@@ -50,7 +49,8 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
     }
 
     private void getPassedEmailBody(){
-        currentEmailSubject = getIntent().getStringExtra("clickedUserEmail");
+        Intent intent = getIntent();
+        emailToBeReplayed = (Email) intent.getSerializableExtra("clickedUserEmail");
     }
 
     private void getAllEmails(){
@@ -81,17 +81,17 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         replayButton = findViewById(R.id.reply_button);
     }
 
-    private void setCurrentEmail(){
-        Log.e("inbox status", "finding curent email");
-        Log.e("inbox size value", String.valueOf(inboxEmails.size()));
-        for (Email e: inboxEmails){
-            if(e.getSubject().equals(currentEmailSubject)){
-                Log.e("inbox size", "not empty");
-                emailToBeReplayed = e;
-                break;
-            }
-        }
-    }
+//    private void setCurrentEmail(){
+//        Log.e("inbox status", "finding curent email");
+//        Log.e("inbox size value", String.valueOf(inboxEmails.size()));
+//        for (Email e: inboxEmails){
+//            if(e.getSubject().equals(currentEmailSubject)){
+//                Log.e("inbox size", "not empty");
+//                emailToBeReplayed = e;
+//                break;
+//            }
+//        }
+//    }
 
     private void displayContent(){
         if(emailToBeReplayed != null) {
@@ -102,9 +102,9 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         }
     }
 
-    private void gotoSendEmail(){
+    private void gotoSendEmailPage(){
         Intent sendEmailIntent = new Intent(NotificationTemplateViewActivity.this, EmailSenderActivity.class);
-        sendEmailIntent.putExtra("clickedUserEmail", "emailToBeReplayed.getSender()");
+        sendEmailIntent.putExtra("clickedUserEmail", emailToBeReplayed);
         startActivity(sendEmailIntent);
     }
 }

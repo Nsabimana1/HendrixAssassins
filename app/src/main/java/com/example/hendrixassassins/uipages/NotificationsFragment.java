@@ -18,12 +18,16 @@ import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.email.Email;
+import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.email.MessageReader;
 import com.example.hendrixassassins.email.Notification;
 import com.example.hendrixassassins.email.NotificationList;
 
 import java.io.EOFException;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.mail.MessagingException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,20 +97,6 @@ public class NotificationsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
-//        mySwipeRefreshLayout.setOnRefreshListener(
-//                new SwipeRefreshLayout.OnRefreshListener() {
-//                    @Override
-//                    public void onRefresh() {
-//                        Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
-//
-//                        // This method performs the actual data-refresh operation.
-//                        // The method calls setRefreshing(false) when it's finished.
-//                        myUpdateOperation();
-//                    }
-//                }
-//        );
     }
 
     @Override
@@ -115,7 +105,6 @@ public class NotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
         createListViewAdapter();
-//        showListView = fragView.findViewById(R.id.showListView_Button);
         return fragView;
     }
 
@@ -174,16 +163,16 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.e("I am clicked", "I was clicked");
-                String emailBody = inboxEmails.get(position).getSubject();
+                Email emailBody = inboxEmails.get(position);
                 toNotificationContentActivity(emailBody);
             }
 
         });
     }
 
-    private void toNotificationContentActivity(String emailBody) {
+    private void toNotificationContentActivity(Email emailToView) {
         Intent forwardIntent = new Intent(getActivity(), NotificationTemplateViewActivity.class);
-        forwardIntent.putExtra("clickedUserEmail", emailBody);
+        forwardIntent.putExtra("clickedUserEmail", emailToView);
         startActivity(forwardIntent);
     }
 
@@ -193,14 +182,13 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    messageReader = new MessageReader("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
-                    Log.e("connedted", "I connected");
-                    inboxEmails = messageReader.getInboxMessages();
-                    Log.e("sise of messagelist", String.valueOf(inboxEmails.size()));
-                }catch (Exception e){
-                    Log.e("messea fil", "message Reder failed");
+                    EmailServer.get().refreshInboxMessages();
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+                inboxEmails = EmailServer.get().getInboxList();
             }
         }).start();
     }
