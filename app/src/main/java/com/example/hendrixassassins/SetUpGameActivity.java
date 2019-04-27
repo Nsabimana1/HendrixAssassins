@@ -3,7 +3,6 @@ package com.example.hendrixassassins;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,11 +15,8 @@ import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.email.GMailSender;
-import com.example.hendrixassassins.email.MessageReader;
 import com.example.hendrixassassins.game.Game;
 import com.example.hendrixassassins.uipages.HomeActivity;
-import com.example.hendrixassassins.uipages.LoginActivity;
-import com.example.hendrixassassins.uipages.SetUpGameFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,14 +27,14 @@ import javax.mail.AuthenticationFailedException;
 import javax.mail.MessagingException;
 
 public class SetUpGameActivity extends AppCompatActivity {
-    private Button createGameButton, verifyAllAgentsButton, refreshEmails;
+    private Button createGameButton, verifyAllAgentsButton, refreshEmailsButton;
     private ListView incomingEmails;
     private ArrayList<Email> unread_filtered_emails;
     private IncomingEmailListViewAdapter<Email> incomingEmailListViewAdapter;
     private Game game;
     private AgentList agentList;
     private Context context;
-    
+
     // TODO we will need to rewrite the Agent file every time we change it!
 
     @Override
@@ -73,6 +69,16 @@ public class SetUpGameActivity extends AppCompatActivity {
         agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
     }
 
+    private void setToRefreshing(){
+        refreshEmailsButton.setText("Retrieving Emails .....");
+        refreshEmailsButton.setClickable(false);
+    }
+
+    private void setToRefreshable(){
+        refreshEmailsButton.setText("Refresh");
+        refreshEmailsButton.setClickable(true);
+    }
+
     private void getAllNewFilterEmails(){
         final Thread thread = new Thread(new Runnable() {
             @Override
@@ -80,7 +86,6 @@ public class SetUpGameActivity extends AppCompatActivity {
                 refreshEmails();
                 EmailServer emailServer = EmailServer.get();
                 String year = String.valueOf(new GregorianCalendar().get(Calendar.YEAR));
-                Log.e("AAA", year);
                 ArrayList<Email> filteredEmails = emailServer.getEmailsSubjectBeginsWith(year);
                 unread_filtered_emails.clear();
                 unread_filtered_emails.addAll(filteredEmails);
@@ -88,6 +93,7 @@ public class SetUpGameActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         incomingEmailListViewAdapter.notifyDataSetChanged();
+                        setToRefreshable();
                     }
                 });
             }
@@ -117,10 +123,11 @@ public class SetUpGameActivity extends AppCompatActivity {
     }
 
     private void refreshEmailsButtonListener() {
-        refreshEmails.setOnClickListener(new View.OnClickListener() {
+        refreshEmailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               getAllNewFilterEmails();
+                setToRefreshing();
+                getAllNewFilterEmails();
             }
         });
     }
@@ -181,6 +188,7 @@ public class SetUpGameActivity extends AppCompatActivity {
         createGameButton = findViewById(R.id.createGame);
         verifyAllAgentsButton = findViewById(R.id.verifyAllAgents);
         incomingEmails = findViewById(R.id.listofIncomingEmails);
-        refreshEmails = findViewById(R.id.refresh_emails_1);
+        refreshEmailsButton = findViewById(R.id.refresh_emails_1);
+        setToRefreshing();
     }
 }
