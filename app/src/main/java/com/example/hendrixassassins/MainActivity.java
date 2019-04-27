@@ -16,6 +16,7 @@ import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.email.GmailLogin;
 import com.example.hendrixassassins.email.GmailTestActivity;
 import com.example.hendrixassassins.game.Game;
+import com.example.hendrixassassins.uipages.HomeActivity;
 import com.example.hendrixassassins.uipages.LoginActivity;
 
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toListViewTestActivity() {
-        Intent forwardIntent = new Intent(MainActivity.this, ListViewTestActivity.class);
+        Intent forwardIntent = new Intent(MainActivity.this, HomeActivity.class);
         startActivity(forwardIntent);
     }
 

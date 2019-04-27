@@ -9,8 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
+import com.example.hendrixassassins.email.GMailSender;
 import com.example.hendrixassassins.email.MessageReader;
 import com.example.hendrixassassins.uipages.HomeActivity;
 import com.example.hendrixassassins.uipages.LoginActivity;
@@ -19,6 +22,7 @@ import com.example.hendrixassassins.uipages.SetUpGameFragment;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.mail.AuthenticationFailedException;
 import javax.mail.MessagingException;
 
 public class SetUpGameActivity extends AppCompatActivity {
@@ -42,6 +46,17 @@ public class SetUpGameActivity extends AppCompatActivity {
         getAllNewFilterEmails();
 
 
+
+    }
+
+    private Email getVerificationEmail(){
+        AgentList agentList = new AgentList();
+        for(Email email: unread_filtered_emails){
+            Agent agent = new Agent(email.getSender(), "bob");
+            agentList.addAgent(agent);
+
+        }
+        return new Email(agentList.getAgentEmails(), "Testing Verification", "Congratulations you have signed up to play assassins!");
 
     }
 
@@ -96,31 +111,6 @@ public class SetUpGameActivity extends AppCompatActivity {
         });
     }
 
-    private void grabSent() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String date, sender, subject, display;
-                    boolean read;
-                    MessageReader reader = new MessageReader("HendrixAssassinsApp", "AssassinsTest1");
-                    ArrayList<Email> sent = reader.getUnreadMessages();
-                    unread_filtered_emails.addAll(sent);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            incomingEmailListViewAdapter.notifyDataSetChanged();
-                        }
-                    });
-                    //this crashs the project
-
-
-                } catch (MessagingException | IOException e) {
-                    Log.e("SetUpGameFragment", "Failure getting mail: " + e.toString());
-                }
-            }
-        }).start();
-    }
 
     private void setupIncomingEmailsListView() {
         incomingEmailListViewAdapter = new IncomingEmailListViewAdapter<>(this,
@@ -135,6 +125,23 @@ public class SetUpGameActivity extends AppCompatActivity {
         verifyAllAgentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                verifyAllAgentsButton.setVisibility(View.INVISIBLE);
+                final Email message = getVerificationEmail();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
+                            sender.sendMail(message);
+                        } catch (AuthenticationFailedException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+                unread_filtered_emails.clear();
+                incomingEmailListViewAdapter.notifyDataSetChanged();
 
             }
         });
