@@ -161,13 +161,50 @@ public class GmailTestActivity extends AppCompatActivity {
         refreshInbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testEmailStuff();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setEmailStatusTest(0, true);
+                    }}).start();
             }
         });
 
     }
 
-    private void testEmailStuff() {
+    private void setEmailStatusTest(int i, boolean value) {
+        try {
+            Email currentMessage = EmailServer.get().getInboxList().get(i);
+            currentMessage.setRead(value);
+            String date = currentMessage.getDate().toString();
+            String sender = currentMessage.getSender();
+            String subject = currentMessage.getSubject();
+            boolean read = currentMessage.getRead();
+            String body = currentMessage.getBody();
+            String display = date + "\n" + sender + "\n" + subject + "\n" + read + "\n"
+                    +body+"\n----------------\n";
+            final String showMessages = display;
+            GmailTestActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    inboxMessages.setText(showMessages);
+                }
+            });
+        } catch (MessagingException e) {
+            Log.e("readStatus", e.toString());
+            GmailTestActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Failed to change read status", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        }
+    }
+
+
+
+    private void testAddExtraEmail() {
         String date, sender, subject, body;
         boolean read;
         //look at the first email in the inboxlist

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
@@ -78,6 +79,18 @@ public class EmailServer {
             emailList.add(new Email(message));
         }
         sentList = emailList;
+    }
+
+    public void setMessageRead(int messageNumber, boolean value) throws MessagingException {
+        Store store = imapSession.getStore("imaps");
+        store.connect("imap.gmail.com", "HendrixAssassinsApp", "AssassinsTest1");
+        Folder folder = store.getFolder("Inbox");
+        folder.open(folder.READ_WRITE);
+        Message[] messages = folder.getMessages();
+        if (messageNumber > 0) {
+            messages[messageNumber - 1].setFlag(Flags.Flag.SEEN, value);
+        }
+        folder.close(true);
     }
 
     public ArrayList<Email> getUnreadMessages() {

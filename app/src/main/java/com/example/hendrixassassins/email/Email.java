@@ -2,12 +2,7 @@ package com.example.hendrixassassins.email;
 
 
 import android.util.Log;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,13 +15,15 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.InternetAddress;
 
+
 public class Email implements Serializable {
     private String sender, subject, body;
     private final String gameEmail = "HendrixAssassinsApp@gmail.com";
     private ArrayList<String> recipients = new ArrayList<String>();
     private Date date;
     private boolean read;
-    boolean textIsHtml = false;
+    private boolean textIsHtml = false;
+    private int messageNumber;
 
 
     public Email(String recipient, String subject, String body){
@@ -36,6 +33,7 @@ public class Email implements Serializable {
         this.body = body;
         this.date = Calendar.getInstance().getTime();
         this.read = false;
+        this.messageNumber = -1;
     }
 
     public Email(ArrayList<String> recipients, String subject, String body){
@@ -45,6 +43,7 @@ public class Email implements Serializable {
         this.body = body;
         this.date = Calendar.getInstance().getTime();
         this.read = false;
+        this.messageNumber = -1;
     }
 
     public Email(Message message) throws MessagingException, IOException {
@@ -57,6 +56,8 @@ public class Email implements Serializable {
         }
         this.date = message.getSentDate();
         read = message.isSet(Flags.Flag.SEEN);
+        message.getMessageNumber();
+        this.messageNumber = message.getMessageNumber();
     }
 
 
@@ -72,6 +73,13 @@ public class Email implements Serializable {
 
     public boolean getRead() {return read;}
 
+    public void setRead(boolean value) throws MessagingException {
+        this.read = value;
+        if (messageNumber > 0 ) {
+            EmailServer.get().setMessageRead(messageNumber,value);
+        }
+
+    }
 
 
     // Modified from https://javaee.github.io/javamail/FAQ#mainbody
