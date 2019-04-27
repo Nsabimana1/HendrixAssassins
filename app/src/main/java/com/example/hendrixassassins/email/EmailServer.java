@@ -6,7 +6,6 @@ import com.example.hendrixassassins.agent.Agent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
-
 import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -127,10 +126,25 @@ public class EmailServer {
     public ArrayList<Email> getMessagesToAgent(Agent agent) {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : sentList) {
-            if (agent.getEmail().equals(current.getRecipients() )) {
+            for (String recipient : current.getRecipients()) {
+                if (agent.getEmail().equals(recipient )) {
+                    emailList.add(current);
+                }
+            }
+        }
+        return emailList;
+    }
+
+    public ArrayList<Email> getEmailWithSubject(String subject) {
+        ArrayList<Email> emailList = new ArrayList<>();
+        for (Email current : inboxList) {
+            if (current.getSubject().trim().equalsIgnoreCase(subject.trim())) {
                 emailList.add(current);
             }
         }
         return emailList;
     }
+
+
+
 }
