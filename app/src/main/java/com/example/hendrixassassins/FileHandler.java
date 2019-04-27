@@ -30,6 +30,10 @@ public class FileHandler {
             killListIndex = 8;
     private final static String dateSplitChar = "-", spaceSplitChar = " ", timeSplitChar = ":";
 
+    public FileHandler(){
+
+    }
+
     public void set_filedir(File filedir, File taskdir){
         this.filedir = filedir;
         this.taskdir = taskdir;
@@ -109,9 +113,9 @@ public class FileHandler {
 
     }
 
-    public AgentList read_Agent_file(String taskname) throws FileNotFoundException {
+    public AgentList read_Agent_file(String fileName) throws FileNotFoundException {
         ArrayList<String> agentsCSV = new ArrayList<>();
-        Scanner x = new Scanner(new File(taskdir.getAbsoluteFile(), taskname));
+        Scanner x = new Scanner(new File(taskdir.getAbsoluteFile(), fileName));
         while(x.hasNextLine()) {
             String line = x.nextLine();
             agentsCSV.add(line);
