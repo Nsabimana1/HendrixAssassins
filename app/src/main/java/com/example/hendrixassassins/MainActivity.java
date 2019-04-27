@@ -11,11 +11,13 @@ import android.widget.Button;
 import com.example.hendrixassassins.UItestcompnents.ListViewTestActivity;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.agent.AgentStatus;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.email.GmailLogin;
 import com.example.hendrixassassins.email.GmailTestActivity;
 import com.example.hendrixassassins.game.Game;
+import com.example.hendrixassassins.game.GameStatus;
 import com.example.hendrixassassins.uipages.HomeActivity;
 
 import com.example.hendrixassassins.uipages.HomeFragment;
@@ -56,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toListViewTestActivity() {
-
-        Intent forwardIntent = new Intent(MainActivity.this, HomeActivity.class);
-
         Game game = new Game("test@gmail.com");
         game.readGameFromFile(context);
         game.writeGameToFile(context);
@@ -110,7 +109,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new GmailLogin("HendrixAssassinsApp","AssassinsTest1");
-                Game game = setupGame(GmailLogin.email, GmailLogin.password);
+                Game game = new Game("HendrixAssassinsApp@gmail.com");
+                game.resetPassword("AssassinsTest1");
+                game.setStatus(GameStatus.SIGNUP);
+                game.writeGameToFile(context);
                 // go to user listview
                 gotoHomeIntent(game.getEmail());
             }
@@ -125,8 +127,8 @@ public class MainActivity extends AppCompatActivity {
         game.writeGameToFile(context);
         Game game2 = new Game(email);
         game2.readGameFromFile(context);
-        AgentFileHelper helper = new AgentFileHelper();
-        helper.writeToFile(game.getAgentFileName(), new AgentList(), context);
+        //AgentFileHelper helper = new AgentFileHelper();
+        //helper.writeToFile(game.getAgentFileName(), new AgentList(), context);
         return game;
         // TODO set next screen based on game status
     }

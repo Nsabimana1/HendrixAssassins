@@ -20,13 +20,12 @@ public class Game {
     private String fileName;
     private GameStatus status;
     private GregorianCalendar purgeTime;
-    private GameMethods gameMethods;
 
     private final static String dateSplitChar = "-", spaceSplitChar = " ", timeSplitChar = ":";
 
 
     public Game(String email){
-        this.email = email;
+        this.email = email.toLowerCase();
         this.fileName = this.email.split("@")[0];
         this.purgeTime = null;
     }
@@ -50,6 +49,8 @@ public class Game {
     public void resetPassword(String newPassword){
         password = newPassword;
     }
+
+    public String getEmailBeforeAtSymbol(){return fileName;}
 
     public String getGameFileName(){
         return fileName + ".csv";

@@ -46,6 +46,7 @@ public class AgentFileInteraction {
         }
         catch (FileNotFoundException e) {
             Log.e("Exception", "File not found: " + e.toString());
+            writeAgentFile("", fileName);
         } catch (IOException e) {
             Log.e("Exception", "Can not read file: " + e.toString());
         }
