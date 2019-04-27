@@ -4,6 +4,7 @@ package com.example.hendrixassassins.email;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,7 +14,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
-public class Email {
+public class Email implements Serializable {
     private String sender, subject, body;
     private final String gameEmail = "HendrixAssassinsApp@gmail.com";
     private ArrayList<String> recipients;
