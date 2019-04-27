@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.agent.AgentStatus;
 
 public class FileTestActivity {
 
@@ -34,12 +35,16 @@ public class FileTestActivity {
             Agent target = new Agent(letter , letter);
             testList.addAgent(new Agent(letter + "person@hendrix.edu", letter + "person"));
             testList.getAllAgents().get(testList.size() - 1).setCurrentTarget(target);
+            if(letter.equals("a") || letter.equals("b") || letter.equals("c")) {
+                testList.getAllAgents().get(testList.size() - 1).setStatus(AgentStatus.DEAD);
+            }
+            testList.getAllAgents().get(testList.size() - 1).setPointsTotal((int) Math.ceil(Math.random() * 100));
             for(Agent agent: testList.getAllAgents()){
                 testList.getAllAgents().get(testList.size() - 1).addToKillList(agent);
             }
             Log.e("AAA",testList.getAllAgents().get(testList.size() - 1).getTableRow());
         }
-        fileHelper.writeToFile("testFile.csv", testList, context);
+        fileHelper.writeToFile("testFile_Agents.csv", testList, context);
     }
 
 

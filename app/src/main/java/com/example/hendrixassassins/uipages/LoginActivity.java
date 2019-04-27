@@ -215,8 +215,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         game.resetPassword(password);
         game.readGameFromFile(context);
         game.writeGameToFile(context);
-        Game game2 = new Game(email);
-        game2.readGameFromFile(context);
         AgentFileHelper helper = new AgentFileHelper();
         helper.writeToFile(game.getAgentFileName(), new AgentList(), context);
         return game;
