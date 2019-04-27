@@ -96,7 +96,7 @@ public class EmailServer {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : inboxList) {
             if (!current.getRead()) {
-                emailList.add(0,current);
+                emailList.add(current);
             }
         }
         return emailList;
@@ -106,7 +106,7 @@ public class EmailServer {
          ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : sentList) {
             if (current.getRead()) {
-                emailList.add(0,current);
+                emailList.add(current);
             }
         }
         return emailList;
@@ -117,7 +117,7 @@ public class EmailServer {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : inboxList) {
             if (agent.getEmail().equals(current.getSender()) ) {
-                emailList.add(0,current);
+                emailList.add(current);
             }
         }
         return emailList;
@@ -128,7 +128,7 @@ public class EmailServer {
         for (Email current : sentList) {
             for (String recipient : current.getRecipients()) {
                 if (agent.getEmail().equals(recipient )) {
-                    emailList.add(0,current);
+                    emailList.add(current);
                 }
             }
         }
@@ -139,7 +139,7 @@ public class EmailServer {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : inboxList) {
             if (current.getSubject().trim().toLowerCase().startsWith(subject.trim().toLowerCase())) {
-                emailList.add(0,current);
+                emailList.add(current);
             }
         }
         return emailList;
