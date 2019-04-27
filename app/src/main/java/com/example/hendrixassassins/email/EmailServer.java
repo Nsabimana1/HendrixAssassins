@@ -135,10 +135,10 @@ public class EmailServer {
         return emailList;
     }
 
-    public ArrayList<Email> getEmailWithSubject(String subject) {
+    public ArrayList<Email> getEmailsSubjectBeginsWith(String subject) {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : inboxList) {
-            if (current.getSubject().trim().equalsIgnoreCase(subject.trim())) {
+            if (current.getSubject().trim().toLowerCase().startsWith(subject.trim().toLowerCase())) {
                 emailList.add(current);
             }
         }
