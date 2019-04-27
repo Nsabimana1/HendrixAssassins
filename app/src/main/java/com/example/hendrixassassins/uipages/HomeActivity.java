@@ -72,6 +72,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
+        //yes this causes a null pointer exception
         String email = intent.getExtras().getString("email");
         context = getApplicationContext();
         setContentView(R.layout.activity_home);

@@ -33,7 +33,6 @@ public class AgentProfileActivity extends AppCompatActivity {
     }
 
     private void buildAgentHistory(){
-        agentHistory = findViewById(R.id.agentHistoryList);
         CustomListViewAdapter adapter = new CustomListViewAdapter<>(this,
                 R.layout.test_list_view, allAgents);
 
@@ -47,9 +46,6 @@ public class AgentProfileActivity extends AppCompatActivity {
     }
 
     private void setUpTextViews(){
-        emailView = findViewById(R.id.agentEmail);
-        statusView = findViewById(R.id.agentStatus);
-        pointsView = findViewById(R.id.agentPoints);
         nameView =  findViewById(R.id.agentName);
     }
 

@@ -9,6 +9,7 @@ import java.security.Security;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
+import javax.mail.AuthenticationFailedException;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -26,7 +27,7 @@ public class GMailSender extends javax.mail.Authenticator {
         Security.addProvider(new JSSEProvider());
     }
 
-    public GMailSender(String userEmailAddress, String password) {
+    public GMailSender(String userEmailAddress, String password) throws AuthenticationFailedException{
         this.user = userEmailAddress;
         this.password = password;
 

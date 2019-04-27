@@ -1,10 +1,12 @@
 package com.example.hendrixassassins.email;
 
+import android.util.Log;
+
 import com.example.hendrixassassins.agent.Agent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
-
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
@@ -46,7 +48,7 @@ public class EmailServer {
         return inboxList;
     }
 
-    public ArrayList<Email> getsentList() {
+    public ArrayList<Email> getSentList() {
         return sentList;
     }
 
@@ -60,7 +62,7 @@ public class EmailServer {
         for (Message message : messages) {
             emailList.add(new Email(message));
         }
-        inbox.close(true);
+        Log.e("EmailServer","Finished reading inbox");
         inboxList =  emailList;
     }
 
@@ -69,13 +71,25 @@ public class EmailServer {
         store = imapSession.getStore("imaps");
         store.connect("imap.gmail.com", username, password);
         sent = store.getFolder("[Gmail]/Sent Mail");
-        inbox.open(Folder.READ_ONLY);
+        sent.open(Folder.READ_ONLY);
         Message[] messages = sent.getMessages();
         ArrayList<Email> emailList = new ArrayList<>();
         for (Message message : messages) {
             emailList.add(new Email(message));
         }
         sentList = emailList;
+    }
+
+    public void setMessageRead(int messageNumber, boolean value) throws MessagingException {
+        Store store = imapSession.getStore("imaps");
+        store.connect("imap.gmail.com", "HendrixAssassinsApp", "AssassinsTest1");
+        Folder folder = store.getFolder("Inbox");
+        folder.open(folder.READ_WRITE);
+        Message[] messages = folder.getMessages();
+        if (messageNumber > 0) {
+            messages[messageNumber - 1].setFlag(Flags.Flag.SEEN, value);
+        }
+        folder.close(true);
     }
 
     public ArrayList<Email> getUnreadMessages() {
@@ -112,10 +126,25 @@ public class EmailServer {
     public ArrayList<Email> getMessagesToAgent(Agent agent) {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : sentList) {
-            if (agent.getEmail().equals(current.getRecipients() )) {
+            for (String recipient : current.getRecipients()) {
+                if (agent.getEmail().equals(recipient )) {
+                    emailList.add(current);
+                }
+            }
+        }
+        return emailList;
+    }
+
+    public ArrayList<Email> getEmailsSubjectBeginsWith(String subject) {
+        ArrayList<Email> emailList = new ArrayList<>();
+        for (Email current : inboxList) {
+            if (current.getSubject().trim().toLowerCase().startsWith(subject.trim().toLowerCase())) {
                 emailList.add(current);
             }
         }
         return emailList;
     }
+
+
+
 }

@@ -17,6 +17,9 @@ public class GmailLogin {
     private Properties props;
     private Store store;
     private Session imapSession;
+    public static String email, username, password;
+
+
 
 
     public GmailLogin(final String username, final String password) {
@@ -26,6 +29,10 @@ public class GmailLogin {
         props.setProperty("mail.imaps.port", "993");
         props.setProperty("mail.imaps.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.setProperty("mail.imaps.socketFactory.fallback", "false");
+        this.email = "HendrixAssassinsApp@gmail.com";
+        this.password = "AssassinsTest1";
+        this.username = "HendrixAssassinsApp";
+
         //Setting IMAP session
         imapSession = Session.getInstance(props);
              new Thread(new Runnable() {
@@ -42,4 +49,6 @@ public class GmailLogin {
                     }
                 }    }).start();
     }
+
+
 }

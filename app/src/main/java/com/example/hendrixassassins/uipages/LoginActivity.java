@@ -37,6 +37,7 @@ import java.util.List;
 
 import com.example.hendrixassassins.MainActivity;
 import com.example.hendrixassassins.R;
+import com.example.hendrixassassins.SetUpGameActivity;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.game.Game;
@@ -203,6 +204,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+            //This causes an error
             Game game = setupGame(email, password);
             // go to user listview
             gotoHomeIntent(game.getEmail());
@@ -229,7 +231,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void gotoHomeIntent(String email){
+        /*
         Intent userListView = new Intent(LoginActivity.this, HomeActivity.class);
+        //this is where we need the game logic to tell the userListView which activity it needs to go to
+         */
+        Intent userListView = new Intent(LoginActivity.this, SetUpGameActivity.class);
         userListView.putExtra("email", email);
         startActivity(userListView);
         finish();

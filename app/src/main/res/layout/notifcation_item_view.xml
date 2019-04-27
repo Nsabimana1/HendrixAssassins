@@ -45,6 +45,7 @@
         android:layout_toStartOf="@+id/sent_date"
         android:text="Email Title" />
 
+<<<<<<< HEAD
     <!--<Button-->
         <!--android:id="@+id/sender_Initials"-->
         <!--android:layout_width="78dp"-->
@@ -57,5 +58,21 @@
         <!--android:clickable="false"-->
         <!--android:text="Button"-->
         <!--android:textAllCaps="false" />-->
+=======
+    <Button
+        android:id="@+id/sender_Initials"
+        android:layout_width="160dp"
+        android:layout_height="137dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="422dp"
+        android:background="@drawable/custom_button"
+        android:text="Button"
+        android:textAllCaps="false"
+        android:textSize="25sp" />
+>>>>>>> cd98db8cd006beecfcc03e988867ea98fa53eb0c
 
 </RelativeLayout>
