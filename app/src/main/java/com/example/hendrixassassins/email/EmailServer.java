@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.hendrixassassins.agent.Agent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Properties;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -59,8 +60,8 @@ public class EmailServer {
         inbox.open(Folder.READ_ONLY);
         Message[] messages = inbox.getMessages();
         ArrayList<Email> emailList = new ArrayList<>();
-        for (Message message : messages) {
-            emailList.add(0,new Email(message));
+        for (int i = messages.length-1; i >= 0; i--) {
+            emailList.add(new Email(messages[i]));
         }
         Log.e("EmailServer","Finished reading inbox");
         inboxList =  emailList;
@@ -74,8 +75,8 @@ public class EmailServer {
         sent.open(Folder.READ_ONLY);
         Message[] messages = sent.getMessages();
         ArrayList<Email> emailList = new ArrayList<>();
-        for (Message message : messages) {
-            emailList.add(0,new Email(message));
+        for (int i = messages.length-1; i >= 0; i--) {
+            emailList.add(new Email(messages[i]));
         }
         sentList = emailList;
     }
