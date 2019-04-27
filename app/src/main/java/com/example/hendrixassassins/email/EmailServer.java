@@ -60,7 +60,7 @@ public class EmailServer {
         Message[] messages = inbox.getMessages();
         ArrayList<Email> emailList = new ArrayList<>();
         for (Message message : messages) {
-            emailList.add(new Email(message));
+            emailList.add(0,new Email(message));
         }
         Log.e("EmailServer","Finished reading inbox");
         inboxList =  emailList;
@@ -75,7 +75,7 @@ public class EmailServer {
         Message[] messages = sent.getMessages();
         ArrayList<Email> emailList = new ArrayList<>();
         for (Message message : messages) {
-            emailList.add(new Email(message));
+            emailList.add(0,new Email(message));
         }
         sentList = emailList;
     }
@@ -96,7 +96,7 @@ public class EmailServer {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : inboxList) {
             if (!current.getRead()) {
-                emailList.add(current);
+                emailList.add(0,current);
             }
         }
         return emailList;
@@ -106,7 +106,7 @@ public class EmailServer {
          ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : sentList) {
             if (current.getRead()) {
-                emailList.add(current);
+                emailList.add(0,current);
             }
         }
         return emailList;
@@ -117,7 +117,7 @@ public class EmailServer {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : inboxList) {
             if (agent.getEmail().equals(current.getSender()) ) {
-                emailList.add(current);
+                emailList.add(0,current);
             }
         }
         return emailList;
@@ -128,7 +128,7 @@ public class EmailServer {
         for (Email current : sentList) {
             for (String recipient : current.getRecipients()) {
                 if (agent.getEmail().equals(recipient )) {
-                    emailList.add(current);
+                    emailList.add(0,current);
                 }
             }
         }
@@ -139,12 +139,10 @@ public class EmailServer {
         ArrayList<Email> emailList = new ArrayList<>();
         for (Email current : inboxList) {
             if (current.getSubject().trim().toLowerCase().startsWith(subject.trim().toLowerCase())) {
-                emailList.add(current);
+                emailList.add(0,current);
             }
         }
         return emailList;
     }
-
-
 
 }
