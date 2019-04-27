@@ -25,7 +25,7 @@ import javax.mail.Session;
 import javax.mail.MessagingException;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
-
+/*
 public class MessageReader {
     private String date, sender, subject, display;
     private Properties props;
@@ -134,6 +134,6 @@ public class MessageReader {
         return emailList;
     }
 
-}
+}*/
 
 
