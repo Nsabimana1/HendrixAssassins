@@ -21,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -207,7 +206,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //This causes an error
             Game game = setupGame(email, password);
             // go to user listview
-            gotoHomeIntent(game.getEmail());
+            gotoNextIntent(game.getEmail());
         }
     }
 
@@ -230,7 +229,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         finish();
     }
 
-    private void gotoHomeIntent(String email){
+    private void gotoNextIntent(String email){
         /*
         Intent userListView = new Intent(LoginActivity.this, HomeActivity.class);
         //this is where we need the game logic to tell the userListView which activity it needs to go to

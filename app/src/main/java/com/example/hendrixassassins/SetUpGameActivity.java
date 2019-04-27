@@ -2,6 +2,7 @@ package com.example.hendrixassassins;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.hendrixassassins.email.Email;
+import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.email.MessageReader;
 import com.example.hendrixassassins.uipages.HomeActivity;
 import com.example.hendrixassassins.uipages.LoginActivity;
@@ -37,13 +39,59 @@ public class SetUpGameActivity extends AppCompatActivity {
         refreshEmailsButtonListener();
         setupIncomingEmailsListView();
 
+        getAllNewFilterEmails();
+
+
+
     }
 
+    private void getAllNewFilterEmails(){
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                refreshEmails();
+                EmailServer emailServer = EmailServer.get();
+                //TODO: we want to not have magic values
+                ArrayList<Email> filteredEmails = emailServer.getEmailsSubjectBeginsWith("2019");
+                unread_filtered_emails.clear();
+                unread_filtered_emails.addAll(filteredEmails);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        incomingEmailListViewAdapter.notifyDataSetChanged();
+                    }
+                });
+
+            }
+        });
+        thread.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(thread.isAlive()){
+                    Log.d("IM WAITING", thread.getState().toString());
+                }
+            }
+        });
+
+
+    }
+
+    // Don't run this without threading it
+    private void refreshEmails(){
+        try {
+            EmailServer.get().refreshInboxMessages();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void refreshEmailsButtonListener() {
         refreshEmails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grabSent();
+               getAllNewFilterEmails();
             }
         });
     }

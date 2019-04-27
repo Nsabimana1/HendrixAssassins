@@ -15,10 +15,7 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.InternetAddress;
 
-<<<<<<< HEAD
-=======
 
->>>>>>> cd98db8cd006beecfcc03e988867ea98fa53eb0c
 public class Email implements Serializable {
     private String sender, subject, body;
     private final String gameEmail = "HendrixAssassinsApp@gmail.com";
