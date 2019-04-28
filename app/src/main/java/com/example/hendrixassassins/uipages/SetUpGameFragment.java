@@ -6,16 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.hendrixassassins.IncomingEmailListViewAdapter;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.email.Email;
-import com.example.hendrixassassins.email.GmailTestActivity;
-import com.example.hendrixassassins.email.MessageReader;
+import com.example.hendrixassassins.email.EmailServer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,20 +69,18 @@ public class SetUpGameFragment extends Fragment {
         refreshEmails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grabSent();
+                grabUnreadInbox();
             }
         });
     }
 
-    private void grabSent() {
+    private void grabUnreadInbox() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    String date, sender, subject, display;
-                    boolean read;
-                    MessageReader reader = new MessageReader("HendrixAssassinsApp", "AssassinsTest1");
-                    ArrayList<Email> sent = reader.getUnreadMessages();
+                    EmailServer.get().refreshInboxMessages();
+                    ArrayList<Email> sent = EmailServer.get().getUnreadMessages();
                     unread_filtered_emails.addAll(sent);
                     SetUpGameFragment.this.getActivity().runOnUiThread(new Runnable() {
                         @Override
@@ -93,11 +88,9 @@ public class SetUpGameFragment extends Fragment {
                             incomingEmailListViewAdapter.notifyDataSetChanged();
                         }
                     });
-                    //this crashs the project
-
-
                 } catch (MessagingException | IOException e) {
                     Log.e("SetUpGameFragment", "Failure getting mail: " + e.toString());
+
                 }
             }
         }).start();

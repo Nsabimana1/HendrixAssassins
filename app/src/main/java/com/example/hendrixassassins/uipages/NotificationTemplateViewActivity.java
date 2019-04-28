@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.email.Email;
-import com.example.hendrixassassins.email.MessageReader;
+import com.example.hendrixassassins.email.EmailServer;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
     private Email emailToBeReplayed;
     private ArrayList<Email> inboxEmails = new ArrayList<>();
     private Email currentEmail;
-    private MessageReader messageReader;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +59,9 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    messageReader = new MessageReader("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+                    EmailServer.get().refreshInboxMessages();
                     Log.e("connedted", "I connected");
-                    inboxEmails = messageReader.getInboxMessages();
+                    inboxEmails = EmailServer.get().getInboxList();
                     Log.e("sise of messagelist", String.valueOf(inboxEmails.size()));
                 }catch (Exception e){
                     Log.e("messea fil", "message Reder failed");
