@@ -2,8 +2,10 @@ package com.example.hendrixassassins;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,10 +17,11 @@ import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.game.Game;
+import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
 
 import java.util.ArrayList;
 
-public class AgentProfileActivity extends AppCompatActivity {
+public class AgentProfileActivity extends AppCompatActivity implements ChangeNameDialogFragment.NoticeDialogListener{
     private TextView agentName, AgentTotalPoints, AgentPersonalKills, agentEmail,
             agentStatusCurrent;
     private ImageButton changeAgentName, sendEmailAgent, removeAgent, editPlayerStatus;
@@ -27,7 +30,7 @@ public class AgentProfileActivity extends AppCompatActivity {
     private Game game;
     private Agent agent;
     private AgentList agentList;
-
+    private AgentFileHelper agentFileHelper;
 
 
     @Override
@@ -51,7 +54,7 @@ public class AgentProfileActivity extends AppCompatActivity {
     }
 
     private void setupAgentList(){
-        AgentFileHelper agentFileHelper = new AgentFileHelper();
+        agentFileHelper = new AgentFileHelper();
         agentList = agentFileHelper.readFromFile(game.getAgentFileName(), context);
     }
 
@@ -83,7 +86,27 @@ public class AgentProfileActivity extends AppCompatActivity {
 
 
     public void changeAgentNameButtonListener(View view) {
-        //TODO: change agent name
+        changeAgentName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment changeNameFragment = new ChangeNameDialogFragment();
+                changeNameFragment.show(getSupportFragmentManager(), "changeName");
+            }
+        });
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, String updatedName) {
+        Log.e("CCC", "posClick");
+        Log.e("CCC", updatedName);
+        agent.setName(updatedName);
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
+        agentName.setText(agent.getName());
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
     }
 
     public void sendEmailAgentButtonListener(View view) {
@@ -91,14 +114,33 @@ public class AgentProfileActivity extends AppCompatActivity {
     }
 
     private void gotoSendEmail() {
+        sendEmailAgent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         //TODO: need to make sure going to the email intent won't cause crashes
     }
 
     public void editPlayerStatusButtonListener(View view) {
+        editPlayerStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         //TODO: edit player status
     }
 
     public void removeAgentButtonListener(View view) {
+        removeAgent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         //TODO: remove agent from game
+        // why is this seperate from the status changing?
     }
 }
