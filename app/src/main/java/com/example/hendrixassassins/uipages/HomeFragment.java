@@ -16,6 +16,7 @@ import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.game.Game;
 
 import java.util.ArrayList;
 
@@ -30,8 +31,7 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "email";
 
     private View fragView;
     private ListView listView;
@@ -41,9 +41,10 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private static final AgentFileHelper agentFileHelper = new AgentFileHelper();;
     private OnFragmentInteractionListener mListener;
-    private AgentList agentList = new AgentList();
-    private AgentFileHelper agentFileHelper = new AgentFileHelper();
+    private AgentList agentList;
+    private Game game;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -62,7 +63,6 @@ public class HomeFragment extends Fragment {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,11 +71,11 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String handlerEmail = getArguments().getString(ARG_PARAM1);
+            game = new Game(handlerEmail);
+            // TODO replace testFile.csv with game.getAgentFileName
+            agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
         }
-        agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
-
     }
 
     private void findButtons(){
@@ -172,6 +172,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, this.getContext());
         mListener = null;
     }
 

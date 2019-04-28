@@ -17,10 +17,13 @@ import android.widget.ListView;
 import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.agent.AgentFileHelper;
+import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.email.Notification;
 import com.example.hendrixassassins.email.NotificationList;
+import com.example.hendrixassassins.game.Game;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -39,14 +42,16 @@ import javax.mail.MessagingException;
 public class NotificationsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "email";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+    private static final AgentFileHelper agentFileHelper = new AgentFileHelper();;
     private OnFragmentInteractionListener mListener;
+    private AgentList agentList;
+    private Game game;
     private View fragView;
     private Button showListView;
 
@@ -83,7 +88,6 @@ public class NotificationsFragment extends Fragment {
         NotificationsFragment fragment = new NotificationsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,8 +96,10 @@ public class NotificationsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String handlerEmail = getArguments().getString(ARG_PARAM1);
+            game = new Game(handlerEmail);
+            // TODO replace testFile.csv with game.getAgentFileName
+            agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
         }
     }
 
@@ -124,6 +130,7 @@ public class NotificationsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, this.getContext());
         mListener = null;
     }
 
