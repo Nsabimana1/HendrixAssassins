@@ -48,7 +48,8 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "email";
 
-    public static final int sortDescending = 2, sortAscending = 1;
+    public static final int sortDescending = 2, sortAscending = 1,
+            sortByArray = R.array.sortBy_array, filterStatusArray = R.array.filterStatus_array;
 
     private View fragView;
     private ListView listView;
@@ -109,20 +110,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void setSpinnerDropdowns() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.sortBy_array, simple_spinner_item);
-        String[] options = getResources().getStringArray(R.array.sortBy_array);
-        options[0] = "Kills";
-        killsFilter.setAdapter(new ArrayAdapter<CharSequence>(this.getContext(),
+        setAdapter("Kills", killsFilter, sortByArray);
+        setAdapter("Points", pointsFilter, sortByArray);
+        setAdapter("Alphabetical", alphabeticalFilter, sortByArray);
+        setAdapter("Status", statusFilter, filterStatusArray);
+    }
+
+    private void setAdapter(String title, Spinner spinner, int optionArray){
+        String[] options = getResources().getStringArray(optionArray);
+        options[0] = title;
+        spinner.setAdapter(new ArrayAdapter<CharSequence>(this.getContext(),
                 simple_spinner_item, options));
-        options[0] = "Points";
-        pointsFilter.setAdapter(new ArrayAdapter<CharSequence>(this.getContext(),
-                simple_spinner_item, options));
-        options[0] = "Alphabetical";
-        alphabeticalFilter.setAdapter(new ArrayAdapter<CharSequence>(this.getContext(),
-                simple_spinner_item, options));
-        statusFilter.setAdapter(new ArrayAdapter<AgentStatus>(this.getContext(),
-                simple_spinner_item, AgentStatus.values()));
     }
 
     private void setSpinnerListeners() {
@@ -146,7 +144,7 @@ public class HomeFragment extends Fragment {
                         break;
                     default:
                 }
-                createListViewAdapter();
+                createListViewAdapter(agentList);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -159,8 +157,11 @@ public class HomeFragment extends Fragment {
         statusFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                agentList.filterAgentsByStatus(AgentStatus.valueOf(parent.getSelectedItem().toString()));
-                createListViewAdapter();
+                if(position > 0){
+                    AgentStatus status = AgentStatus.valueOf(parent.getSelectedItem().toString());
+                    AgentList filtered = agentList.filterAgentsByStatus(status);
+                    createListViewAdapter(filtered);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -183,7 +184,7 @@ public class HomeFragment extends Fragment {
                         break;
                      default:
                 }
-                createListViewAdapter();
+                createListViewAdapter(agentList);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -206,7 +207,7 @@ public class HomeFragment extends Fragment {
                         break;
                     default:
                 }
-                createListViewAdapter();
+                createListViewAdapter(agentList);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -219,14 +220,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragView = inflater.inflate(R.layout.fragment_home, container, false);
-        createListViewAdapter();
-
+        createListViewAdapter(agentList);
         //setupButtons();
 
         AutoCompleteTextView autoCompleteTextView = fragView.findViewById(R.id.autoCompleteTest);
         AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this.getContext(),
                 R.layout.auto_complete_list_test, agentList.getAllAgents());
-        autoCompleteTextView.setAdapter(adapter);
+        // This was causing a bug
+        // autoCompleteTextView.setAdapter(adapter);
 
         setupSpinners();
 
@@ -278,11 +279,11 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void createListViewAdapter(){
+    private void createListViewAdapter(AgentList displayAgents){
         ListView listView = fragView.findViewById(R.id.agentList);
-        Log.e("all agents", String.valueOf(agentList.getAllAgents().size()));
+        Log.e("all agents", String.valueOf(displayAgents.getAllAgents().size()));
         CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
-                R.layout.test_list_view, agentList.getAllAgents());
+                R.layout.test_list_view, displayAgents.getAllAgents());
         listView.setAdapter(adapter);
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

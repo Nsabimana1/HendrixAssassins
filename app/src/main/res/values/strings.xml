@@ -42,4 +42,13 @@
             <item>Sort Descending</item>
         </string-array>
 
+    <string-array name="filterStatus_array">
+        <item> Status </item>
+        <item>ALIVE</item>
+        <item>DEAD</item>
+        <item>FROZEN</item>
+        <item>PURGED</item>
+        <item>WITHDRAWN</item>
+    </string-array>
+
 </resources>
