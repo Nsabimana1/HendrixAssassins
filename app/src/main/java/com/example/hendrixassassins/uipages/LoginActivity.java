@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +31,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,10 @@ import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.SetUpGameActivity;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.email.Email;
+import com.example.hendrixassassins.email.GMailSender;
+import com.example.hendrixassassins.email.GmailLogin;
+import com.example.hendrixassassins.email.GmailTestActivity;
 import com.example.hendrixassassins.game.Game;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -173,8 +179,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setError(null);
         mPasswordView.setError(null);
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
         boolean cancel = false;
         View focusView = null;
         // Check for a valid password, if the user entered one.
@@ -201,12 +207,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-            //This causes an error
-            Game game = setupGame(email, password);
-            // go to user listview
-            gotoNextIntent(game.getEmail());
+           // mAuthTask = new UserLoginTask(email, password);
+           // mAuthTask.execute((Void) null);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        GmailLogin login = new GmailLogin(email,password);
+                        Log.e("Login","made it past the exception");
+                        Game game = setupGame(email, password);
+                        gotoNextIntent(game.getEmail());
+                    } catch (Exception e) {
+                        Log.e("Login Activivity", e.toString());
+                        LoginActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "Login Failed.", Toast.LENGTH_SHORT);
+                                toast.show();
+                                showProgress(false);
+                                return;
+                            }});
+                    }
+                }
+            }).start();
         }
     }
 

@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         toHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GmailLogin("HendrixAssassinsApp","AssassinsTest1");
                 Game game = new Game("HendrixAssassinsApp@gmail.com");
                 game.resetPassword("AssassinsTest1");
                 game.setStatus(GameStatus.SIGNUP);

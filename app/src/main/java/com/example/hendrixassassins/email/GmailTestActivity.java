@@ -35,7 +35,7 @@ public class GmailTestActivity extends AppCompatActivity {
         sendClassArrayListListener();
 
         //test the login verification class
-        GmailLogin login = new GmailLogin("HendrixAssassinsApp","AssassinsTest1");
+        //GmailLogin login = new GmailLogin("HendrixAssassinsApp","AssassinsTest1");
 
         //display the inbox messages in the textview
         grabInbox();
