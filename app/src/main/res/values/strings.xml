@@ -35,4 +35,11 @@
 
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
+
+        <string-array name="sortBy_array">
+            <item> </item>
+            <item>Sort Ascending </item>
+            <item>Sort Descending</item>
+        </string-array>
+
 </resources>
