@@ -10,9 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+
+import android.widget.ArrayAdapter;
+
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.MainActivity;
@@ -22,9 +27,13 @@ import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.agent.AgentStatus;
 import com.example.hendrixassassins.game.Game;
 
 import java.util.ArrayList;
+
+import static android.R.layout.simple_spinner_item;
+import static com.example.hendrixassassins.agent.AgentStatus.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,9 +48,11 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "email";
 
+    public static final int sortDescending = 2, sortAscending = 1;
+
     private View fragView;
     private ListView listView;
-    private Button statusFilter, killsFilter, pointsFilter, alphabeticalFilter;
+    private Spinner statusFilter, killsFilter, pointsFilter, alphabeticalFilter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -84,19 +95,37 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void findButtons(){
-        statusFilter = fragView.findViewById(R.id.statusButton);
-        killsFilter = fragView.findViewById(R.id.KillsButton);
-        pointsFilter = fragView.findViewById(R.id.PointsButton);
-        alphabeticalFilter = fragView.findViewById(R.id.AlphabetButton);
+    private void setupSpinners() {
+        findSpinners();
+        setSpinnerDropdowns();
+        setSpinnerListeners();
     }
 
-    private void setupButtons() {
-        findButtons();
-        setButtonListeners();
+    private void findSpinners(){
+        statusFilter = fragView.findViewById(R.id.sortbyStatus);
+        killsFilter = fragView.findViewById(R.id.sortByKills);
+        pointsFilter = fragView.findViewById(R.id.sortByPoints);
+        alphabeticalFilter = fragView.findViewById(R.id.sortByAlphabet);
     }
 
-    private void setButtonListeners() {
+    private void setSpinnerDropdowns() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.sortBy_array, simple_spinner_item);
+        String[] options = getResources().getStringArray(R.array.sortBy_array);
+        options[0] = "Kills";
+        killsFilter.setAdapter(new ArrayAdapter<CharSequence>(this.getContext(),
+                simple_spinner_item, options));
+        options[0] = "Points";
+        pointsFilter.setAdapter(new ArrayAdapter<CharSequence>(this.getContext(),
+                simple_spinner_item, options));
+        options[0] = "Alphabetical";
+        alphabeticalFilter.setAdapter(new ArrayAdapter<CharSequence>(this.getContext(),
+                simple_spinner_item, options));
+        statusFilter.setAdapter(new ArrayAdapter<AgentStatus>(this.getContext(),
+                simple_spinner_item, AgentStatus.values()));
+    }
+
+    private void setSpinnerListeners() {
         setStatusFilterListener();
         setKillsFilterListener();
         setPointsFilterListener();
@@ -104,42 +133,84 @@ public class HomeFragment extends Fragment {
     }
 
     private void setAlphabeticalFilterListener(){
-        alphabeticalFilter.setOnClickListener(new View.OnClickListener() {
+        alphabeticalFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                agentList.sortNamesAlphabetically();
-                agentList.reverse();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case sortAscending:
+                        agentList.sortNamesAlphabetically();
+                        break;
+                    case sortDescending:
+                        agentList.sortNamesAlphabetically();
+                        agentList.reverse();
+                        break;
+                    default:
+                }
                 createListViewAdapter();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
 
     private void setStatusFilterListener(){
-        statusFilter.setOnClickListener(new View.OnClickListener() {
+        statusFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                agentList.filterAgentsByStatus(AgentStatus.valueOf(parent.getSelectedItem().toString()));
+                createListViewAdapter();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
     }
 
     private void setKillsFilterListener(){
-        statusFilter.setOnClickListener(new View.OnClickListener() {
+        killsFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                agentList.sortByPersonalKills();
-
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case sortAscending:
+                        agentList.sortByPersonalKills();
+                        break;
+                    case sortDescending:
+                        agentList.sortByPersonalKills();
+                        agentList.reverse();
+                        break;
+                     default:
+                }
                 createListViewAdapter();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
 
     private void setPointsFilterListener(){
-        statusFilter.setOnClickListener(new View.OnClickListener() {
+        pointsFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                agentList.sortByPointsTotal();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case sortAscending:
+                        agentList.sortByPointsTotal();
+                        break;
+                    case sortDescending:
+                        agentList.sortByPointsTotal();
+                        agentList.reverse();
+                        break;
+                    default:
+                }
                 createListViewAdapter();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
@@ -149,12 +220,16 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         fragView = inflater.inflate(R.layout.fragment_home, container, false);
         createListViewAdapter();
+
         setupButtons();
 
         AutoCompleteTextView autoCompleteTextView = fragView.findViewById(R.id.autoCompleteTest);
         AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this.getContext(),
                 R.layout.auto_complete_list_test, agentList.getAllAgents());
         autoCompleteTextView.setAdapter(adapter);
+
+        setupSpinners();
+
         // Inflate the layout for this fragment
         return fragView;
     }

@@ -71,41 +71,63 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@color/colorPrimary">
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/AlphabetButton"
-                    android:layout_width="110dp"
+                <Spinner
+                    android:id="@+id/sortByKills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:addStatesFromChildren="false"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown" />
+
+                <Spinner
+                    android:id="@+id/sortByPoints"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/filter_button_theme"
-                    android:text="alphabet"
-                    android:textColor="@color/white" />
+                    android:addStatesFromChildren="false"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown" />
 
-                <Button
-                    android:id="@+id/statusButton"
+                <Spinner
+                    android:id="@+id/sortbyStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/filter_button_theme"
-                    android:text="status"
-                    android:textColor="@color/white" />
+                    android:layout_weight="1"
+                    android:addStatesFromChildren="false"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown" />
 
-                <Button
-                    android:id="@+id/KillsButton"
+                <Spinner
+                    android:id="@+id/sortByAlphabet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/filter_button_theme"
-                    android:text="kills"
-                    android:textColor="@color/white" />
+                    android:layout_weight="1"
+                    android:addStatesFromChildren="false"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown" />
 
-                <Button
-                    android:id="@+id/PointsButton"
-                    android:layout_width="wrap_content"
+                <Space
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/filter_button_theme"
-                    android:text="points"
-                    android:textColor="@color/white" />
+                    android:layout_weight="1" />
+
+                <Space
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Space
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
