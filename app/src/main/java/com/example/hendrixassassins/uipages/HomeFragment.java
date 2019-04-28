@@ -223,11 +223,11 @@ public class HomeFragment extends Fragment {
         createListViewAdapter(agentList);
         //setupButtons();
 
-        AutoCompleteTextView autoCompleteTextView = fragView.findViewById(R.id.autoCompleteTest);
-        AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this.getContext(),
-                R.layout.auto_complete_list_test, agentList.getAllAgents());
-        // This was causing a bug
-        // autoCompleteTextView.setAdapter(adapter);
+//        AutoCompleteTextView autoCompleteTextView = fragView.findViewById(R.id.autoCompleteTest);
+//        AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this.getContext(),
+//                R.layout.auto_complete_list_test, agentList.getAllAgents());
+//        // This was causing a bug
+//        // autoCompleteTextView.setAdapter(adapter);
 
         setupSpinners();
 
