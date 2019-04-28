@@ -1,6 +1,7 @@
 package com.example.hendrixassassins.uipages;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+<<<<<<< HEAD
 import android.widget.ArrayAdapter;
+=======
+import android.widget.Button;
+>>>>>>> master
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.example.hendrixassassins.AgentProfileActivity;
+import com.example.hendrixassassins.MainActivity;
 import com.example.hendrixassassins.UItestcompnents.CustomListViewAdapter;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.AgentFileHelper;
@@ -265,5 +272,19 @@ public class HomeFragment extends Fragment {
         CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
                 R.layout.test_list_view, agentList.getAllAgents());
         listView.setAdapter(adapter);
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                gotoAgentProfile();
+            }
+
+
+        });
+    }
+
+    private void gotoAgentProfile() {
+        Intent userListView = new Intent(getActivity(), AgentProfileActivity.class);
+        startActivity(userListView);
     }
 }
