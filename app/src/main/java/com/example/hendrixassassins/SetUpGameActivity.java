@@ -150,7 +150,7 @@ public class SetUpGameActivity extends AppCompatActivity {
                     public void run() {
                         try {
                             //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
-                            GMailSender sender = new GMailSender(game.getEmailBeforeAtSymbol(), game.getPassword());
+                            GMailSender sender = new GMailSender();
                             sender.sendMail(message);
                         } catch (AuthenticationFailedException e) {
                             e.printStackTrace();
