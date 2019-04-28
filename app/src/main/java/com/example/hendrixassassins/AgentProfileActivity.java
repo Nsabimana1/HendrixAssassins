@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class AgentProfileActivity extends AppCompatActivity {
     private TextView agentName, AgentTotalPoints, AgentPersonalKills, agentEmail,
-            agentStatus;
+            agentStatusCurrent;
     private ImageButton changeAgentName, sendEmailAgent, removeAgent, editPlayerStatus;
     private ListView agentEmailHistory, agentKillHistory;
     private Context context;
@@ -65,7 +65,7 @@ public class AgentProfileActivity extends AppCompatActivity {
         AgentPersonalKills = findViewById(R.id.AgentPersonalKills);
         agentEmail = findViewById(R.id.agentEmail);
         // This was causing errors for some reason.
-        //agentStatus = findViewById(R.id.agentStatus);
+        agentStatusCurrent = findViewById(R.id.agentStatus);
         changeAgentName = findViewById(R.id.changeAgentName);
         sendEmailAgent = findViewById(R.id.sendEmailAgent);
         removeAgent = findViewById(R.id.removeAgent);
@@ -78,6 +78,7 @@ public class AgentProfileActivity extends AppCompatActivity {
         agentName.setText(agent.getName());
         AgentTotalPoints.setText(String.valueOf(agent.getPointsTotal()));
         AgentPersonalKills.setText(String.valueOf(agent.getPersonalKills()));
+        agentStatusCurrent.setText(agent.getStatus().toString());
     }
 
 
