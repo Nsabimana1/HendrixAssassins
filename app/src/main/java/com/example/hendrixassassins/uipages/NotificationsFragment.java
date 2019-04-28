@@ -21,7 +21,6 @@ import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
-import com.example.hendrixassassins.email.MessageReader;
 import com.example.hendrixassassins.email.Notification;
 import com.example.hendrixassassins.email.NotificationList;
 import com.example.hendrixassassins.game.Game;
@@ -61,7 +60,6 @@ public class NotificationsFragment extends Fragment {
     private ArrayList<Notification> allNotifications = new ArrayList<>();
 
     private ArrayList<Email> inboxEmails = new ArrayList<>();
-    private MessageReader messageReader;
 
 
     public NotificationsFragment() {

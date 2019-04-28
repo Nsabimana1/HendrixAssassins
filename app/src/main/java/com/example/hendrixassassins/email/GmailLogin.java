@@ -19,7 +19,7 @@ public class GmailLogin {
     private Session imapSession;
 
 
-    public GmailLogin(final String username, final String password) throws MessagingException {
+    public GmailLogin(String username, String password) throws MessagingException {
         props = new Properties();
         props.setProperty("mail.store.protocol", "imaps");
         props.setProperty("mail.imaps.host", "imaps.gmail.com");
