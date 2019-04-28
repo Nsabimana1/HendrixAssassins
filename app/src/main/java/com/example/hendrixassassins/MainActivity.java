@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.hendrixassassins.UItestcompnents.ListViewTestActivity;
 import com.example.hendrixassassins.agent.AgentFileHelper;
@@ -37,6 +38,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findIDs();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GmailLogin login = new GmailLogin("HendrixAssassinsApp@gmail.com","AssassinsTest1");
+                 } catch (Exception e) {
+                    Log.e("Login Activivity", e.toString());
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "Login Failed.", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }});
+                }
+            }
+        }).start();
         context = this.getApplicationContext();
         toGmailTestButton();
         toListViewTestButton();

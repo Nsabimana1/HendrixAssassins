@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.hendrixassassins.R;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
@@ -72,7 +71,7 @@ public class GmailTestActivity extends AppCompatActivity {
                         Email email = new Email(address.getText().toString(),
                                 subject.getText().toString(), message.getText().toString());
                         try {
-                            sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+                            sender = new GMailSender();
                             sender.sendMail(email);
                         } catch (Exception e) {
                             Log.e("Gmailtest-send", e.toString());
@@ -103,7 +102,7 @@ public class GmailTestActivity extends AppCompatActivity {
                         Email email = new Email(addresses,
                                 subject.getText().toString(),message.getText().toString());
                         try {
-                            sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+                            sender = new GMailSender();
                             sender.sendMail(email);
                         } catch (Exception e) {
                             Log.e("Gmailtest-send csv", e.toString());
@@ -138,7 +137,7 @@ public class GmailTestActivity extends AppCompatActivity {
                         Email email = new Email(addresses, subject.getText().toString(),
                                 message.getText().toString());
                         try {
-                            sender = new GMailSender("HendrixAssassinsApp@gmail.com", "AssassinsTest1");
+                            sender = new GMailSender();
                             sender.sendMail(email);
                         } catch (Exception e) {
                             Log.e("Gmailtest-arraylist", e.toString());

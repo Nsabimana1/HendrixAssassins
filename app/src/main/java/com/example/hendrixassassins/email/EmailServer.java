@@ -5,7 +5,6 @@ import android.util.Log;
 import com.example.hendrixassassins.agent.Agent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Properties;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -19,7 +18,7 @@ public class EmailServer {
     private static EmailServer instance;
     private Session imapSession;
     private Store store;
-    private String username, password;
+    private final String email, password;
     private Folder inbox, sent;
     private ArrayList<Email> inboxList, sentList;
 
@@ -32,8 +31,8 @@ public class EmailServer {
 
 
     public EmailServer()  {
-        this.username = "HendrixAssassinsApp";
-        this.password = "AssassinsTest1";
+        this.email = GmailLogin.email;
+        this.password = GmailLogin.password;
         inboxList = new ArrayList<>();
         sentList = new ArrayList<>();
         Properties props = new Properties();
@@ -55,7 +54,7 @@ public class EmailServer {
 
     public void refreshInboxMessages() throws MessagingException, IOException {
         store = imapSession.getStore("imaps");
-        store.connect("imap.gmail.com", username, password);
+        store.connect("imap.gmail.com", email, password);
         inbox = store.getFolder("Inbox");
         inbox.open(Folder.READ_ONLY);
         Message[] messages = inbox.getMessages();
@@ -70,7 +69,7 @@ public class EmailServer {
 
     public void refreshSentMessages() throws MessagingException, IOException {
         store = imapSession.getStore("imaps");
-        store.connect("imap.gmail.com", username, password);
+        store.connect("imap.gmail.com", email, password);
         sent = store.getFolder("[Gmail]/Sent Mail");
         sent.open(Folder.READ_ONLY);
         Message[] messages = sent.getMessages();

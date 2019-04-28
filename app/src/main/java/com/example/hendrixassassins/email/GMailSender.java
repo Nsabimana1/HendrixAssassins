@@ -3,8 +3,6 @@ package com.example.hendrixassassins.email;
 //From https://medium.com/@ssaurel/how-to-send-an-email-with-javamail-api-in-android-2fc405441079
 
 
-import android.util.Log;
-
 import java.security.Security;
 import java.util.Properties;
 
@@ -19,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 
 public class GMailSender extends javax.mail.Authenticator {
     private String mailhost = "smtp.gmail.com";
-    private String user;
+    private String email;
     private String password;
     private Session session;
 
@@ -27,9 +25,9 @@ public class GMailSender extends javax.mail.Authenticator {
         Security.addProvider(new JSSEProvider());
     }
 
-    public GMailSender(String userEmailAddress, String password) throws AuthenticationFailedException{
-        this.user = userEmailAddress;
-        this.password = password;
+    public GMailSender() throws AuthenticationFailedException{
+        this.email = GmailLogin.email;
+        this.password = GmailLogin.password;
 
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
@@ -44,7 +42,7 @@ public class GMailSender extends javax.mail.Authenticator {
     }
 
     protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(user, password);
+        return new PasswordAuthentication(email, password);
     }
 
     public synchronized void sendMail(Email email) throws Exception {
