@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.MainActivity;
+import com.example.hendrixassassins.UItestcompnents.AutoCompleteAgentAdapter;
 import com.example.hendrixassassins.UItestcompnents.CustomListViewAdapter;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
@@ -148,6 +150,11 @@ public class HomeFragment extends Fragment {
         fragView = inflater.inflate(R.layout.fragment_home, container, false);
         createListViewAdapter();
         setupButtons();
+
+        AutoCompleteTextView autoCompleteTextView = fragView.findViewById(R.id.autoCompleteTest);
+        AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this.getContext(),
+                R.layout.auto_complete_list_test, agentList.getAllAgents());
+        autoCompleteTextView.setAdapter(adapter);
         // Inflate the layout for this fragment
         return fragView;
     }

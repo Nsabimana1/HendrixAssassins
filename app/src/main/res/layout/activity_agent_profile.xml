@@ -17,11 +17,6 @@
         app:cardBackgroundColor="@color/colorPrimary"
         >
 
-        <ImageView
-            android:src="@drawable/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
 
 
         <ImageView
@@ -41,11 +36,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="22dp"
         app:cardBackgroundColor="@color/colorPrimary">
-        <ImageView
-            android:src="@drawable/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,11 +52,14 @@
                 android:textColor="@color/white"
                 android:textSize="25sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/changeAgentName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="edit" />
+                android:layout_width="81dp"
+                android:layout_height="42dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                android:onClick="changeAgentNameButtonListener"
+                android:src="@drawable/ic_settings_black_24dp" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
@@ -80,11 +74,7 @@
         android:layout_marginEnd="186dp"
         app:cardBackgroundColor="@color/colorPrimary"
         android:background="@drawable/filter_button_theme">
-        <ImageView
-            android:src="@drawable/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -137,38 +127,54 @@
         android:layout_marginEnd="21dp"
         app:cardBackgroundColor="@color/colorPrimary">
 
-        <ImageView
-            android:src="@drawable/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/emailAgentTag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email Agent"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/sendEmailAgent"
                 android:layout_width="match_parent"
-                android:layout_height="82dp"
+                android:layout_height="66dp"
+                android:src="@drawable/ic_email_black_24dp"
+                android:background="@color/colorPrimary"
+                android:onClick="sendEmailAgentButtonListener"
                 android:text="email" />
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="83dp" />
+                android:layout_height="35dp" />
 
-            <Button
-                android:id="@+id/removeAgent"
+            <TextView
+                android:id="@+id/removeAgentTag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Remove Agent"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+
+            <ImageButton
+                android:id="@+id/removeAgent"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:onClick="removeAgentButtonListener"
+                android:background="@color/colorPrimary"
+                android:src="@drawable/ic_delete_black_24dp"
                 android:text="remove" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/agentEmail"
+        android:id="@+id/agentEmailCard"
         android:layout_width="194dp"
         android:layout_height="67dp"
         android:layout_alignParentStart="true"
@@ -177,14 +183,9 @@
         android:layout_marginTop="234dp"
         app:cardBackgroundColor="@color/colorPrimary">
 
-        <ImageView
-            android:src="@drawable/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/agentEmail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="EMAIL"
@@ -202,11 +203,6 @@
         android:layout_marginTop="339dp"
         app:cardBackgroundColor="@color/colorPrimary">
 
-        <ImageView
-            android:src="@drawable/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
 
         <ListView
             android:id="@+id/agentKillHistory"
@@ -223,11 +219,6 @@
         android:layout_marginTop="337dp"
         app:cardBackgroundColor="@color/colorPrimary">
 
-        <ImageView
-            android:src="@drawable/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -235,7 +226,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/agentStatus"
                 android:layout_width="140dp"
                 android:layout_height="74dp"
                 android:layout_gravity="bottom"
@@ -244,11 +235,15 @@
                 android:textColor="@color/white"
                 android:textSize="30sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/editPlayerStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="e          d        i         t" />
+                android:layout_width="55dp"
+                android:layout_height="86dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                android:onClick="editPlayerStatusButtonListener"
+                android:src="@drawable/ic_settings_black_24dp"
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
@@ -263,11 +258,6 @@
         app:cardBackgroundColor="@color/colorPrimary"
         android:background="@drawable/filter_button_theme">
 
-        <ImageView
-            android:src="@drawable/card_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"/>
 
         <ListView
             android:id="@+id/agentEmailHistory"
