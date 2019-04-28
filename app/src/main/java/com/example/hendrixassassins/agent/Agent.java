@@ -38,6 +38,8 @@ public class Agent {
         return email;
     }
 
+    public void setName(String updatedName){name = updatedName;}
+
     public String getName(){
         return name;
     }

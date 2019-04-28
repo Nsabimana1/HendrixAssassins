@@ -279,7 +279,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void createListViewAdapter(AgentList displayAgents){
+    private void createListViewAdapter(final AgentList displayAgents){
         ListView listView = fragView.findViewById(R.id.agentList);
         Log.e("all agents", String.valueOf(displayAgents.getAllAgents().size()));
         CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
@@ -289,15 +289,18 @@ public class HomeFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                gotoAgentProfile();
+                gotoAgentProfile(displayAgents.getAllAgents().get(position));
             }
 
 
         });
     }
 
-    private void gotoAgentProfile() {
+    private void gotoAgentProfile(Agent agent) {
         Intent userListView = new Intent(getActivity(), AgentProfileActivity.class);
+        userListView.putExtra("handlerEmail", game.getEmail());
+        userListView.putExtra("agentEmail", agent.getEmail());
+        startActivity(userListView);
         startActivity(userListView);
     }
 }
