@@ -103,11 +103,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setFragment(Fragment fragment){
+        setBundle(fragment);
         loadEmails();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
     }
+
+    private void setBundle(Fragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putString("email", game.getEmail());
+        fragment.setArguments(bundle);
+    }
+
     private void loadEmails(){
         new Thread(new Runnable() {
             @Override

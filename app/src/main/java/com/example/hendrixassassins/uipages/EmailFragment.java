@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hendrixassassins.R;
+import com.example.hendrixassassins.agent.AgentFileHelper;
+import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.game.Game;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,11 +27,10 @@ public class EmailFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private static final AgentFileHelper agentFileHelper = new AgentFileHelper();;
     private OnFragmentInteractionListener mListener;
+    private AgentList agentList;
+    private Game game;
 
     public EmailFragment() {
         // Required empty public constructor
@@ -56,8 +58,10 @@ public class EmailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String handlerEmail = getArguments().getString(ARG_PARAM1);
+            game = new Game(handlerEmail);
+            // TODO replace testFile.csv with game.getAgentFileName
+            agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
         }
     }
 
@@ -91,6 +95,7 @@ public class EmailFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, this.getContext());
         mListener = null;
     }
 

@@ -180,6 +180,7 @@ public class SetUpGameActivity extends AppCompatActivity {
 
     private void gotoHomeIntent(){
         Intent userListView = new Intent(SetUpGameActivity.this, HomeActivity.class);
+        userListView.putExtra("email", game.getEmail());
         startActivity(userListView);
         finish();
     }

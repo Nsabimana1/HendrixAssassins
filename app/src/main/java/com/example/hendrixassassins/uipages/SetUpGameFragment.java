@@ -13,9 +13,12 @@ import android.widget.Toast;
 
 import com.example.hendrixassassins.IncomingEmailListViewAdapter;
 import com.example.hendrixassassins.R;
+import com.example.hendrixassassins.agent.AgentFileHelper;
+import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.GmailTestActivity;
 import com.example.hendrixassassins.email.MessageReader;
+import com.example.hendrixassassins.game.Game;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,8 +33,9 @@ public class SetUpGameFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
+    private static final AgentFileHelper agentFileHelper = new AgentFileHelper();
+    private AgentList agentList;
+    private Game game;
     private View fragView;
     private IncomingEmailListViewAdapter<Email> incomingEmailListViewAdapter;
 
@@ -44,10 +48,11 @@ public class SetUpGameFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String handlerEmail = getArguments().getString(ARG_PARAM1);
+            game = new Game(handlerEmail);
+            // TODO replace testFile.csv with game.getAgentFileName
+            agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
         }
-        unread_filtered_emails = new ArrayList<>();
     }
 
 
@@ -138,7 +143,11 @@ public class SetUpGameFragment extends Fragment {
         refreshEmails = fragView.findViewById(R.id.refresh_emails_1);
     }
 
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, this.getContext());
+    }
 
 
 }
