@@ -221,7 +221,7 @@ public class HomeFragment extends Fragment {
         fragView = inflater.inflate(R.layout.fragment_home, container, false);
         createListViewAdapter();
 
-        setupButtons();
+        //setupButtons();
 
         AutoCompleteTextView autoCompleteTextView = fragView.findViewById(R.id.autoCompleteTest);
         AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this.getContext(),

@@ -18,7 +18,7 @@ import javax.mail.internet.InternetAddress;
 
 public class Email implements Serializable {
     private String sender, subject, body;
-    private final String gameEmail = "HendrixAssassinsApp@gmail.com";
+    private final String gameEmail = GmailLogin.email;
     private ArrayList<String> recipients = new ArrayList<String>();
     private Date date;
     private boolean read;
