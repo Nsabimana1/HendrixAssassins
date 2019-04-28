@@ -15,8 +15,6 @@ import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
-import com.example.hendrixassassins.email.GmailTestActivity;
-import com.example.hendrixassassins.email.MessageReader;
 import com.example.hendrixassassins.game.Game;
 
 import java.io.IOException;
