@@ -63,13 +63,21 @@ public class EmailSenderActivity extends AppCompatActivity {
                         try {
                             GMailSender sender = new GMailSender();
                             sender.sendMail(email);
+                            EmailSenderActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                            "Email Sent.", Toast.LENGTH_LONG);
+                                    toast.show();
+                                }});
+                            finish();
                         } catch (Exception e) {
                             Log.e("Gmailtest-send", e.toString());
                             EmailSenderActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     Toast toast = Toast.makeText(getApplicationContext(),
-                                            "Failed to send", Toast.LENGTH_SHORT);
+                                            "Failed to send", Toast.LENGTH_LONG);
                                     toast.show();
                                 }});
                         }
