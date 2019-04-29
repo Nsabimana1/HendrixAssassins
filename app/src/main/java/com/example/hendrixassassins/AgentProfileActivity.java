@@ -18,10 +18,13 @@ import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.game.Game;
 import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
+import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentName;
+import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentStatus;
 
 import java.util.ArrayList;
 
-public class AgentProfileActivity extends AppCompatActivity implements ChangeNameDialogFragment.NoticeDialogListener{
+public class AgentProfileActivity extends AppCompatActivity implements ChangeNameDialogFragment.NoticeDialogListener,
+        PopupChangeAgentName.DialogListener, PopupChangeAgentStatus.DialogListener {
     private TextView agentName, AgentTotalPoints, AgentPersonalKills, agentEmail,
             agentStatusCurrent;
     private ImageButton changeAgentName, sendEmailAgent, removeAgent, editPlayerStatus;
@@ -89,8 +92,10 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         changeAgentName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment changeNameFragment = new ChangeNameDialogFragment();
-                changeNameFragment.show(getSupportFragmentManager(), "changeName");
+                PopupChangeAgentName changeAgentName = new PopupChangeAgentName();
+                changeAgentName.show(getSupportFragmentManager(), "changeName");
+//                DialogFragment changeNameFragment = new ChangeNameDialogFragment();
+//                changeNameFragment.show(getSupportFragmentManager(), "changeName");
             }
         });
     }
@@ -127,6 +132,8 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         editPlayerStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PopupChangeAgentStatus changeAgentStatus = new PopupChangeAgentStatus();
+                changeAgentStatus.show(getSupportFragmentManager(), "changeAgentStatus");
 
             }
         });
@@ -142,5 +149,30 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         });
         //TODO: remove agent from game
         // why is this seperate from the status changing?
+    }
+
+    @Override
+    public void changeName(String updateName) {
+
+        agentName.setText(updateName);
+
+
+
+    }
+
+    @Override
+    public void changeStatus(String updatedName) {
+        agentStatusCurrent.setText(updatedName);
+    }
+
+    public void goToTargetsProfile(View view) {
+        gotoAgentProfile(agent.getCurrentTarget());
+    }
+
+    private void gotoAgentProfile(Agent agent) {
+        Intent userListView = new Intent(AgentProfileActivity.this, AgentProfileActivity.class);
+        userListView.putExtra("handlerEmail", game.getEmail());
+        userListView.putExtra("agentEmail", agent.getEmail());
+        startActivity(userListView);
     }
 }

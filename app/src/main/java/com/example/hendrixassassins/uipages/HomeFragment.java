@@ -330,6 +330,5 @@ public class HomeFragment extends Fragment {
         userListView.putExtra("handlerEmail", game.getEmail());
         userListView.putExtra("agentEmail", agent.getEmail());
         startActivity(userListView);
-        startActivity(userListView);
     }
 }
