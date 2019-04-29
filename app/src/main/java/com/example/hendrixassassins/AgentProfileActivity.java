@@ -21,6 +21,7 @@ import com.example.hendrixassassins.game.Game;
 import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentName;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentStatus;
+import com.example.hendrixassassins.uipages.HomeActivity;
 
 import java.util.ArrayList;
 
@@ -178,6 +179,11 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         Intent userListView = new Intent(AgentProfileActivity.this, AgentProfileActivity.class);
         userListView.putExtra("handlerEmail", game.getEmail());
         userListView.putExtra("agentEmail", agent.getEmail());
+        startActivity(userListView);
+    }
+
+    public void goBackToFragment(View view) {
+        Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
         startActivity(userListView);
     }
 }

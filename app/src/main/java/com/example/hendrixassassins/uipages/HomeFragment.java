@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.util.Log;
@@ -70,6 +71,7 @@ public class HomeFragment extends Fragment {
     private ImageView searchAgent;
     private AutoCompleteTextView autoCompleteTextView;
     private CustomListViewAdapter<Agent> adapter;
+    private Button clearFilter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -101,20 +103,6 @@ public class HomeFragment extends Fragment {
             // TODO replace testFile.csv with game.getAgentFileName
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-
     }
 
     private void setupSpinners() {
@@ -191,6 +179,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
     private void setKillsFilterListener(){
         Drawable d = getResources().getDrawable(R.drawable.filter_button_theme);
 
@@ -259,7 +248,22 @@ public class HomeFragment extends Fragment {
 
     private void setupButtons() {
         searchAgent = fragView.findViewById(R.id.searchAgent);
+        clearFilter = fragView.findViewById(R.id.clearFilters);
+        createClearFilterButtonListener();
         createSearchAgentButtonListener();
+    }
+
+    private void createClearFilterButtonListener() {
+        clearFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                statusFilter.setSelection(0);
+                killsFilter.setSelection(0);
+                pointsFilter.setSelection(0);
+                alphabeticalFilter.setSelection(0);
+                createListViewAdapter(agentList);
+            }
+        });
     }
 
     private void createSearchAgentButtonListener() {
