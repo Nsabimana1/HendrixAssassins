@@ -23,6 +23,7 @@ public class Email implements Serializable {
     private Date date;
     private boolean read;
     private boolean textIsHtml = false;
+    private boolean premade = false;
     private int messageNumber;
 
 
@@ -78,8 +79,17 @@ public class Email implements Serializable {
         if (messageNumber > 0 ) {
             EmailServer.get().setMessageRead(messageNumber,value);
         }
-
     }
+
+    public boolean isPremade(){
+        return premade;
+    }
+
+    public Email returnPremade(){
+        this.premade = true;
+        return this;
+    }
+
 
 
     // Modified from https://javaee.github.io/javamail/FAQ#mainbody
