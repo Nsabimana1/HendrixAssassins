@@ -17,17 +17,22 @@ import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.agent.AgentStatus;
+import com.example.hendrixassassins.email.Email;
+import com.example.hendrixassassins.email.GMailSender;
 import com.example.hendrixassassins.game.Game;
+import com.example.hendrixassassins.game.GameMethods;
 import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentName;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentStatus;
 
 import java.util.ArrayList;
 
-public class AgentProfileActivity extends AppCompatActivity implements ChangeNameDialogFragment.NoticeDialogListener,
+import javax.mail.AuthenticationFailedException;
+
+public class AgentProfileActivity extends AppCompatActivity implements
         PopupChangeAgentName.DialogListener, PopupChangeAgentStatus.DialogListener {
     private TextView agentName, AgentTotalPoints, AgentPersonalKills, agentEmail,
-            agentStatusCurrent, currentAgentTarget;
+            agentStatusCurrent;
     private ImageButton changeAgentName, sendEmailAgent, removeAgent, editPlayerStatus;
     private ListView agentEmailHistory, agentKillHistory;
     private Context context;
@@ -78,7 +83,6 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         editPlayerStatus = findViewById(R.id.editPlayerStatus);
         agentEmailHistory = findViewById(R.id.agentEmailHistory);
         agentKillHistory = findViewById(R.id.agentKillHistory);
-        currentAgentTarget = findViewById(R.id.currentAgentTarget);
     }
 
     private void personalizeAgentPage(){
@@ -86,7 +90,6 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         AgentTotalPoints.setText(String.valueOf(agent.getPointsTotal()));
         AgentPersonalKills.setText(String.valueOf(agent.getPersonalKills()));
         agentStatusCurrent.setText(agent.getStatus().toString());
-        currentAgentTarget.setText(agent.getCurrentTarget().getName());
     }
 
 
@@ -96,26 +99,14 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
             public void onClick(View view) {
                 PopupChangeAgentName changeAgentName = new PopupChangeAgentName();
                 changeAgentName.show(getSupportFragmentManager(), "changeName");
+//                DialogFragment changeNameFragment = new ChangeNameDialogFragment();
+//                changeNameFragment.show(getSupportFragmentManager(), "changeName");
             }
         });
     }
 
     private void updateAgentListFile(){
         agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
-    }
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog, String updatedName) {
-        Log.e("CCC", "posClick");
-        Log.e("CCC", updatedName);
-        agent.setName(updatedName);
-        updateAgentListFile();
-        agentName.setText(agent.getName());
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // User touched the dialog's negative button
     }
 
     public void sendEmailAgentButtonListener(View view) {
@@ -156,18 +147,60 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
 
     @Override
     public void changeName(String updateName) {
-
-        if(!updateName.isEmpty()){
-        agentName.setText(updateName);
-        }
+        agent.setName(updateName);
+        updateAgentListFile();
+        agentName.setText(agent.getName());
     }
-
 
     @Override
     public void changeStatus(String updatedName) {
-        agent.setStatus(AgentStatus.valueOf(updatedName));
-        agentStatusCurrent.setText(agent.getStatus().toString());
+        AgentStatus newStatus = AgentStatus.valueOf(updatedName);
+        AgentStatus oldStatus = agent.getStatus();
+        if(newStatus == AgentStatus.FROZEN) freezeAgent();
+        else  agent.setStatus(newStatus);
+        agentStatusCurrent.setText(updatedName);
         updateAgentListFile();
+    }
+
+    private void freezeAgent() {
+        GameMethods methods = new GameMethods(agentList);
+        Agent agentWithNewTarget = agentList.getAgentAssignedToKill(agent);
+        methods.freezeAgent(agent);
+        sendTargetEmails(agentWithNewTarget);
+    }
+
+    private void sendTargetEmails(Agent agent){
+        final Email message = getTargetEmail(agent);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
+                    // TODO uncomment this to send emails again:
+                    GMailSender sender = new GMailSender();
+                    sender.sendMail(message);
+                } catch (AuthenticationFailedException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private Email getTargetEmail(Agent agent){
+        return new Email(agentList.getAgentEmails(), "Assassins Verification",
+                writeTargetEmail(agent));
+    }
+
+    private String writeTargetEmail(Agent agent){
+        Log.e("OOO", agent.getEmail());
+        Log.e("OOO", agent.getCurrentTargetEmail());
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "Your target is " + agent.getCurrentTarget().getName() +
+                ". Their email is " + agent.getCurrentTargetEmail() + "\n\n";
+        String signoff = "Happy hunting,\nThe Handler";
+        return salutation + body + signoff;
     }
 
     public void goToTargetsProfile(View view) {
