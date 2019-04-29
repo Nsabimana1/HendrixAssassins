@@ -30,7 +30,6 @@ public class HomeActivity extends AppCompatActivity {
     private NotificationsFragment notificationsFragment;
     private EmailFragment emailFragment;
 
-    private SetUpGameFragment setUpGameFragment;
 
     private Game game;
     private Context context;
@@ -99,7 +98,6 @@ public class HomeActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         notificationsFragment = new NotificationsFragment();
         emailFragment = new EmailFragment();
-        setUpGameFragment  = new SetUpGameFragment();
     }
 
     private void setFragment(Fragment fragment){
