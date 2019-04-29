@@ -1,78 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<ImageView-->
-        <!--android:id="@+id/imageView2"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="95dp"-->
+
+    <TextView
+        android:id="@+id/nameTest"
+        android:layout_width="208dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="15dp"
+        android:text="TextView"
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/statusTest"
+        android:layout_width="91dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="236dp"
+        android:text="TextView"
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/pointsTest"-->
+        <!--android:layout_width="54dp"-->
+        <!--android:layout_height="100dp"-->
         <!--android:layout_alignParentTop="true"-->
         <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginTop="33dp"-->
-        <!--android:layout_marginEnd="297dp"-->
-        <!--android:layout_marginBottom="603dp"-->
-        <!--tools:srcCompat="@tools:sample/avatars" />-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:layout_marginEnd="15dp"-->
+        <!--android:text="TextView"-->
+        <!--android:textColor="@color/colorAccent"-->
+        <!--android:textSize="25sp" />-->
 
-    <TextView
-        android:id="@+id/sender_email"
-        android:layout_width="116dp"
-        android:layout_height="38dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="16dp"
-        android:text="User Name" />
-
-    <TextView
-        android:id="@+id/sent_date"
-        android:layout_width="115dp"
-        android:layout_height="33dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="14dp"
-        android:text="Date" />
-
-    <TextView
-        android:id="@+id/notication_header"
-        android:layout_width="127dp"
-        android:layout_height="33dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="479dp"
-        android:layout_toStartOf="@+id/sent_date"
-        android:text="Email Title" />
-
-
-    <!--<Button-->
-        <!--android:id="@+id/sender_Initials"-->
-        <!--android:layout_width="78dp"-->
-        <!--android:layout_height="78dp"-->
-        <!--android:layout_alignParentStart="true"-->
+    <!--<TextView-->
+        <!--android:id="@+id/killsTest"-->
+        <!--android:layout_width="96dp"-->
+        <!--android:layout_height="100dp"-->
         <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginStart="12dp"-->
-        <!--android:layout_marginTop="166dp"-->
-        <!--android:background="@drawable/custom_button"-->
-        <!--android:clickable="false"-->
-        <!--android:text="Button"-->
-        <!--android:textAllCaps="false" />-->
-
-    <Button
-        android:id="@+id/sender_Initials"
-        android:layout_width="160dp"
-        android:layout_height="137dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="422dp"
-        android:background="@drawable/custom_button"
-        android:text="Button"
-        android:textAllCaps="false"
-        android:textSize="25sp" />
->>>>>>> cd98db8cd006beecfcc03e988867ea98fa53eb0c
-
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:layout_marginEnd="80dp"-->
+        <!--android:text="TextView"-->
+        <!--android:textColor="@color/colorAccent"-->
+        <!--android:textSize="25sp" />-->
 </RelativeLayout>

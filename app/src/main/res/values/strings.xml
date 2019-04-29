@@ -15,8 +15,9 @@
     </string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_email">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_settings">Notifications</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -45,10 +46,10 @@
     <string name="refresh">Refresh</string>
 
     <string-array name="sortBy_array">
-            <item> </item>
-            <item>Sort Ascending </item>
-            <item>Sort Descending</item>
-        </string-array>
+        <item> </item>
+        <item>Sort Ascending </item>
+        <item>Sort Descending</item>
+    </string-array>
 
     <string-array name="filterStatus_array">
         <item> Status </item>
