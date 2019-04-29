@@ -33,9 +33,16 @@
         tortor.
     </string>
 
+    <string name="verification_email">Congratulations you have signed up to play assassins!
+        Reply to this email with the subject line \'withdraw\' if you do not want to be in assassins.
+    </string>
+
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="status">STATUS</string>
+
+    <string name="refreshing">Retrieving Emails .....</string>
+    <string name="refresh">Refresh</string>
 
     <string-array name="sortBy_array">
             <item> </item>
@@ -45,6 +52,14 @@
 
     <string-array name="filterStatus_array">
         <item> Status </item>
+        <item>ALIVE</item>
+        <item>DEAD</item>
+        <item>FROZEN</item>
+        <item>PURGED</item>
+        <item>WITHDRAWN</item>
+    </string-array>
+
+    <string-array name="popup_changeStatus">
         <item>ALIVE</item>
         <item>DEAD</item>
         <item>FROZEN</item>

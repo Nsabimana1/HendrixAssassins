@@ -16,6 +16,8 @@ import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
 import com.example.hendrixassassins.email.GMailSender;
 import com.example.hendrixassassins.game.Game;
+import com.example.hendrixassassins.game.GameMethods;
+import com.example.hendrixassassins.game.GameStatus;
 import com.example.hendrixassassins.uipages.HomeActivity;
 
 import java.io.IOException;
@@ -31,6 +33,7 @@ public class SetUpGameActivity extends AppCompatActivity {
     private ListView incomingEmails;
     private ArrayList<Email> unread_filtered_emails;
     private IncomingEmailListViewAdapter<Email> incomingEmailListViewAdapter;
+    String year = String.valueOf(new GregorianCalendar().get(Calendar.YEAR));
     private Game game;
     private AgentList agentList;
     private Context context;
@@ -54,14 +57,19 @@ public class SetUpGameActivity extends AppCompatActivity {
         getAllNewFilterEmails();
     }
 
-    private Email getVerificationEmail(){
+    private void initializeAgentList(){
         agentList = new AgentList();
         for(Email email: unread_filtered_emails){
-            Agent agent = new Agent(email.getSender(), "bob");
+            Agent agent = new Agent(email.getSender(), getAgentNameFromSubject(email));
+            Log.e("SetupGame",email.getSender()+" "+getAgentNameFromSubject(email));
             agentList.addAgent(agent);
         }
         updateAgentListFile();
-        return new Email(agentList.getAgentEmails(), "Testing Verification", "Congratulations you have signed up to play assassins!");
+    }
+
+    private Email getVerificationEmail(){
+        return new Email(agentList.getAgentEmails(), "Assassins Verification",
+                getResources().getString(R.string.verification_email));
     }
 
     private void updateAgentListFile() {
@@ -70,12 +78,12 @@ public class SetUpGameActivity extends AppCompatActivity {
     }
 
     private void setToRefreshing(){
-        refreshEmailsButton.setText("Retrieving Emails .....");
+        refreshEmailsButton.setText(getResources().getString(R.string.refreshing));
         refreshEmailsButton.setClickable(false);
     }
 
     private void setToRefreshable(){
-        refreshEmailsButton.setText("Refresh");
+        refreshEmailsButton.setText(getResources().getString(R.string.refresh));
         refreshEmailsButton.setClickable(true);
     }
 
@@ -85,7 +93,6 @@ public class SetUpGameActivity extends AppCompatActivity {
             public void run() {
                 refreshEmails();
                 EmailServer emailServer = EmailServer.get();
-                String year = String.valueOf(new GregorianCalendar().get(Calendar.YEAR));
                 ArrayList<Email> filteredEmails = emailServer.getEmailsSubjectBeginsWith(year);
                 unread_filtered_emails.clear();
                 unread_filtered_emails.addAll(filteredEmails);
@@ -94,6 +101,7 @@ public class SetUpGameActivity extends AppCompatActivity {
                     public void run() {
                         incomingEmailListViewAdapter.notifyDataSetChanged();
                         setToRefreshable();
+                        verifyAllAgentsButton.setEnabled(true);
                     }
                 });
             }
@@ -144,6 +152,8 @@ public class SetUpGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 verifyAllAgentsButton.setVisibility(View.INVISIBLE);
+                createGameButton.setEnabled(true);
+                initializeAgentList();
                 final Email message = getVerificationEmail();
                 new Thread(new Runnable() {
                     @Override
@@ -151,7 +161,8 @@ public class SetUpGameActivity extends AppCompatActivity {
                         try {
                             //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
                             GMailSender sender = new GMailSender();
-                            sender.sendMail(message);
+                            // TODO uncomment this to send emails again:
+                            //sender.sendMail(message);
                         } catch (AuthenticationFailedException e) {
                             e.printStackTrace();
                         } catch (Exception e) {
@@ -173,9 +184,27 @@ public class SetUpGameActivity extends AppCompatActivity {
                 This is how we get to the Home Activity after we have created the game
                  */
                 // TODO set game status to PrePurge and rewrite game file.
+                setGameToStarted();
+                initializeAgentTargets();
                 gotoHomeIntent();
             }
         });
+    }
+
+    private void initializeAgentTargets(){
+        GameMethods methods = new GameMethods(agentList);
+        methods.initializeTargets();
+        AgentFileHelper agentFileHelper = new AgentFileHelper();
+        agentFileHelper.writeToFile(game.getAgentFileName(), methods.getAgentList(), context);
+        for(Agent agent: methods.getAgentList().getAllAgents()){
+            Log.e("ZZZ", agent.getEmail() + " " + agent.getCurrentTargetEmail());
+        }
+    }
+
+    private void setGameToStarted(){
+        game.setStatus(GameStatus.PREPURGE);
+        //TODO set purge time with a dialog box?
+        game.writeGameToFile(context);
     }
 
     private void gotoHomeIntent(){
@@ -187,9 +216,20 @@ public class SetUpGameActivity extends AppCompatActivity {
 
     private void getIDs() {
         createGameButton = findViewById(R.id.createGame);
+        createGameButton.setEnabled(false);
         verifyAllAgentsButton = findViewById(R.id.verifyAllAgents);
+        verifyAllAgentsButton.setEnabled(false);
         incomingEmails = findViewById(R.id.listofIncomingEmails);
         refreshEmailsButton = findViewById(R.id.refresh_emails_1);
         setToRefreshing();
+    }
+
+    private String getAgentNameFromSubject(Email email) {
+        int index = email.getSubject().trim().indexOf(year);
+        String name = email.getSubject().trim().substring(index+year.length());
+        if (name.trim().length()<1) {
+            name = email.getSender();
+        }
+        return name;
     }
 }

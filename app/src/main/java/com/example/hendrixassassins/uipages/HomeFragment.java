@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
             String handlerEmail = getArguments().getString(ARG_PARAM1);
             game = new Game(handlerEmail);
             // TODO replace testFile.csv with game.getAgentFileName
-            agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
+            agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
     }
 
@@ -329,7 +329,6 @@ public class HomeFragment extends Fragment {
         Intent userListView = new Intent(getActivity(), AgentProfileActivity.class);
         userListView.putExtra("handlerEmail", game.getEmail());
         userListView.putExtra("agentEmail", agent.getEmail());
-        startActivity(userListView);
         startActivity(userListView);
     }
 }
