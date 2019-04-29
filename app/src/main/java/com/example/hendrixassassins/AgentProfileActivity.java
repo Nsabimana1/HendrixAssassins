@@ -48,6 +48,7 @@ public class AgentProfileActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         String handlerEmail = intent.getExtras().getString("handlerEmail");
         String agentEmail = intent.getExtras().getString("agentEmail");
+
         setupGame(handlerEmail);
         setupAgentList();
         setupAgent(agentEmail);

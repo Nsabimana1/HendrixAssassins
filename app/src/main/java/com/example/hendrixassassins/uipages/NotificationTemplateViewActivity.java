@@ -65,6 +65,7 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
 
     private void goToAgentProfile(){
         Intent agentProfileIntent = new Intent(NotificationTemplateViewActivity.this, AgentProfileActivity.class);
+        agentProfileIntent.putExtra("handlerEmail", GmailLogin.email);
         agentProfileIntent.putExtra("agentEmail", emailToBeReplayed.getSender());
         startActivity(agentProfileIntent);
     }
