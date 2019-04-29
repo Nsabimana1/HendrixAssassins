@@ -4,13 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.email.Email;
+import com.example.hendrixassassins.email.GMailSender;
 import com.example.hendrixassassins.game.Game;
 
 /**
@@ -31,6 +37,8 @@ public class EmailFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private AgentList agentList;
     private Game game;
+    private ImageButton sendButton;
+    private CheckBox alive, dead, frozen, purged, withDrown;
 
     public EmailFragment() {
         // Required empty public constructor
@@ -113,4 +121,6 @@ public class EmailFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    
 }
