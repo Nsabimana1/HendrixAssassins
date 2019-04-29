@@ -172,6 +172,8 @@ public class AgentProfileActivity extends AppCompatActivity implements
         updateAgentListFile();
     }
 
+
+    // TODO change back to using GameMethods
     /*private void freezeAgent() {
         GameMethods methods = new GameMethods(agentList);;
         Agent agentWithNewTarget = agentList.getAgentAssignedToKill(agent)

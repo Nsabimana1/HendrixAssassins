@@ -175,7 +175,7 @@ public class SetUpGameActivity extends AppCompatActivity {
 
     private void sendVerificationEmails(){
         final Email message = getVerificationEmail();
-        /*new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -189,7 +189,7 @@ public class SetUpGameActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }).start();*/
+        }).start();
     }
 
     private void initializeAgentList(){
@@ -257,7 +257,7 @@ public class SetUpGameActivity extends AppCompatActivity {
     private void sendTargetEmails(){
         for(Agent agent: agentList.getAllAgents()){
             final Email message = getTargetEmail(agent);
-            /*
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -272,7 +272,7 @@ public class SetUpGameActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
-            }).start();*/
+            }).start();
 
             Log.e("ZZZ", agent.getEmail() + " " + agent.getCurrentTargetEmail());
         }
