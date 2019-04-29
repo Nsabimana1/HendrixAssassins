@@ -43,6 +43,7 @@ public class EmailSenderActivity extends AppCompatActivity {
     private void autoDisplayEmail(){
         emailToReplyView.setText(emailTobeReplied.getSender());
         if (emailTobeReplied.isPremade()) {
+            emailToReplyView.setText(emailTobeReplied.getRecipients().get(0));
             emailSubjectView.setText(emailTobeReplied.getSubject());
             emailBodyView.setText(emailTobeReplied.getBody());
         }
