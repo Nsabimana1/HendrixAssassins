@@ -195,7 +195,11 @@ public class SetUpGameActivity extends AppCompatActivity {
     }
 
     private String getAgentNameFromSubject(Email email) {
-        int index = email.getSubject().indexOf(year);
-        return email.getSubject().substring(index+year.length());
+        int index = email.getSubject().trim().indexOf(year);
+        String name = email.getSubject().trim().substring(index+year.length());
+        if (name.trim().length()<1) {
+            name = email.getSender();
+        }
+        return name;
     }
 }
