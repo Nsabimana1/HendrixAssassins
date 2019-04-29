@@ -31,6 +31,7 @@ public class SetUpGameActivity extends AppCompatActivity {
     private ListView incomingEmails;
     private ArrayList<Email> unread_filtered_emails;
     private IncomingEmailListViewAdapter<Email> incomingEmailListViewAdapter;
+    String year = String.valueOf(new GregorianCalendar().get(Calendar.YEAR));
     private Game game;
     private AgentList agentList;
     private Context context;
@@ -57,7 +58,8 @@ public class SetUpGameActivity extends AppCompatActivity {
     private Email getVerificationEmail(){
         agentList = new AgentList();
         for(Email email: unread_filtered_emails){
-            Agent agent = new Agent(email.getSender(), "bob");
+            Agent agent = new Agent(email.getSender(), getAgentNameFromSubject(email));
+            Log.e("SetupGame",email.getSender()+" "+getAgentNameFromSubject(email));
             agentList.addAgent(agent);
         }
         updateAgentListFile();
@@ -85,7 +87,6 @@ public class SetUpGameActivity extends AppCompatActivity {
             public void run() {
                 refreshEmails();
                 EmailServer emailServer = EmailServer.get();
-                String year = String.valueOf(new GregorianCalendar().get(Calendar.YEAR));
                 ArrayList<Email> filteredEmails = emailServer.getEmailsSubjectBeginsWith(year);
                 unread_filtered_emails.clear();
                 unread_filtered_emails.addAll(filteredEmails);
@@ -191,5 +192,10 @@ public class SetUpGameActivity extends AppCompatActivity {
         incomingEmails = findViewById(R.id.listofIncomingEmails);
         refreshEmailsButton = findViewById(R.id.refresh_emails_1);
         setToRefreshing();
+    }
+
+    private String getAgentNameFromSubject(Email email) {
+        int index = email.getSubject().indexOf(year);
+        return email.getSubject().substring(index+year.length());
     }
 }
