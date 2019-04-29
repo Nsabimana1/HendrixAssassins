@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 
@@ -37,6 +38,8 @@ public class ChangeNameDialogFragment extends DialogFragment {
         builder.setView(inflater.inflate(R.layout.dialog_change_agent_name, null))
                 .setPositiveButton("save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        String name = newName.getText().toString();
+                        Log.d("NAME: ", name);
                         listener.onDialogPositiveClick(ChangeNameDialogFragment.this,
                                 newName.getText().toString());
                     }
@@ -49,11 +52,11 @@ public class ChangeNameDialogFragment extends DialogFragment {
         Dialog dialog = builder.create();
         dialog.setContentView(R.layout.dialog_change_agent_name);
         newName = dialog.findViewById(R.id.newAgentName);
-        return builder.create();
+        return  builder.create();
     }
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog, String updatedName);
-        public void onDialogNegativeClick(DialogFragment dialog);
+         void onDialogPositiveClick(DialogFragment dialog, String updatedName);
+         void onDialogNegativeClick(DialogFragment dialog);
     }
 }

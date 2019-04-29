@@ -2,9 +2,11 @@ package com.example.hendrixassassins.uipages;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import android.widget.Button;
 
 import android.widget.ArrayAdapter;
 
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -63,6 +67,8 @@ public class HomeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private AgentList agentList;
     private Game game;
+    private ImageView searchAgent;
+    private AutoCompleteTextView autoCompleteTextView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -171,6 +177,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void setKillsFilterListener(){
+        Drawable d = getResources().getDrawable(R.drawable.filter_button_theme);
+
         killsFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -221,18 +229,39 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         fragView = inflater.inflate(R.layout.fragment_home, container, false);
         createListViewAdapter(agentList);
-        //setupButtons();
+        setupButtons();
 
-//        AutoCompleteTextView autoCompleteTextView = fragView.findViewById(R.id.autoCompleteTest);
-//        AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this.getContext(),
-//                R.layout.auto_complete_list_test, agentList.getAllAgents());
-//        // This was causing a bug
-//        // autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView = fragView.findViewById(R.id.autoCompleteAgentName);
+        AutoCompleteAgentAdapter<Agent> adapter = new AutoCompleteAgentAdapter<>(this.getContext(),
+                R.layout.auto_complete_list_test, agentList.getAllAgents());
+        autoCompleteTextView.setAdapter(adapter);
 
         setupSpinners();
 
         // Inflate the layout for this fragment
         return fragView;
+    }
+
+    private void setupButtons() {
+        searchAgent = fragView.findViewById(R.id.searchAgent);
+        createSearchAgentButtonListener();
+    }
+
+    private void createSearchAgentButtonListener() {
+        searchAgent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Editable text = autoCompleteTextView.getText();
+                if(text.length() > 0){
+                    String email = text.toString();
+                    Agent agent = agentList.getAgentWithEmailAddress(email);
+                    if(agent != null){
+                        gotoAgentProfile(agent);
+                    }
+
+                }
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
