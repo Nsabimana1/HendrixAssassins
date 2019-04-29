@@ -26,9 +26,7 @@ import java.util.ArrayList;
 public class NotificationTemplateViewActivity extends AppCompatActivity {
     private TextView notificationHeaderView, notificationContentView;
     private TextView  senderNameView, dateView;
-    private Button confirmKillButton, viewProfileButton;
-    private ImageButton ignoreButton, replayButton;
-
+    private Button confirmKillButton, viewProfileButton, replayButton;
     private Email emailToBeReplayed;
     private ArrayList<Email> inboxEmails = new ArrayList<>();
     private Email currentEmail;
@@ -58,16 +56,9 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         viewProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goToAgentProfile();
+                gotoAgentProfile();
             }
         });
-    }
-
-    private void goToAgentProfile(){
-        Intent agentProfileIntent = new Intent(NotificationTemplateViewActivity.this, AgentProfileActivity.class);
-        agentProfileIntent.putExtra("handlerEmail", GmailLogin.email);
-        agentProfileIntent.putExtra("agentEmail", emailToBeReplayed.getSender());
-        startActivity(agentProfileIntent);
     }
 
     private void getPassedEmailBody(){
@@ -118,6 +109,14 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         Intent sendEmailIntent = new Intent(NotificationTemplateViewActivity.this, EmailSenderActivity.class);
         sendEmailIntent.putExtra("clickedUserEmail", emailToBeReplayed);
         startActivity(sendEmailIntent);
+    }
+
+
+    private void gotoAgentProfile() {
+        Intent userListView = new Intent(NotificationTemplateViewActivity.this, AgentProfileActivity.class);
+        userListView.putExtra("handlerEmail", GmailLogin.email.toString());
+        userListView.putExtra("agentEmail", emailToBeReplayed.getSender());
+        startActivity(userListView);
     }
 
     private void confirmKillListener() {

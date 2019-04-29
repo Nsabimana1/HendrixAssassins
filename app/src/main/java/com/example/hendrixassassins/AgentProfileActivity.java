@@ -98,7 +98,9 @@ public class AgentProfileActivity extends AppCompatActivity implements
         AgentTotalPoints.setText(String.valueOf(agent.getPointsTotal()));
         AgentPersonalKills.setText(String.valueOf(agent.getPersonalKills()));
         agentStatusCurrent.setText(agent.getStatus().toString());
-        currentTarget.setText(agent.getCurrentTarget().getName());
+        if(agent.getCurrentTarget() != null) {
+            currentTarget.setText(agent.getCurrentTarget().getName());
+        }
     }
 
 
@@ -280,7 +282,8 @@ public class AgentProfileActivity extends AppCompatActivity implements
     }
 
     public void goBackToFragment(View view) {
-        Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
-        startActivity(userListView);
+//        Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
+        finish();
+//        startActivity(userListView);
     }
 }

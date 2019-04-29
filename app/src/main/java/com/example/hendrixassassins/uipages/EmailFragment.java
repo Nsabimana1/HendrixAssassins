@@ -93,11 +93,6 @@ public class EmailFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         }
-
-//        else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
     }
 
     @Override
@@ -122,5 +117,5 @@ public class EmailFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    
+
 }
