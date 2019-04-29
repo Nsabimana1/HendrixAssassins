@@ -35,7 +35,7 @@
         android:text="Date" />
 
     <TextView
-        android:id="@+id/email_subject"
+        android:id="@+id/notication_header"
         android:layout_width="127dp"
         android:layout_height="33dp"
         android:layout_alignParentTop="true"

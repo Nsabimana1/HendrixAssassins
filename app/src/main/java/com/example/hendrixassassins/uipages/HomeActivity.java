@@ -120,10 +120,8 @@ public class HomeActivity extends AppCompatActivity {
             public void run() {
                 try {
                     EmailServer.get().refreshInboxMessages();
-                } catch (MessagingException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException | MessagingException e) {
+                    Log.e("email error", e.toString());
                 }
             }
         }).start();
