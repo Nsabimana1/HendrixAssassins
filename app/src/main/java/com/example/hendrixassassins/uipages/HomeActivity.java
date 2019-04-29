@@ -29,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
     private HomeFragment homeFragment;
     private NotificationsFragment notificationsFragment;
     private EmailFragment emailFragment;
+    private SettingsFragment settingsFragment;
 
 
     private Game game;
@@ -46,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
                     setFragment(homeFragment); // forward intent through fragment
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                    mTextMessage.setText(R.string.title_email);
                     setFragment(emailFragment);
                     return true;
                 case R.id.navigation_notifications:
@@ -54,6 +55,10 @@ public class HomeActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_notifications);
                     setFragment(notificationsFragment);
                     //setFragment(setUpGameFragment);
+                    return true;
+                case R.id.navigation_settings:
+                    mTextMessage.setText(R.string.title_settings);
+                    setFragment(settingsFragment);
                     return true;
             }
             return false;
@@ -98,6 +103,7 @@ public class HomeActivity extends AppCompatActivity {
         homeFragment = new HomeFragment();
         notificationsFragment = new NotificationsFragment();
         emailFragment = new EmailFragment();
+        settingsFragment = new SettingsFragment();
     }
 
     private void setFragment(Fragment fragment){

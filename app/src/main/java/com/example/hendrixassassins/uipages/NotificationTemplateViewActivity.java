@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
@@ -42,12 +43,18 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
             }
         });
 
-//        ignoreButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//        });
+        viewProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToAgentProfile();
+            }
+        });
+    }
+
+    private void goToAgentProfile(){
+        Intent agentProfileIntent = new Intent(NotificationTemplateViewActivity.this, AgentProfileActivity.class);
+        agentProfileIntent.putExtra("agentEmail", emailToBeReplayed.getSender());
+        startActivity(agentProfileIntent);
     }
 
     private void getPassedEmailBody(){
@@ -84,17 +91,6 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         replayButton = findViewById(R.id.reply_button);
     }
 
-//    private void setCurrentEmail(){
-//        Log.e("inbox status", "finding curent email");
-//        Log.e("inbox size value", String.valueOf(inboxEmails.size()));
-//        for (Email e: inboxEmails){
-//            if(e.getSubject().equals(currentEmailSubject)){
-//                Log.e("inbox size", "not empty");
-//                emailToBeReplayed = e;
-//                break;
-//            }
-//        }
-//    }
 
     private void displayContent(){
         if(emailToBeReplayed != null) {
