@@ -170,6 +170,7 @@ public class HomeFragment extends Fragment {
                     AgentStatus status = AgentStatus.valueOf(parent.getSelectedItem().toString());
                     AgentList filtered = agentList.filterAgentsByStatus(status);
                     createListViewAdapter(filtered);
+
                 }
             }
             @Override

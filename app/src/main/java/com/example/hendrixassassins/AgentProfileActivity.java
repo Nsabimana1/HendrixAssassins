@@ -43,6 +43,11 @@ public class AgentProfileActivity extends AppCompatActivity implements
     private AgentFileHelper agentFileHelper;
 
     @Override
+    public void onBackPressed() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
