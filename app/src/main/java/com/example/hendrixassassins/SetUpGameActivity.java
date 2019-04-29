@@ -37,6 +37,7 @@ public class SetUpGameActivity extends AppCompatActivity {
     private Game game;
     private AgentList agentList;
     private Context context;
+    private GMailSender sender;
 
     // TODO we will need to rewrite the Agent file every time we change it!
 
@@ -62,6 +63,7 @@ public class SetUpGameActivity extends AppCompatActivity {
     }
 
     private void getIDs() {
+        getSender();
         createGameButton = findViewById(R.id.createGame);
         createGameButton.setEnabled(false);
         verifyAllAgentsButton = findViewById(R.id.verifyAllAgents);
@@ -69,6 +71,16 @@ public class SetUpGameActivity extends AppCompatActivity {
         incomingEmails = findViewById(R.id.listofIncomingEmails);
         refreshEmailsButton = findViewById(R.id.refresh_emails_1);
         setToRefreshing();
+    }
+
+    private void getSender() {
+        try {
+            sender = new GMailSender();
+        } catch (AuthenticationFailedException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupIncomingEmailsListView() {
@@ -88,7 +100,7 @@ public class SetUpGameActivity extends AppCompatActivity {
         refreshEmailsButton.setClickable(true);
     }
 
-    // // // // // // // 
+    // // // // // // //
     // refresh emails //
     // // // // // // //
 
@@ -154,26 +166,30 @@ public class SetUpGameActivity extends AppCompatActivity {
                 verifyAllAgentsButton.setVisibility(View.INVISIBLE);
                 createGameButton.setEnabled(true);
                 initializeAgentList();
-                final Email message = getVerificationEmail();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
-                            GMailSender sender = new GMailSender();
-                            // TODO uncomment this to send emails again:
-                            //sender.sendMail(message);
-                        } catch (AuthenticationFailedException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                sendVerificationEmails();
                 unread_filtered_emails.clear();
                 incomingEmailListViewAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void sendVerificationEmails(){
+        final Email message = getVerificationEmail();
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
+
+                    // TODO uncomment this to send emails again:
+                    sender.sendMail(message);
+                } catch (AuthenticationFailedException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();*/
     }
 
     private void initializeAgentList(){
@@ -219,19 +235,55 @@ public class SetUpGameActivity extends AppCompatActivity {
                 // TODO set game status to PrePurge and rewrite game file.
                 setGameToStarted();
                 initializeAgentTargets();
+                sendTargetEmails();
                 gotoHomeIntent();
             }
         });
     }
 
+    private String writeTargetEmail(Agent agent){
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "Your target is " + agent.getCurrentTarget().getName() +
+                ". Their email is " + agent.getCurrentTargetEmail() + "\n\n";
+        String signoff = "Happy hunting,\nThe Handler";
+        return salutation + body + signoff;
+    }
+
+    private Email getTargetEmail(Agent agent){
+        return new Email(agent.getEmail(), "Target Assignment",
+                writeTargetEmail(agent));
+    }
+
+    private void sendTargetEmails(){
+        for(Agent agent: agentList.getAllAgents()){
+            final Email message = getTargetEmail(agent);
+            /*
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
+
+                        // TODO uncomment this to send emails again:
+                        sender.sendMail(message);
+                    } catch (AuthenticationFailedException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();*/
+
+            Log.e("ZZZ", agent.getEmail() + " " + agent.getCurrentTargetEmail());
+        }
+    }
+
     private void initializeAgentTargets(){
         GameMethods methods = new GameMethods(agentList);
         methods.initializeTargets();
+        agentList = methods.getAgentList();
         AgentFileHelper agentFileHelper = new AgentFileHelper();
-        agentFileHelper.writeToFile(game.getAgentFileName(), methods.getAgentList(), context);
-        for(Agent agent: methods.getAgentList().getAllAgents()){
-            Log.e("ZZZ", agent.getEmail() + " " + agent.getCurrentTargetEmail());
-        }
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
     }
 
     private void setGameToStarted(){
