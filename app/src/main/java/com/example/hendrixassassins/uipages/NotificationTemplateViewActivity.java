@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 public class NotificationTemplateViewActivity extends AppCompatActivity {
     private TextView notificationHeaderView, notificationContentView;
     private TextView  senderNameView, dateView;
+    private Button confirmKillButton, viewProfileButton;
     private ImageButton ignoreButton, replayButton;
 
     private Email emailToBeReplayed;
@@ -40,12 +42,12 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
             }
         });
 
-        ignoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        ignoreButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
     }
 
     private void getPassedEmailBody(){
@@ -77,7 +79,8 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         notificationHeaderView = findViewById(R.id.notication_header);
         senderNameView = findViewById(R.id.sender_name_view);
         dateView = findViewById(R.id.date_view);
-        ignoreButton = findViewById(R.id.ignore_button);
+        confirmKillButton = findViewById(R.id.confirm_kill);
+        viewProfileButton = findViewById(R.id.view_record);
         replayButton = findViewById(R.id.reply_button);
     }
 
