@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class AgentProfileActivity extends AppCompatActivity implements ChangeNameDialogFragment.NoticeDialogListener,
         PopupChangeAgentName.DialogListener, PopupChangeAgentStatus.DialogListener {
     private TextView agentName, AgentTotalPoints, AgentPersonalKills, agentEmail,
-            agentStatusCurrent;
+            agentStatusCurrent, currentAgentTarget;
     private ImageButton changeAgentName, sendEmailAgent, removeAgent, editPlayerStatus;
     private ListView agentEmailHistory, agentKillHistory;
     private Context context;
@@ -78,6 +78,7 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         editPlayerStatus = findViewById(R.id.editPlayerStatus);
         agentEmailHistory = findViewById(R.id.agentEmailHistory);
         agentKillHistory = findViewById(R.id.agentKillHistory);
+        currentAgentTarget = findViewById(R.id.currentAgentTarget);
     }
 
     private void personalizeAgentPage(){
@@ -85,6 +86,7 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         AgentTotalPoints.setText(String.valueOf(agent.getPointsTotal()));
         AgentPersonalKills.setText(String.valueOf(agent.getPersonalKills()));
         agentStatusCurrent.setText(agent.getStatus().toString());
+        currentAgentTarget.setText(agent.getCurrentTarget().getName());
     }
 
 
@@ -94,8 +96,6 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
             public void onClick(View view) {
                 PopupChangeAgentName changeAgentName = new PopupChangeAgentName();
                 changeAgentName.show(getSupportFragmentManager(), "changeName");
-//                DialogFragment changeNameFragment = new ChangeNameDialogFragment();
-//                changeNameFragment.show(getSupportFragmentManager(), "changeName");
             }
         });
     }
@@ -153,16 +153,14 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
 
     @Override
     public void changeName(String updateName) {
-
+        if(!updateName.isEmpty()){
         agentName.setText(updateName);
-
-
-
+        }
     }
 
     @Override
-    public void changeStatus(String updatedName) {
-        agentStatusCurrent.setText(updatedName);
+    public void changeStatus(String updatedStatus) {
+        agentStatusCurrent.setText(updatedStatus);
     }
 
     public void goToTargetsProfile(View view) {
