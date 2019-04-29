@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
     private Game game;
     private ImageView searchAgent;
     private AutoCompleteTextView autoCompleteTextView;
+    private CustomListViewAdapter<Agent> adapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -100,6 +101,20 @@ public class HomeFragment extends Fragment {
             // TODO replace testFile.csv with game.getAgentFileName
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
     }
 
     private void setupSpinners() {
@@ -309,9 +324,9 @@ public class HomeFragment extends Fragment {
 
 
     private void createListViewAdapter(final AgentList displayAgents){
-        ListView listView = fragView.findViewById(R.id.agentList);
+        listView = fragView.findViewById(R.id.agentList);
         Log.e("all agents", String.valueOf(displayAgents.getAllAgents().size()));
-        CustomListViewAdapter adapter = new CustomListViewAdapter<>(this.getContext(),
+        adapter = new CustomListViewAdapter<>(this.getContext(),
                 R.layout.test_list_view, displayAgents.getAllAgents());
         listView.setAdapter(adapter);
         listView.setClickable(true);

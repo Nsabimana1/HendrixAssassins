@@ -44,7 +44,7 @@ public class AutoCompleteAgentAdapter<E> extends ArrayAdapter<E> {
         Agent agent = (Agent) getItem(position);
 
         if(agent != null){
-            textViewEmail.setText(agent.getEmail());
+            textViewEmail.setText(agent.getName());
         }
 
         return convertView;
@@ -63,7 +63,7 @@ public class AutoCompleteAgentAdapter<E> extends ArrayAdapter<E> {
                 String filterpattern = constraint.toString().toLowerCase().trim();
                 for(E item: displayItems){
                     Agent agent = (Agent) item;
-                    if(agent.getEmail().toLowerCase().contains(filterpattern)){
+                    if(agent.getName().toLowerCase().contains(filterpattern)){
                         suggestions.add(item);
 
                     }

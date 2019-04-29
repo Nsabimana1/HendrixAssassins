@@ -8,11 +8,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.R;
+import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.agent.AgentFileHelper;
+import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
+import com.example.hendrixassassins.email.GMailSender;
+import com.example.hendrixassassins.email.GmailLogin;
+import com.example.hendrixassassins.game.Game;
 
 import java.util.ArrayList;
 
@@ -25,6 +32,9 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
     private Email emailToBeReplayed;
     private ArrayList<Email> inboxEmails = new ArrayList<>();
     private Email currentEmail;
+    private AgentList agents;
+    private Game theGame = new Game(GmailLogin.email);
+
 
 
     @Override
@@ -35,6 +45,7 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         getAllEmails();
         getPassedEmailBody();
         displayContent();
+        confirmKillListener();
 
         replayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,4 +117,29 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         sendEmailIntent.putExtra("clickedUserEmail", emailToBeReplayed);
         startActivity(sendEmailIntent);
     }
+
+    private void confirmKillListener() {
+        Agent killer = agents.getAgentWithEmailAddress(emailToBeReplayed.getSender());
+        Agent target = killer.getCurrentTarget();
+
+
+        Email confirmKillEmail = new Email(target.getEmail(), "Please confirm kill.",
+               "Dear Agent "+ target.getName()+ ",\n\n"+
+                       killer.getName()+" has reported that you have been elimitaed.\n"+
+                       "Please reply to this email to confirm or dispute your death..\n\n"+
+                       "With deepest regrets,\n"+
+                       "The Handler");
+        confirmKillEmail=confirmKillEmail.returnPremade();
+        Intent sendEmailIntent = new Intent(NotificationTemplateViewActivity.this, EmailSenderActivity.class);
+        sendEmailIntent.putExtra("clickedUserEmail", confirmKillEmail);
+        startActivity(sendEmailIntent);
+
+    }
+
+   private void setupAgentlist() {
+       theGame.readGameFromFile(this);
+       AgentFileHelper fileHelper = new AgentFileHelper();
+       agents = fileHelper.readFromFile(theGame.getAgentFileName(), this);
+   }
+
 }

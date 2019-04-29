@@ -29,6 +29,7 @@ public class CustomListViewAdapter<E> extends ArrayAdapter<E> {
     public static class ViewHolder {
         TextView name;
         TextView status;
+        TextView kills;
         TextView score;
         /*
         Define any objects inside custom view
@@ -39,10 +40,6 @@ public class CustomListViewAdapter<E> extends ArrayAdapter<E> {
 
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
-        E d = getItem(position);
-        if(d.getClass() == Agent.class){
-
-        }
 //        String name = (String) getItem(position);
         Agent agent = (Agent) getItem(position);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -53,19 +50,22 @@ public class CustomListViewAdapter<E> extends ArrayAdapter<E> {
         TextView person = convertView.findViewById(R.id.nameTest);
         TextView status = convertView.findViewById(R.id.statusTest);
         TextView score = convertView.findViewById(R.id.pointsTest);
+        TextView kills = convertView.findViewById(R.id.killsTest);
 
 
         viewHolder.name = person;
         viewHolder.status = status;
+        viewHolder.kills = kills;
         viewHolder.score = score;
         convertView.setTag(viewHolder);
 
 
         person.setText(agent.getName().toString());
         status.setText(agent.getStatus().toString());
+        kills.setText(String.valueOf(agent.getPersonalKills()));
         score.setText(String.valueOf(agent.getPointsTotal()));
 
-        Log.e("NotificationListViewAdapter", "CustomListView Adapter made");
+
 
         /*
         Set up TextViews here from convertView

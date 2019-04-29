@@ -37,8 +37,13 @@ public class SetUpGameActivity extends AppCompatActivity {
     private Game game;
     private AgentList agentList;
     private Context context;
+    private GMailSender sender;
 
     // TODO we will need to rewrite the Agent file every time we change it!
+
+    // // // // // // // // // // //
+    // setup the setup activity   //
+    // // // // // // // // // // //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,25 +62,33 @@ public class SetUpGameActivity extends AppCompatActivity {
         getAllNewFilterEmails();
     }
 
-    private void initializeAgentList(){
-        agentList = new AgentList();
-        for(Email email: unread_filtered_emails){
-            Agent agent = new Agent(email.getSender(), getAgentNameFromSubject(email));
-            Log.e("SetupGame",email.getSender()+" "+getAgentNameFromSubject(email));
-            agentList.addAgent(agent);
+    private void getIDs() {
+        getSender();
+        createGameButton = findViewById(R.id.createGame);
+        createGameButton.setEnabled(false);
+        verifyAllAgentsButton = findViewById(R.id.verifyAllAgents);
+        verifyAllAgentsButton.setEnabled(false);
+        incomingEmails = findViewById(R.id.listofIncomingEmails);
+        refreshEmailsButton = findViewById(R.id.refresh_emails_1);
+        setToRefreshing();
+    }
+
+    private void getSender() {
+        try {
+            sender = new GMailSender();
+        } catch (AuthenticationFailedException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        updateAgentListFile();
     }
 
-    private Email getVerificationEmail(){
-        return new Email(agentList.getAgentEmails(), "Assassins Verification",
-                getResources().getString(R.string.verification_email));
+    private void setupIncomingEmailsListView() {
+        incomingEmailListViewAdapter = new IncomingEmailListViewAdapter<>(this,
+                R.layout.incoming_emails_start_game, unread_filtered_emails);
+        incomingEmails.setAdapter(incomingEmailListViewAdapter);
     }
 
-    private void updateAgentListFile() {
-        AgentFileHelper agentFileHelper = new AgentFileHelper();
-        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
-    }
 
     private void setToRefreshing(){
         refreshEmailsButton.setText(getResources().getString(R.string.refreshing));
@@ -85,6 +98,20 @@ public class SetUpGameActivity extends AppCompatActivity {
     private void setToRefreshable(){
         refreshEmailsButton.setText(getResources().getString(R.string.refresh));
         refreshEmailsButton.setClickable(true);
+    }
+
+    // // // // // // //
+    // refresh emails //
+    // // // // // // //
+
+    private void refreshEmailsButtonListener() {
+        refreshEmailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setToRefreshing();
+                getAllNewFilterEmails();
+            }
+        });
     }
 
     private void getAllNewFilterEmails(){
@@ -115,8 +142,6 @@ public class SetUpGameActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     // Don't run this without threading it
@@ -130,22 +155,9 @@ public class SetUpGameActivity extends AppCompatActivity {
         }
     }
 
-    private void refreshEmailsButtonListener() {
-        refreshEmailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setToRefreshing();
-                getAllNewFilterEmails();
-            }
-        });
-    }
-
-    private void setupIncomingEmailsListView() {
-        incomingEmailListViewAdapter = new IncomingEmailListViewAdapter<>(this,
-                R.layout.incoming_emails_start_game, unread_filtered_emails);
-        incomingEmails.setAdapter(incomingEmailListViewAdapter);
-
-    }
+    // // // // // // // //
+    // Verify Agent Code //
+    // // // // // // // //
 
     private void verifyAllAgentsButtonListener() {
         verifyAllAgentsButton.setOnClickListener(new View.OnClickListener() {
@@ -154,27 +166,64 @@ public class SetUpGameActivity extends AppCompatActivity {
                 verifyAllAgentsButton.setVisibility(View.INVISIBLE);
                 createGameButton.setEnabled(true);
                 initializeAgentList();
-                final Email message = getVerificationEmail();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
-                            GMailSender sender = new GMailSender();
-                            // TODO uncomment this to send emails again:
-                            //sender.sendMail(message);
-                        } catch (AuthenticationFailedException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                sendVerificationEmails();
                 unread_filtered_emails.clear();
                 incomingEmailListViewAdapter.notifyDataSetChanged();
             }
         });
     }
+
+    private void sendVerificationEmails(){
+        final Email message = getVerificationEmail();
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
+
+                    // TODO uncomment this to send emails again:
+                    sender.sendMail(message);
+                } catch (AuthenticationFailedException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();*/
+    }
+
+    private void initializeAgentList(){
+        agentList = new AgentList();
+        for(Email email: unread_filtered_emails){
+            Agent agent = new Agent(email.getSender(), getAgentNameFromSubject(email));
+            Log.e("SetupGame",email.getSender()+" "+getAgentNameFromSubject(email));
+            agentList.addAgent(agent);
+        }
+        updateAgentListFile();
+    }
+
+    private String getAgentNameFromSubject(Email email) {
+        int index = email.getSubject().trim().indexOf(year);
+        String name = email.getSubject().trim().substring(index+year.length());
+        if (name.trim().length()<1) {
+            name = email.getSender();
+        }
+        return name;
+    }
+
+    private Email getVerificationEmail(){
+        return new Email(agentList.getAgentEmails(), "Assassins Verification",
+                getResources().getString(R.string.verification_email));
+    }
+
+    private void updateAgentListFile() {
+        AgentFileHelper agentFileHelper = new AgentFileHelper();
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
+    }
+
+    // // // // // // // // //
+    //  create game code    //
+    // // // // // // // // //
 
     private void createGameButtonListener() {
         createGameButton.setOnClickListener(new View.OnClickListener() {
@@ -186,19 +235,55 @@ public class SetUpGameActivity extends AppCompatActivity {
                 // TODO set game status to PrePurge and rewrite game file.
                 setGameToStarted();
                 initializeAgentTargets();
+                sendTargetEmails();
                 gotoHomeIntent();
             }
         });
     }
 
+    private String writeTargetEmail(Agent agent){
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "Your target is " + agent.getCurrentTarget().getName() +
+                ". Their email is " + agent.getCurrentTargetEmail() + "\n\n";
+        String signoff = "Happy hunting,\nThe Handler";
+        return salutation + body + signoff;
+    }
+
+    private Email getTargetEmail(Agent agent){
+        return new Email(agent.getEmail(), "Target Assignment",
+                writeTargetEmail(agent));
+    }
+
+    private void sendTargetEmails(){
+        for(Agent agent: agentList.getAllAgents()){
+            final Email message = getTargetEmail(agent);
+            /*
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
+
+                        // TODO uncomment this to send emails again:
+                        sender.sendMail(message);
+                    } catch (AuthenticationFailedException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();*/
+
+            Log.e("ZZZ", agent.getEmail() + " " + agent.getCurrentTargetEmail());
+        }
+    }
+
     private void initializeAgentTargets(){
         GameMethods methods = new GameMethods(agentList);
         methods.initializeTargets();
+        agentList = methods.getAgentList();
         AgentFileHelper agentFileHelper = new AgentFileHelper();
-        agentFileHelper.writeToFile(game.getAgentFileName(), methods.getAgentList(), context);
-        for(Agent agent: methods.getAgentList().getAllAgents()){
-            Log.e("ZZZ", agent.getEmail() + " " + agent.getCurrentTargetEmail());
-        }
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
     }
 
     private void setGameToStarted(){
@@ -212,24 +297,5 @@ public class SetUpGameActivity extends AppCompatActivity {
         userListView.putExtra("email", game.getEmail());
         startActivity(userListView);
         finish();
-    }
-
-    private void getIDs() {
-        createGameButton = findViewById(R.id.createGame);
-        createGameButton.setEnabled(false);
-        verifyAllAgentsButton = findViewById(R.id.verifyAllAgents);
-        verifyAllAgentsButton.setEnabled(false);
-        incomingEmails = findViewById(R.id.listofIncomingEmails);
-        refreshEmailsButton = findViewById(R.id.refresh_emails_1);
-        setToRefreshing();
-    }
-
-    private String getAgentNameFromSubject(Email email) {
-        int index = email.getSubject().trim().indexOf(year);
-        String name = email.getSubject().trim().substring(index+year.length());
-        if (name.trim().length()<1) {
-            name = email.getSender();
-        }
-        return name;
     }
 }
