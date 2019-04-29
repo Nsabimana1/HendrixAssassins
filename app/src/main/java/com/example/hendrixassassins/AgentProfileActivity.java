@@ -161,13 +161,7 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         agentName.setText(updateName);
         }
     }
-
-    @Override
-    public void changeStatus(String updatedStatus) {
-        agentStatusCurrent.setText(updatedStatus);
-
-        agentName.setText(updateName);
-    }
+    
 
     @Override
     public void changeStatus(String updatedName) {
