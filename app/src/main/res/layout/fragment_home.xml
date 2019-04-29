@@ -74,6 +74,13 @@
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/clearFilters"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="clear" />
+
                 <Spinner
                     android:id="@+id/sortByAlphabet"
                     android:layout_width="35dp"
