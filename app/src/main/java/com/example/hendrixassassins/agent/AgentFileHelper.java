@@ -68,7 +68,10 @@ public class AgentFileHelper {
 
     private AgentList getAgentKillList(String[] killed, AgentList agentList){
         AgentList killedList = new AgentList();
-        for(String k: killed)  killedList.addAgent( agentList.getAgentWithEmailAddress(k));
+        for(String k: killed) {
+            Log.e("ZZZ", k);
+            if(!k.equals("NA")) killedList.addAgent( agentList.getAgentWithEmailAddress(k));
+        }
         return killedList;
     }
 
@@ -86,6 +89,7 @@ public class AgentFileHelper {
             if(split.length > 8) {
                 Agent agent = agentList.getAgentWithEmailAddress(split[emailIndex]);
                 agent.setCurrentTarget(agentList.getAgentWithEmailAddress(split[currentTargetIndex]));
+                Log.e("DDD", line);
                 agent.extendKillList(getAgentKillList(splitLine(split[killListIndex], ":"), agentList));
             }
         }
