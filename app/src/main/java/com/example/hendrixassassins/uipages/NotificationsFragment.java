@@ -61,11 +61,8 @@ public class NotificationsFragment extends Fragment {
 
     private ArrayList<Email> inboxEmails = new ArrayList<>();
 
-
     public NotificationsFragment() {
         // Required empty public constructor
-
-
         notificationList = new NotificationList();
         notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "Patrick"), "Iwant to dodd"));
         notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kakanana"), "Iwant to dodd"));
@@ -101,6 +98,7 @@ public class NotificationsFragment extends Fragment {
             // TODO replace testFile.csv with game.getAgentFileName
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
+
     }
 
     @Override
@@ -108,7 +106,15 @@ public class NotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
+        showListView = fragView.findViewById(R.id.refresh_notification_button);
         createListViewAdapter();
+        showListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateMessages();
+                createListViewAdapter();
+            }
+        });
         return fragView;
     }
 
@@ -152,11 +158,8 @@ public class NotificationsFragment extends Fragment {
 
     private void createListViewAdapter(){
         ListView notificationListView = fragView.findViewById(R.id.notifications_ListView);
-//        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
-//                R.layout.test_list_view, allNotifications);
-
         NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
-                R.layout.test_list_view, inboxEmails);
+                R.layout.notifcation_item_view, inboxEmails);
         notificationListView.setAdapter(adapter);
         setUpItemClickListener(notificationListView);
     }
@@ -182,7 +185,6 @@ public class NotificationsFragment extends Fragment {
     }
 
     public void updateMessages(){
-        Log.e("Im in here", "I am called11");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -197,6 +199,39 @@ public class NotificationsFragment extends Fragment {
             }
         }).start();
     }
+
+//    private void getAllEmails() {
+//        final Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                refreshEmails();
+//                EmailServer emailServer = EmailServer.get();
+//                ArrayList<Email> filteredEmails = emailServer.getEmailsSubjectBeginsWith(year);
+//                unread_filtered_emails.clear();
+//                unread_filtered_emails.addAll(filteredEmails);
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        incomingEmailListViewAdapter.notifyDataSetChanged();
+//                        setToRefreshable();
+//                        verifyAllAgentsButton.setEnabled(true);
+//                    }
+//                });
+//            }
+//        });
+//        thread.start();
+//    }
+
+    private void refreshEmails(){
+        try {
+            EmailServer.get().refreshInboxMessages();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 //    @Override
 //    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

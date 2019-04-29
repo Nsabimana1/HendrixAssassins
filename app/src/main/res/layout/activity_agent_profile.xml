@@ -277,18 +277,37 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="185dp"
-        android:layout_height="531dp"
+        android:layout_height="433dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="34dp"
         android:layout_marginTop="460dp"
-        app:cardBackgroundColor="@color/colorPrimary"
-        android:background="@drawable/filter_button_theme">
+        android:background="@drawable/filter_button_theme"
+        app:cardBackgroundColor="@color/colorPrimary">
 
 
         <ListView
             android:id="@+id/agentEmailHistory"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="431dp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="192dp"
+        android:layout_height="86dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="32dp"
+        app:cardBackgroundColor="@color/colorPrimary">
+
+        <Button
+            android:id="@+id/goBackToListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="GO BACK"
+            android:onClick="goBackToFragment"
+            android:textColor="@color/white"
+            android:background="@drawable/filter_button_theme"/>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

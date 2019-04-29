@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
@@ -44,6 +45,7 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         getAllEmails();
         getPassedEmailBody();
         displayContent();
+        setupAgentlist();
         confirmKillListener();
 
         replayButton.setOnClickListener(new View.OnClickListener() {
@@ -53,12 +55,18 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
             }
         });
 
-//        ignoreButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//        });
+        viewProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToAgentProfile();
+            }
+        });
+    }
+
+    private void goToAgentProfile(){
+        Intent agentProfileIntent = new Intent(NotificationTemplateViewActivity.this, AgentProfileActivity.class);
+        agentProfileIntent.putExtra("agentEmail", emailToBeReplayed.getSender());
+        startActivity(agentProfileIntent);
     }
 
     private void getPassedEmailBody(){
@@ -95,17 +103,6 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
         replayButton = findViewById(R.id.reply_button);
     }
 
-//    private void setCurrentEmail(){
-//        Log.e("inbox status", "finding curent email");
-//        Log.e("inbox size value", String.valueOf(inboxEmails.size()));
-//        for (Email e: inboxEmails){
-//            if(e.getSubject().equals(currentEmailSubject)){
-//                Log.e("inbox size", "not empty");
-//                emailToBeReplayed = e;
-//                break;
-//            }
-//        }
-//    }
 
     private void displayContent(){
         if(emailToBeReplayed != null) {
@@ -123,21 +120,23 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
     }
 
     private void confirmKillListener() {
-        Agent killer = agents.getAgentWithEmailAddress(emailToBeReplayed.getSender());
-        Agent target = killer.getCurrentTarget();
-
-
-        Email confirmKillEmail = new Email(target.getEmail(), "Please confirm kill.",
-               "Dear Agent "+ target.getName()+ ",\n\n"+
-                       killer.getName()+" has reported that you have been elimitaed.\n"+
-                       "Please reply to this email to confirm or dispute your death..\n\n"+
-                       "With deepest regrets,\n"+
-                       "The Handler");
-        confirmKillEmail=confirmKillEmail.returnPremade();
-        Intent sendEmailIntent = new Intent(NotificationTemplateViewActivity.this, EmailSenderActivity.class);
-        sendEmailIntent.putExtra("clickedUserEmail", confirmKillEmail);
-        startActivity(sendEmailIntent);
-
+        confirmKillButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Agent killer = agents.getAgentWithEmailAddress(emailToBeReplayed.getSender());
+                Agent target = killer.getCurrentTarget();
+                Email confirmKillEmail = new Email(target.getEmail(), "Please confirm kill.",
+                        "Dear Agent " + target.getName() + ",\n\n" +
+                                killer.getName() + " has reported that you have been elimitaed.\n" +
+                                "Please reply to this email to confirm or dispute your death.\n\n" +
+                                "With deepest regrets,\n" +
+                                "The Handler");
+                confirmKillEmail = confirmKillEmail.returnPremade();
+                Intent sendEmailIntent = new Intent(NotificationTemplateViewActivity.this, EmailSenderActivity.class);
+                sendEmailIntent.putExtra("clickedUserEmail", confirmKillEmail);
+                startActivity(sendEmailIntent);
+            }
+        });
     }
 
    private void setupAgentlist() {
