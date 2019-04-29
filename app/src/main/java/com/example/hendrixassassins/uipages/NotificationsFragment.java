@@ -61,7 +61,6 @@ public class NotificationsFragment extends Fragment {
 
     private ArrayList<Email> inboxEmails = new ArrayList<>();
 
-
     public NotificationsFragment() {
         // Required empty public constructor
         notificationList = new NotificationList();
@@ -70,7 +69,7 @@ public class NotificationsFragment extends Fragment {
         notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kamnana"), "Iwant to dodd"));
         allNotifications = notificationList.getAllNotifications();
         Log.e("Im in here", "I am called11");
-//        updateMessages();
+        updateMessages();
     }
 
     /**
@@ -112,6 +111,7 @@ public class NotificationsFragment extends Fragment {
         showListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                updateMessages();
                 createListViewAdapter();
             }
         });
@@ -158,11 +158,8 @@ public class NotificationsFragment extends Fragment {
 
     private void createListViewAdapter(){
         ListView notificationListView = fragView.findViewById(R.id.notifications_ListView);
-//        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
-//                R.layout.test_list_view, allNotifications);
-
         NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
-                R.layout.test_list_view, inboxEmails);
+                R.layout.notifcation_item_view, inboxEmails);
         notificationListView.setAdapter(adapter);
         setUpItemClickListener(notificationListView);
     }
@@ -187,21 +184,21 @@ public class NotificationsFragment extends Fragment {
         startActivity(forwardIntent);
     }
 
-//    public void updateMessages(){
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    EmailServer.get().refreshInboxMessages();
-//                } catch (MessagingException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                inboxEmails = EmailServer.get().getInboxList();
-//            }
-//        }).start();
-//    }
+    public void updateMessages(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EmailServer.get().refreshInboxMessages();
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                inboxEmails = EmailServer.get().getInboxList();
+            }
+        }).start();
+    }
 
 //    private void getAllEmails() {
 //        final Thread thread = new Thread(new Runnable() {

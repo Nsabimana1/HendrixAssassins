@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setFragment(Fragment fragment){
         setBundle(fragment);
-        loadEmails();
+//        loadEmails();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();

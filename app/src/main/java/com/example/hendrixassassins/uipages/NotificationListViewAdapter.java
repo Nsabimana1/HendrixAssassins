@@ -57,10 +57,10 @@ public class NotificationListViewAdapter<E> extends ArrayAdapter<E> {
 
         TextView person = convertView.findViewById(R.id.nameTest);
         TextView status = convertView.findViewById(R.id.statusTest);
-        TextView score = convertView.findViewById(R.id.pointsTest);
+//        TextView score = convertView.findViewById(R.id.pointsTest);
         viewHolder.name = person;
         viewHolder.status = status;
-        viewHolder.score = score;
+//        viewHolder.score = score;
 
 
 //        Button senderInitials = convertView.findViewById(R.id.sender_Initials);
