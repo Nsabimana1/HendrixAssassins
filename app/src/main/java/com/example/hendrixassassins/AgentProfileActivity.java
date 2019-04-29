@@ -16,6 +16,7 @@ import com.example.hendrixassassins.UItestcompnents.CustomListViewAdapter;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.agent.AgentStatus;
 import com.example.hendrixassassins.game.Game;
 import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentName;
@@ -34,7 +35,6 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
     private Agent agent;
     private AgentList agentList;
     private AgentFileHelper agentFileHelper;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,12 +100,16 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
         });
     }
 
+    private void updateAgentListFile(){
+        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
+    }
+
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, String updatedName) {
         Log.e("CCC", "posClick");
         Log.e("CCC", updatedName);
         agent.setName(updatedName);
-        agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
+        updateAgentListFile();
         agentName.setText(agent.getName());
     }
 
@@ -134,7 +138,6 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
             public void onClick(View view) {
                 PopupChangeAgentStatus changeAgentStatus = new PopupChangeAgentStatus();
                 changeAgentStatus.show(getSupportFragmentManager(), "changeAgentStatus");
-
             }
         });
         //TODO: edit player status
@@ -153,16 +156,14 @@ public class AgentProfileActivity extends AppCompatActivity implements ChangeNam
 
     @Override
     public void changeName(String updateName) {
-
         agentName.setText(updateName);
-
-
-
     }
 
     @Override
     public void changeStatus(String updatedName) {
-        agentStatusCurrent.setText(updatedName);
+        agent.setStatus(AgentStatus.valueOf(updatedName));
+        agentStatusCurrent.setText(agent.getStatus().toString());
+        updateAgentListFile();
     }
 
     public void goToTargetsProfile(View view) {
