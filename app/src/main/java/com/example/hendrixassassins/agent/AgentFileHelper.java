@@ -86,6 +86,7 @@ public class AgentFileHelper {
             if(split.length > 8) {
                 Agent agent = agentList.getAgentWithEmailAddress(split[emailIndex]);
                 agent.setCurrentTarget(agentList.getAgentWithEmailAddress(split[currentTargetIndex]));
+                Log.e("DDD", line);
                 agent.extendKillList(getAgentKillList(splitLine(split[killListIndex], ":"), agentList));
             }
         }
