@@ -282,8 +282,8 @@ public class AgentProfileActivity extends AppCompatActivity implements
     }
 
     public void goBackToFragment(View view) {
-//        Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
-        finish();
-//        startActivity(userListView);
+        Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
+//        finish();
+        startActivity(userListView);
     }
 }

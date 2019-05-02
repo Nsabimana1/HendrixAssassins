@@ -3,6 +3,8 @@ package com.example.hendrixassassins.uipages;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,11 +15,16 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.hendrixassassins.R;
+import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.agent.AgentStatus;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.GMailSender;
+import com.example.hendrixassassins.email.GmailLogin;
 import com.example.hendrixassassins.game.Game;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +46,10 @@ public class EmailFragment extends Fragment {
     private Game game;
     private ImageButton sendButton;
     private CheckBox alive, dead, frozen, purged, withDrown;
+    private TextInputEditText emailSubjectView, emailBodyView;
+    private View componentsViewsGetter;
+//    private ArrayList<Email> selectedEmailAddresses = new ArrayList<>();
+    private ArrayList<Agent> allAgents = new ArrayList<>();
 
     public EmailFragment() {
         // Required empty public constructor
@@ -68,16 +79,24 @@ public class EmailFragment extends Fragment {
         if (getArguments() != null) {
             String handlerEmail = getArguments().getString(ARG_PARAM1);
 //            game = new Game(handlerEmail);
+//            // TODO replace testFile.csv with game.getAgentFileName
+//            agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
+
+            game = new Game(GmailLogin.email);
             // TODO replace testFile.csv with game.getAgentFileName
-            agentList = agentFileHelper.readFromFile("testFile.csv", this.getContext());
+            agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
+        loadAgents();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_email, container, false);
+        componentsViewsGetter = inflater.inflate(R.layout.fragment_email, container, false);
+        setUpComponents();
+        sendButtonListener();
+        return componentsViewsGetter;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -102,20 +121,112 @@ public class EmailFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
+    private void setUpComponents(){
+        alive = componentsViewsGetter.findViewById(R.id.alive_box);
+        dead = componentsViewsGetter.findViewById(R.id.dead_box);
+        frozen = componentsViewsGetter.findViewById(R.id.frozen_box);
+        purged = componentsViewsGetter.findViewById(R.id.purged_box);
+        withDrown = componentsViewsGetter.findViewById(R.id.withdrow_box);
+        sendButton = componentsViewsGetter.findViewById(R.id.reply_button);
+        emailSubjectView = componentsViewsGetter.findViewById(R.id.email_subject_view);
+        emailBodyView = componentsViewsGetter.findViewById(R.id.email_body_View);
+    }
 
+
+    private void loadAgents(){
+        agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
+        allAgents = agentList.getAllAgents();
+    }
+
+    private ArrayList<String> getEmailAddressesByStatus(AgentStatus agentStatus, ArrayList<Agent> emailList){
+        ArrayList<String> requiredEmailAddresses = new ArrayList<>();
+        for(Agent agent: emailList){
+            if(agent.getStatus().equals(agentStatus)){
+                requiredEmailAddresses.add(agent.getEmail());
+            }
+        }
+        return requiredEmailAddresses;
+    }
+
+    private ArrayList getSelectedEmails(){
+        ArrayList<String> selectedEmailAddresses = new ArrayList<>();
+        if(alive.isChecked()){
+            selectedEmailAddresses.addAll(getEmailAddressesByStatus(AgentStatus.ALIVE, allAgents));
+        }
+        if(dead.isChecked()){
+            selectedEmailAddresses.addAll(getEmailAddressesByStatus(AgentStatus.DEAD, allAgents));
+        }
+        if(frozen.isChecked()){
+            selectedEmailAddresses.addAll(getEmailAddressesByStatus(AgentStatus.FROZEN, allAgents));
+        }
+        if(purged.isChecked()){
+            selectedEmailAddresses.addAll(getEmailAddressesByStatus(AgentStatus.PURGED, allAgents));
+        }
+        if(withDrown.isChecked()){
+            selectedEmailAddresses.addAll(getEmailAddressesByStatus(AgentStatus.WITHDRAWN, allAgents));
+        }
+        return selectedEmailAddresses;
+    }
+
+    private void clearTemplate(){
+        emailBodyView.setText("");
+        emailSubjectView.setText("");
+    }
+
+    private void sendEmail(Email email){
+        try {
+            GMailSender sender = new GMailSender();
+            sender.sendMail(email);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    displayToast("Email Sent (:");
+                }});
+            clearTemplate();
+        } catch (Exception e) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    displayToast("Failed to send ):");
+                }});
+        }
+    }
+    private void sendButtonListener(){
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadAgents();
+                        if (getSelectedEmails().isEmpty()){
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    displayToast("Please select recipients");
+                                }
+                            });
+                        }else {
+                            Email email = new Email(getSelectedEmails(),
+                                    emailSubjectView.getText().toString(), emailBodyView.getText().toString());
+                            sendEmail(email);
+                        }
+                    }
+                }).start();
+            }
+        });
+    }
+
+    public void displayToast(String message){
+        Context context = getContext();
+        CharSequence text = message;
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
 }
