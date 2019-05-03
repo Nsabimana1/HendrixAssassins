@@ -95,12 +95,12 @@
                     android:layout_weight="1" />
 
                 <CheckBox
-                    android:id="@+id/withdrow_box"
+                    android:id="@+id/withdraw_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/autoCompleteHintColor"
-                    android:text="Withdrown" />
+                    android:text="Withdrawn"
+                    android:textColor="@color/autoCompleteHintColor" />
 
             </LinearLayout>
 

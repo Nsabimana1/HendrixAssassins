@@ -131,7 +131,7 @@ public class EmailFragment extends Fragment {
         dead = componentsViewsGetter.findViewById(R.id.dead_box);
         frozen = componentsViewsGetter.findViewById(R.id.frozen_box);
         purged = componentsViewsGetter.findViewById(R.id.purged_box);
-        withDrown = componentsViewsGetter.findViewById(R.id.withdrow_box);
+        withDrown = componentsViewsGetter.findViewById(R.id.withdraw_box);
         sendButton = componentsViewsGetter.findViewById(R.id.reply_button);
         emailSubjectView = componentsViewsGetter.findViewById(R.id.email_subject_view);
         emailBodyView = componentsViewsGetter.findViewById(R.id.email_body_View);
