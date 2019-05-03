@@ -98,10 +98,12 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 displayToast("Refreshing notifications...");
-                updateMessages();
-                adapter.notifyDataSetChanged();
+                refreshListView();
 
-                //createListViewAdapter();
+//                updateMessages();
+//                adapter.notifyDataSetChanged();
+
+//                createListViewAdapter();
             }
         });
     }
@@ -166,18 +168,21 @@ public class NotificationsFragment extends Fragment {
                     e.printStackTrace();
                 }
                 inboxEmails = EmailServer.get().getInboxList();
-//                Log.d("ADAPTER", ""+inboxEmails.size());
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                });
-
-
             }
         }).start();
     }
+
+    private void refreshListView(){
+        updateMessages();
+        Log.d("ADAPTER", ""+ inboxEmails.size());
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 
 
     public void displayToast(String message){
