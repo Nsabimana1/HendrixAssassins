@@ -224,7 +224,16 @@ public class AgentProfileActivity extends AppCompatActivity implements
     }
 
     private void killAgent(Agent agentToKill) {
-
+        Agent killer = agentList.getAgentAssignedToKill(agentToKill);
+        killer.incrementPersonalKills();
+        for(Agent deadAgent: agentToKill.getKillList().getAllAgents()){
+            killer.addToKillList(deadAgent);
+        }
+        killer.addToKillList(agentToKill);
+        killer.setPointsTotal(killer.getKillList().size());
+        reassignAgentWithTarget(agentToKill);
+        agentToKill.setStatus(AgentStatus.DEAD);
+        sendNotificationEmail(agentToKill, getDeadEmail(agentToKill));
     }
 
     private void withdrawAgent(Agent agentToWithdraw) {
@@ -271,6 +280,16 @@ public class AgentProfileActivity extends AppCompatActivity implements
                 writeFrozenEmail(frozenAgent));
     }
 
+    private Email getDeadEmail(Agent frozenAgent) {
+        return new Email(frozenAgent.getEmail(), "Killed Notification",
+                writeDeadEmail(frozenAgent));
+    }
+
+    private Email getPurgedEmail(Agent frozenAgent) {
+        return new Email(frozenAgent.getEmail(), "Purged Notification",
+                writePurgedEmail(frozenAgent));
+    }
+
     private String writeFrozenEmail(Agent agent){
         Log.e("OOO", agent.getEmail());
         Log.e("OOO", agent.getCurrentTargetEmail());
@@ -289,6 +308,14 @@ public class AgentProfileActivity extends AppCompatActivity implements
         return salutation + body + signoff;
     }
 
+    private String writeDeadEmail(Agent agent){
+        Log.e("OOO", agent.getEmail());
+        Log.e("OOO", agent.getCurrentTargetEmail());
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "You have been Killed. \n\n";
+        String signoff = "See you in the afterlife,\nThe Handler";
+        return salutation + body + signoff;
+    }
 
 
     private void sendNotificationEmail(Agent agent, Email email){
