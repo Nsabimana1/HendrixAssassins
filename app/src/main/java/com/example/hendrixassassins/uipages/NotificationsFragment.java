@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -156,6 +158,9 @@ public class NotificationsFragment extends Fragment {
         startActivity(forwardIntent);
     }
 
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
+
     public void updateMessages(){
         new Thread(new Runnable() {
             @Override
@@ -167,7 +172,29 @@ public class NotificationsFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+<<<<<<< HEAD
                 inboxEmails = EmailServer.get().getInboxList();
+=======
+                ArrayList<Email> emails = EmailServer.get().getInboxList();
+                inboxEmails.clear();
+                inboxEmails.addAll(emails);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+//                Log.d("ADAPTER", ""+inboxEmails.size());
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                });
+
+
+
+>>>>>>> 74c3cc613b7c6fb7e5d425ec36dd7204219dd935
             }
         }).start();
     }
