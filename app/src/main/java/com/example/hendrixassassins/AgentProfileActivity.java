@@ -19,6 +19,7 @@ import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.agent.AgentStatus;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.GMailSender;
+import com.example.hendrixassassins.email.GmailLogin;
 import com.example.hendrixassassins.game.Game;
 import com.example.hendrixassassins.game.GameMethods;
 import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
@@ -284,6 +285,8 @@ public class AgentProfileActivity extends AppCompatActivity implements
     //TODO: This is weird
     public void goBackToFragment(View view) {
         Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
+        String email = GmailLogin.email;
+        userListView.putExtra("email", email);
 //        finish();
         startActivity(userListView);
     }

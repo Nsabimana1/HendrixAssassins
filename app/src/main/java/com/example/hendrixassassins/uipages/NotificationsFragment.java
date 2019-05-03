@@ -156,6 +156,8 @@ public class NotificationsFragment extends Fragment {
         startActivity(forwardIntent);
     }
 
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
 
     public void updateMessages(){
         new Thread(new Runnable() {
@@ -168,8 +170,15 @@ public class NotificationsFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                inboxEmails = EmailServer.get().getInboxList();
-
+                ArrayList<Email> emails = EmailServer.get().getInboxList();
+                inboxEmails.clear();
+                inboxEmails.addAll(emails);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
 //                Log.d("ADAPTER", ""+inboxEmails.size());
 //                getActivity().runOnUiThread(new Runnable() {
 //                    @Override
