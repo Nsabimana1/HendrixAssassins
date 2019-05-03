@@ -50,11 +50,15 @@ public class NotificationsFragment extends Fragment {
     private ListView notificationListView;
     private  NotificationListViewAdapter adapter;
 
+<<<<<<< HEAD
+    public NotificationsFragment() { }
+=======
     public NotificationsFragment() {
 
         // updateMessages();
 
     }
+>>>>>>> be2bb5af7112d4b2306f12ef8fbabe80339b9f34
 
     // TODO: Rename and change types and number of parameters
     public static NotificationsFragment newInstance(String param1, String param2) {
@@ -76,7 +80,6 @@ public class NotificationsFragment extends Fragment {
         }
         if(showListView != null) {
             updateMessages();
-//            adapter.notifyDataSetChanged();
         }
     }
 
@@ -144,13 +147,11 @@ public class NotificationsFragment extends Fragment {
     private void setUpItemClickListener(final ListView listView){
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Email emailBody = inboxEmails.get(position);
-                toNotificationContentActivity(emailBody);
-            }
-
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Email emailBody = inboxEmails.get(position);
+            toNotificationContentActivity(emailBody);
+        }
         });
     }
 
@@ -176,6 +177,8 @@ public class NotificationsFragment extends Fragment {
                 ArrayList<Email> emails = EmailServer.get().getInboxList();
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
+<<<<<<< HEAD
+=======
 
                 mHandler.post(new Runnable() {
                     @Override
@@ -184,6 +187,7 @@ public class NotificationsFragment extends Fragment {
                     }
                 });
 
+>>>>>>> be2bb5af7112d4b2306f12ef8fbabe80339b9f34
                 if(adapter != null){
                     mHandler.post(new Runnable() {
                         @Override
@@ -192,6 +196,8 @@ public class NotificationsFragment extends Fragment {
                         }
                     });
                 }
+<<<<<<< HEAD
+=======
 
 //                Log.d("ADAPTER", ""+inboxEmails.size());
 //                getActivity().runOnUiThread(new Runnable() {
@@ -204,23 +210,12 @@ public class NotificationsFragment extends Fragment {
 
 
 
+>>>>>>> be2bb5af7112d4b2306f12ef8fbabe80339b9f34
             }
         }).start();
     }
 
-    private void refreshListView(){
-        updateMessages();
-        Log.d("ADAPTER", ""+ inboxEmails.size());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-
-
+    
     public void displayToast(String message){
         Context context = getContext();
         CharSequence text = message;
