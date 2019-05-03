@@ -180,6 +180,7 @@
                     android:id="@+id/email_body_View"
                     android:layout_width="match_parent"
                     android:layout_height="267dp"
+                    android:textSize="20dp"
                     android:hint="Type your text here"
                     android:textColor="@color/autoCompleteHintColor" />
 
