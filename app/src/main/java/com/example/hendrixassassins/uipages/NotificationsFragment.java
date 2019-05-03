@@ -170,6 +170,15 @@ public class NotificationsFragment extends Fragment {
                 }
                 inboxEmails = EmailServer.get().getInboxList();
 
+//                Log.d("ADAPTER", ""+inboxEmails.size());
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                });
+
+
 
             }
         }).start();
