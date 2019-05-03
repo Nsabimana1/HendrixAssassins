@@ -50,15 +50,11 @@ public class NotificationsFragment extends Fragment {
     private ListView notificationListView;
     private  NotificationListViewAdapter adapter;
 
-<<<<<<< HEAD
-    public NotificationsFragment() { }
-=======
+
     public NotificationsFragment() {
 
-        // updateMessages();
-
     }
->>>>>>> be2bb5af7112d4b2306f12ef8fbabe80339b9f34
+
 
     // TODO: Rename and change types and number of parameters
     public static NotificationsFragment newInstance(String param1, String param2) {
@@ -79,13 +75,18 @@ public class NotificationsFragment extends Fragment {
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
         if(showListView != null) {
-            updateMessages();
+                updateMessages();
+
+//            adapter.notifyDataSetChanged();
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        displayToast("Refreshing notifications...");
+
         // Inflate the layout for this fragment
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
         showListView = fragView.findViewById(R.id.refresh_notification_button);
@@ -177,8 +178,7 @@ public class NotificationsFragment extends Fragment {
                 ArrayList<Email> emails = EmailServer.get().getInboxList();
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
-<<<<<<< HEAD
-=======
+
 
                 mHandler.post(new Runnable() {
                     @Override
@@ -187,7 +187,7 @@ public class NotificationsFragment extends Fragment {
                     }
                 });
 
->>>>>>> be2bb5af7112d4b2306f12ef8fbabe80339b9f34
+
                 if(adapter != null){
                     mHandler.post(new Runnable() {
                         @Override
@@ -196,21 +196,7 @@ public class NotificationsFragment extends Fragment {
                         }
                     });
                 }
-<<<<<<< HEAD
-=======
 
-//                Log.d("ADAPTER", ""+inboxEmails.size());
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                });
-
-
-
-
->>>>>>> be2bb5af7112d4b2306f12ef8fbabe80339b9f34
             }
         }).start();
     }
