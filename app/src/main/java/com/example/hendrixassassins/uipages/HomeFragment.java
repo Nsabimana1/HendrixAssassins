@@ -77,6 +77,7 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -104,6 +105,8 @@ public class HomeFragment extends Fragment {
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
     }
+
+
 
     private void setupSpinners() {
         findSpinners();

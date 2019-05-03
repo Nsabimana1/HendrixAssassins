@@ -50,7 +50,15 @@ public class NotificationsFragment extends Fragment {
     private ListView notificationListView;
     private  NotificationListViewAdapter adapter;
 
+<<<<<<< HEAD
     public NotificationsFragment() { }
+=======
+
+    public NotificationsFragment() {
+
+    }
+
+>>>>>>> 50d8d025450985a32c6ad1b8303a8b234cce79e5
 
     // TODO: Rename and change types and number of parameters
     public static NotificationsFragment newInstance(String param1, String param2) {
@@ -71,13 +79,18 @@ public class NotificationsFragment extends Fragment {
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
         if(showListView != null) {
-            updateMessages();
+                updateMessages();
+
+//            adapter.notifyDataSetChanged();
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        displayToast("Refreshing notifications...");
+
         // Inflate the layout for this fragment
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
         showListView = fragView.findViewById(R.id.refresh_notification_button);
@@ -169,6 +182,19 @@ public class NotificationsFragment extends Fragment {
                 ArrayList<Email> emails = EmailServer.get().getInboxList();
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
+<<<<<<< HEAD
+=======
+
+
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+
+>>>>>>> 50d8d025450985a32c6ad1b8303a8b234cce79e5
                 if(adapter != null){
                     mHandler.post(new Runnable() {
                         @Override
@@ -177,6 +203,10 @@ public class NotificationsFragment extends Fragment {
                         }
                     });
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 50d8d025450985a32c6ad1b8303a8b234cce79e5
             }
         }).start();
     }

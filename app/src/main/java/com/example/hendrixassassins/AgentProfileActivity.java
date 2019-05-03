@@ -25,6 +25,7 @@ import com.example.hendrixassassins.game.GameMethods;
 import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentName;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentStatus;
+import com.example.hendrixassassins.uipages.EmailSenderActivity;
 import com.example.hendrixassassins.uipages.HomeActivity;
 
 import java.util.ArrayList;
@@ -81,7 +82,6 @@ public class AgentProfileActivity extends AppCompatActivity implements
         AgentTotalPoints = findViewById(R.id.AgentTotalPoints);
         AgentPersonalKills = findViewById(R.id.AgentPersonalKills);
         agentEmail = findViewById(R.id.agentEmail);
-        // This was causing errors for some reason.
         agentStatusCurrent = findViewById(R.id.agentStatus);
         changeAgentName = findViewById(R.id.changeAgentName);
         sendEmailAgent = findViewById(R.id.sendEmailAgent);
@@ -94,6 +94,7 @@ public class AgentProfileActivity extends AppCompatActivity implements
 
     private void personalizeAgentPage(){
         agentName.setText(agent.getName());
+        agentEmail.setText(agent.getEmail());
         AgentTotalPoints.setText(String.valueOf(agent.getPointsTotal()));
         AgentPersonalKills.setText(String.valueOf(agent.getPersonalKills()));
         agentStatusCurrent.setText(agent.getStatus().toString());
@@ -109,6 +110,7 @@ public class AgentProfileActivity extends AppCompatActivity implements
     // // // // // // // // //
     // navigate off screen  //
     // // // // // // // // //
+
 
     @Override
     public void onBackPressed() {
@@ -142,7 +144,13 @@ public class AgentProfileActivity extends AppCompatActivity implements
         sendEmailAgent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(AgentProfileActivity.this, EmailSenderActivity.class);
+                Log.d("EMAIL", agent.getEmail());
+                Email email = new Email("", "", "");
+                email.setSender(agent.getEmail());
+                intent.putExtra("clickedUserEmail", email);
+                startActivity(intent);
+                finish();
             }
         });
         //TODO: need to make sure going to the email intent won't cause crashes
@@ -220,15 +228,28 @@ public class AgentProfileActivity extends AppCompatActivity implements
     }
 
     private void purgeAgent(Agent agentToPurge) {
-
+        reassignAgentWithTarget(agentToPurge);
+        agentToPurge.setStatus(AgentStatus.PURGED);
+        sendNotificationEmail(agentToPurge, getPurgedEmail(agentToPurge));
     }
 
     private void killAgent(Agent agentToKill) {
-
+        Agent killer = agentList.getAgentAssignedToKill(agentToKill);
+        killer.incrementPersonalKills();
+        for(Agent deadAgent: agentToKill.getKillList().getAllAgents()){
+            killer.addToKillList(deadAgent);
+        }
+        killer.addToKillList(agentToKill);
+        killer.setPointsTotal(killer.getKillList().size());
+        reassignAgentWithTarget(agentToKill);
+        agentToKill.setStatus(AgentStatus.DEAD);
+        sendNotificationEmail(agentToKill, getDeadEmail(agentToKill));
     }
 
     private void withdrawAgent(Agent agentToWithdraw) {
-
+        reassignAgentWithTarget(agentToWithdraw);
+        agentToWithdraw.setStatus(AgentStatus.WITHDRAWN);
+        sendNotificationEmail(agentToWithdraw, getWithdrawnEmail(agentToWithdraw));
     }
 
     private void thawAgent(Agent agentToThaw) {
@@ -271,6 +292,30 @@ public class AgentProfileActivity extends AppCompatActivity implements
                 writeFrozenEmail(frozenAgent));
     }
 
+    private Email getWithdrawnEmail(Agent withdrawnAgent) {
+        return new Email(withdrawnAgent.getEmail(), "Withdrawn Notification",
+                writeWithdrawnEmail(withdrawnAgent));
+    }
+
+    private Email getDeadEmail(Agent deadAgent) {
+        return new Email(deadAgent.getEmail(), "Killed Notification",
+                writeDeadEmail(deadAgent));
+    }
+
+    private Email getPurgedEmail(Agent purgedAgent) {
+        return new Email(purgedAgent.getEmail(), "Purged Notification",
+                writePurgedEmail(purgedAgent));
+    }
+
+    private String writeWithdrawnEmail(Agent agent){
+        Log.e("OOO", agent.getEmail());
+        Log.e("OOO", agent.getCurrentTargetEmail());
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "You have been withdrawn from the game. \n\n";
+        String signoff = "Sad to see you go,\nThe Handler";
+        return salutation + body + signoff;
+    }
+
     private String writeFrozenEmail(Agent agent){
         Log.e("OOO", agent.getEmail());
         Log.e("OOO", agent.getCurrentTargetEmail());
@@ -289,6 +334,14 @@ public class AgentProfileActivity extends AppCompatActivity implements
         return salutation + body + signoff;
     }
 
+    private String writeDeadEmail(Agent agent){
+        Log.e("OOO", agent.getEmail());
+        Log.e("OOO", agent.getCurrentTargetEmail());
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "You have been Killed. \n\n";
+        String signoff = "See you in the afterlife,\nThe Handler";
+        return salutation + body + signoff;
+    }
 
 
     private void sendNotificationEmail(Agent agent, Email email){
