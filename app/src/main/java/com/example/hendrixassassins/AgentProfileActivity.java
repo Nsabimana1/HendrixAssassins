@@ -42,10 +42,9 @@ public class AgentProfileActivity extends AppCompatActivity implements
     private AgentList agentList;
     private AgentFileHelper agentFileHelper;
 
-    @Override
-    public void onBackPressed() {
-
-    }
+    // // // // // // // // //
+    //   set  up  screen    //
+    // // // // // // // // //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,6 @@ public class AgentProfileActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         String handlerEmail = intent.getExtras().getString("handlerEmail");
         String agentEmail = intent.getExtras().getString("agentEmail");
-
         setupGame(handlerEmail);
         setupAgentList();
         setupAgent(agentEmail);
@@ -101,21 +99,33 @@ public class AgentProfileActivity extends AppCompatActivity implements
         currentTarget.setText(agent.getCurrentTarget().getName());
     }
 
-
-    public void changeAgentNameButtonListener(View view) {
-        changeAgentName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupChangeAgentName changeAgentName = new PopupChangeAgentName();
-                changeAgentName.show(getSupportFragmentManager(), "changeName");
-//                DialogFragment changeNameFragment = new ChangeNameDialogFragment();
-//                changeNameFragment.show(getSupportFragmentManager(), "changeName");
-            }
-        });
-    }
-
     private void updateAgentListFile(){
         agentFileHelper.writeToFile(game.getAgentFileName(), agentList, context);
+    }
+
+    // // // // // // // // //
+    // navigate off screen  //
+    // // // // // // // // //
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
+    public void goToTargetsProfile(View view) {
+        gotoAgentProfile(agent.getCurrentTarget());
+    }
+
+    private void gotoAgentProfile(Agent agent) {
+        Intent userListView = new Intent(AgentProfileActivity.this, AgentProfileActivity.class);
+        userListView.putExtra("handlerEmail", game.getEmail());
+        userListView.putExtra("agentEmail", agent.getEmail());
+        startActivity(userListView);
+    }
+
+    public void goBackToFragment(View view) {
+        Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
+        startActivity(userListView);
     }
 
     public void sendEmailAgentButtonListener(View view) {
@@ -132,15 +142,40 @@ public class AgentProfileActivity extends AppCompatActivity implements
         //TODO: need to make sure going to the email intent won't cause crashes
     }
 
-    public void editPlayerStatusButtonListener(View view) {
-        editPlayerStatus.setOnClickListener(new View.OnClickListener() {
+    // // // // // // // // //
+    // change name of agent //
+    // // // // // // // // //
+
+
+    public void changeAgentNameButtonListener(View view) {
+        changeAgentName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupChangeAgentStatus changeAgentStatus = new PopupChangeAgentStatus();
-                changeAgentStatus.show(getSupportFragmentManager(), "changeAgentStatus");
+                PopupChangeAgentName changeAgentName = new PopupChangeAgentName();
+                changeAgentName.show(getSupportFragmentManager(), "changeName");
+//                DialogFragment changeNameFragment = new ChangeNameDialogFragment();
+//                changeNameFragment.show(getSupportFragmentManager(), "changeName");
             }
         });
-        //TODO: edit player status
+    }
+
+    @Override
+    public void changeName(String updateName) {
+        agent.setName(updateName);
+        updateAgentListFile();
+        agentName.setText(agent.getName());
+    }
+
+    // // // // // // //
+    // change status  //
+    // // // // // // //
+
+    private void reassignAgentWithTarget(Agent target){
+        Agent newKiller = agentList.getAgentAssignedToKill(target);
+        newKiller.setCurrentTarget(target.getCurrentTarget());
+        Log.e("QQQ", newKiller.getEmail());
+        sendTargetEmail(newKiller);
+        setNoTarget(target);
     }
 
     public void removeAgentButtonListener(View view) {
@@ -154,11 +189,15 @@ public class AgentProfileActivity extends AppCompatActivity implements
         // why is this seperate from the status changing?
     }
 
-    @Override
-    public void changeName(String updateName) {
-        agent.setName(updateName);
-        updateAgentListFile();
-        agentName.setText(agent.getName());
+    public void editPlayerStatusButtonListener(View view) {
+        editPlayerStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupChangeAgentStatus changeAgentStatus = new PopupChangeAgentStatus();
+                changeAgentStatus.show(getSupportFragmentManager(), "changeAgentStatus");
+            }
+        });
+        //TODO: edit player status
     }
 
     @Override
@@ -166,12 +205,42 @@ public class AgentProfileActivity extends AppCompatActivity implements
         AgentStatus newStatus = AgentStatus.valueOf(updatedName);
         AgentStatus oldStatus = agent.getStatus();
         if(newStatus == AgentStatus.FROZEN) freezeAgent(agent);
-        else {
-            agent.setStatus(newStatus);
-            agentStatusCurrent.setText(updatedName);
-        }
+        else if(newStatus == AgentStatus.PURGED) purgeAgent(agent);
+        else if(newStatus == AgentStatus.DEAD) killAgent(agent);
+        else if(newStatus == AgentStatus.WITHDRAWN) withdrawAgent(agent);
+        else if(oldStatus == AgentStatus.FROZEN && newStatus == AgentStatus.ALIVE) thawAgent(agent);
+        agentStatusCurrent.setText(updatedName);
         updateAgentListFile();
     }
+
+    private void purgeAgent(Agent agentToPurge) {
+
+    }
+
+    private void killAgent(Agent agentToKill) {
+
+    }
+
+    private void withdrawAgent(Agent agentToWithdraw) {
+
+    }
+
+    private void thawAgent(Agent agentToThaw) {
+
+    }
+
+    public void freezeAgent(Agent agentToFreeze){
+        reassignAgentWithTarget(agentToFreeze);
+        agentToFreeze.setStatus(AgentStatus.FROZEN);
+        sendNotificationEmail(agentToFreeze, getFrozenEmail(agentToFreeze));
+    }
+
+    public void setNoTarget(Agent target){
+        target.setCurrentTarget(null);
+        currentTarget.setText("  ");
+        currentTarget.setClickable(false);
+    }
+
 
 
     // TODO change back to using GameMethods
@@ -187,24 +256,26 @@ public class AgentProfileActivity extends AppCompatActivity implements
         sendTargetEmail(agentWithNewTarget);
     }*/
 
-    private void reassignAgentWithTarget(Agent target){
-        Agent newKiller = agentList.getAgentAssignedToKill(target);
-        newKiller.setCurrentTarget(target.getCurrentTarget());
-        sendTargetEmail(newKiller);
-        target.setCurrentTarget(null);
+    // // // // // // // // // // //
+    //  status notification email //
+    // // // // // // // // // // //
+
+    private Email getFrozenEmail(Agent frozenAgent) {
+        return new Email(frozenAgent.getEmail(), "Frozen Notification",
+                writeFrozenEmail(frozenAgent));
     }
 
-    public void freezeAgent(Agent agentToFreeze){
-        reassignAgentWithTarget(agentToFreeze);
-        agentToFreeze.setStatus(AgentStatus.FROZEN);
-        sendFrozenEmail(agentToFreeze);
-        currentTarget.setText("  ");
-        currentTarget.setClickable(false);
+    private String writeFrozenEmail(Agent agent){
+        Log.e("OOO", agent.getEmail());
+        Log.e("OOO", agent.getCurrentTargetEmail());
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "You have been frozen. You have no target and no one is targeting you. \n\n";
+        String signoff = "Happy hunting,\nThe Handler";
+        return salutation + body + signoff;
     }
 
-
-    private void sendFrozenEmail(Agent agent){
-        final Email message = getFrozenEmail(agent);
+    private void sendNotificationEmail(Agent agent, Email email){
+        final Email message = email;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -222,22 +293,13 @@ public class AgentProfileActivity extends AppCompatActivity implements
         }).start();
     }
 
-    private Email getFrozenEmail(Agent frozenAgent) {
-        return new Email(frozenAgent.getEmail(), "Frozen Notification",
-                writeFrozenEmail(frozenAgent));
-    }
+    // // // // // // //
+    //  target email  //
+    // // // // // // //
 
-    private String writeFrozenEmail(Agent agent){
-        Log.e("OOO", agent.getEmail());
-        Log.e("OOO", agent.getCurrentTargetEmail());
-        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
-        String body = "You have been frozen. You have no target and no one is targeting you. \n\n";
-        String signoff = "Happy hunting,\nThe Handler";
-        return salutation + body + signoff;
-    }
-
-    private void sendTargetEmail(Agent agent){
-        final Email message = getTargetEmail(agent);
+    private void sendTargetEmail(Agent killer){
+        final Email message = getTargetEmail(killer);
+        Log.e("QQQ", message.getBody());
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -270,19 +332,5 @@ public class AgentProfileActivity extends AppCompatActivity implements
         return salutation + body + signoff;
     }
 
-    public void goToTargetsProfile(View view) {
-        gotoAgentProfile(agent.getCurrentTarget());
-    }
 
-    private void gotoAgentProfile(Agent agent) {
-        Intent userListView = new Intent(AgentProfileActivity.this, AgentProfileActivity.class);
-        userListView.putExtra("handlerEmail", game.getEmail());
-        userListView.putExtra("agentEmail", agent.getEmail());
-        startActivity(userListView);
-    }
-
-    public void goBackToFragment(View view) {
-        Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
-        startActivity(userListView);
-    }
 }
