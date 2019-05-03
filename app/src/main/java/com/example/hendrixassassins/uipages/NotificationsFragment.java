@@ -45,6 +45,8 @@ public class NotificationsFragment extends Fragment {
     private Button showListView;
 
     private ArrayList<Email> inboxEmails = new ArrayList<>();
+    private ListView notificationListView;
+    private  NotificationListViewAdapter adapter;
 
     public NotificationsFragment() {
         updateMessages();
@@ -97,7 +99,8 @@ public class NotificationsFragment extends Fragment {
             public void onClick(View view) {
                 displayToast("Refreshing notifications...");
                 updateMessages();
-                createListViewAdapter();
+
+                //createListViewAdapter();
             }
         });
     }
@@ -124,8 +127,8 @@ public class NotificationsFragment extends Fragment {
 
 
     private void createListViewAdapter(){
-        ListView notificationListView = fragView.findViewById(R.id.notifications_ListView);
-        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
+        notificationListView = fragView.findViewById(R.id.notifications_ListView);
+        adapter = new NotificationListViewAdapter<>(this.getContext(),
                 R.layout.notifcation_item_view, inboxEmails);
         notificationListView.setAdapter(adapter);
         setUpItemClickListener(notificationListView);
@@ -162,6 +165,15 @@ public class NotificationsFragment extends Fragment {
                     e.printStackTrace();
                 }
                 inboxEmails = EmailServer.get().getInboxList();
+                Log.d("ADAPTER", ""+inboxEmails.size());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+
             }
         }).start();
     }
