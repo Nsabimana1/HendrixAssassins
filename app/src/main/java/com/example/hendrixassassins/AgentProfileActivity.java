@@ -218,11 +218,11 @@ public class AgentProfileActivity extends AppCompatActivity implements
     public void changeStatus(String updatedName) {
         AgentStatus newStatus = AgentStatus.valueOf(updatedName);
         AgentStatus oldStatus = agent.getStatus();
-        if(newStatus == AgentStatus.FROZEN) freezeAgent(agent);
-        else if(newStatus == AgentStatus.PURGED) purgeAgent(agent);
-        else if(newStatus == AgentStatus.DEAD) killAgent(agent);
-        else if(newStatus == AgentStatus.WITHDRAWN) withdrawAgent(agent);
-        else if(oldStatus == AgentStatus.FROZEN && newStatus == AgentStatus.ALIVE) thawAgent(agent);
+        if(oldStatus != AgentStatus.FROZEN && newStatus == AgentStatus.FROZEN) freezeAgent(agent);
+        else if(oldStatus != AgentStatus.PURGED && newStatus == AgentStatus.PURGED) purgeAgent(agent);
+        else if(oldStatus != AgentStatus.DEAD && newStatus == AgentStatus.DEAD) killAgent(agent);
+        else if(oldStatus != AgentStatus.WITHDRAWN && newStatus == AgentStatus.WITHDRAWN) withdrawAgent(agent);
+        else if(oldStatus != AgentStatus.ALIVE && newStatus == AgentStatus.ALIVE) thawAgent(agent);
         agentStatusCurrent.setText(updatedName);
         updateAgentListFile();
     }
@@ -252,8 +252,23 @@ public class AgentProfileActivity extends AppCompatActivity implements
         sendNotificationEmail(agentToWithdraw, getWithdrawnEmail(agentToWithdraw));
     }
 
-    private void thawAgent(Agent agentToThaw) {
+    public void thawAgent(Agent frozenAgent){
+        AgentList livingAgents = agentList.filterAgentsByStatus(AgentStatus.ALIVE);
+        livingAgents.sortByDrawNumber();
+        if(frozenAgent.getDrawNumber() == 0) thawAgentHelper(frozenAgent, livingAgents.size(), livingAgents);
+        else {
+            int index = 0;
+            while (livingAgents.getAllAgents().get(index).getDrawNumber() < frozenAgent.getDrawNumber())
+                index++;
+            thawAgentHelper(frozenAgent, index, livingAgents);
+        }
+    }
 
+    private void thawAgentHelper(Agent frozenAgent, int index, AgentList livingAgents){
+        frozenAgent.setCurrentTarget(livingAgents.getAllAgents().get(index).getCurrentTarget());
+        livingAgents.getAllAgents().get(index).setCurrentTarget(frozenAgent);
+        frozenAgent.setStatus(AgentStatus.ALIVE);
+        sendTargetEmail(frozenAgent);
     }
 
     public void freezeAgent(Agent agentToFreeze){

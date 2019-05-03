@@ -50,15 +50,9 @@ public class NotificationsFragment extends Fragment {
     private ListView notificationListView;
     private  NotificationListViewAdapter adapter;
 
-<<<<<<< HEAD
-    public NotificationsFragment() { }
-=======
-
     public NotificationsFragment() {
 
     }
-
->>>>>>> 50d8d025450985a32c6ad1b8303a8b234cce79e5
 
     // TODO: Rename and change types and number of parameters
     public static NotificationsFragment newInstance(String param1, String param2) {
@@ -182,8 +176,6 @@ public class NotificationsFragment extends Fragment {
                 ArrayList<Email> emails = EmailServer.get().getInboxList();
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
-<<<<<<< HEAD
-=======
 
 
                 mHandler.post(new Runnable() {
@@ -193,8 +185,6 @@ public class NotificationsFragment extends Fragment {
                     }
                 });
 
-
->>>>>>> 50d8d025450985a32c6ad1b8303a8b234cce79e5
                 if(adapter != null){
                     mHandler.post(new Runnable() {
                         @Override
@@ -203,10 +193,6 @@ public class NotificationsFragment extends Fragment {
                         }
                     });
                 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 50d8d025450985a32c6ad1b8303a8b234cce79e5
             }
         }).start();
     }
