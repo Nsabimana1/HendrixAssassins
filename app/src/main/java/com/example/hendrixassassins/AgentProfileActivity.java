@@ -25,6 +25,7 @@ import com.example.hendrixassassins.game.GameMethods;
 import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentName;
 import com.example.hendrixassassins.uipages.DialogBoxes.PopupChangeAgentStatus;
+import com.example.hendrixassassins.uipages.EmailSenderActivity;
 import com.example.hendrixassassins.uipages.HomeActivity;
 
 import java.util.ArrayList;
@@ -81,7 +82,6 @@ public class AgentProfileActivity extends AppCompatActivity implements
         AgentTotalPoints = findViewById(R.id.AgentTotalPoints);
         AgentPersonalKills = findViewById(R.id.AgentPersonalKills);
         agentEmail = findViewById(R.id.agentEmail);
-        // This was causing errors for some reason.
         agentStatusCurrent = findViewById(R.id.agentStatus);
         changeAgentName = findViewById(R.id.changeAgentName);
         sendEmailAgent = findViewById(R.id.sendEmailAgent);
@@ -94,6 +94,7 @@ public class AgentProfileActivity extends AppCompatActivity implements
 
     private void personalizeAgentPage(){
         agentName.setText(agent.getName());
+        agentEmail.setText(agent.getEmail());
         AgentTotalPoints.setText(String.valueOf(agent.getPointsTotal()));
         AgentPersonalKills.setText(String.valueOf(agent.getPersonalKills()));
         agentStatusCurrent.setText(agent.getStatus().toString());
@@ -142,7 +143,13 @@ public class AgentProfileActivity extends AppCompatActivity implements
         sendEmailAgent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(AgentProfileActivity.this, EmailSenderActivity.class);
+                Log.d("EMAIL", agent.getEmail());
+                new Email("", "", "");
+                
+                intent.putExtra("clickedUserEmail", );
+                startActivity(intent);
+                finish();
             }
         });
         //TODO: need to make sure going to the email intent won't cause crashes
