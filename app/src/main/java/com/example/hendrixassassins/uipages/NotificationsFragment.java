@@ -51,10 +51,9 @@ public class NotificationsFragment extends Fragment {
     private  NotificationListViewAdapter adapter;
 
     public NotificationsFragment() {
-<<<<<<< HEAD
-=======
+
         // updateMessages();
->>>>>>> 130a39db5d62dfb29ff575cd6a03047de3feaa38
+
     }
 
     // TODO: Rename and change types and number of parameters
@@ -177,14 +176,14 @@ public class NotificationsFragment extends Fragment {
                 ArrayList<Email> emails = EmailServer.get().getInboxList();
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
-<<<<<<< HEAD
+
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         adapter.notifyDataSetChanged();
                     }
                 });
-=======
+
                 if(adapter != null){
                     mHandler.post(new Runnable() {
                         @Override
@@ -204,7 +203,7 @@ public class NotificationsFragment extends Fragment {
 
 
 
->>>>>>> 130a39db5d62dfb29ff575cd6a03047de3feaa38
+
             }
         }).start();
     }
