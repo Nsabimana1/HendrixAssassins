@@ -221,12 +221,12 @@
                 android:id="@+id/currentAgentTarget"
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
-                android:text="TextView"
-                android:onClick="goToTargetsProfile"
                 android:background="@drawable/filter_button_theme"
+                android:gravity="center"
+                android:onClick="goToTargetsProfile"
+                android:text="No target"
                 android:textColor="@color/white"
-                android:textSize="30dp"
-                android:gravity="center"/>
+                android:textSize="30dp" />
 
 
             <ListView

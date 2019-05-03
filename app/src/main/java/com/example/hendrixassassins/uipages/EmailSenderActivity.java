@@ -86,7 +86,5 @@ public class EmailSenderActivity extends AppCompatActivity {
                 }).start();
             }
         });
-
     }
-
 }

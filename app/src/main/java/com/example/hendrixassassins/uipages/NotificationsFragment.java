@@ -2,10 +2,12 @@ package com.example.hendrixassassins.uipages;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,32 +15,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.example.hendrixassassins.AgentProfileActivity;
 import com.example.hendrixassassins.R;
 import com.example.hendrixassassins.agent.Agent;
 import com.example.hendrixassassins.agent.AgentFileHelper;
 import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.EmailServer;
-import com.example.hendrixassassins.email.Notification;
-import com.example.hendrixassassins.email.NotificationList;
 import com.example.hendrixassassins.game.Game;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NotificationsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NotificationsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NotificationsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,31 +46,14 @@ public class NotificationsFragment extends Fragment {
     private View fragView;
     private Button showListView;
 
-//    private ListView notificationListView;
-    private NotificationList notificationList;
-    private ArrayList<Notification> allNotifications = new ArrayList<>();
-
     private ArrayList<Email> inboxEmails = new ArrayList<>();
+    private ListView notificationListView;
+    private  NotificationListViewAdapter adapter;
 
     public NotificationsFragment() {
-        // Required empty public constructor
-        notificationList = new NotificationList();
-        notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "Patrick"), "Iwant to dodd"));
-        notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kakanana"), "Iwant to dodd"));
-        notificationList.addNotification(new Notification(new Agent("aperson@hendrix.edu", "kamnana"), "Iwant to dodd"));
-        allNotifications = notificationList.getAllNotifications();
-        Log.e("Im in here", "I am called11");
         updateMessages();
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotificationsFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static NotificationsFragment newInstance(String param1, String param2) {
         NotificationsFragment fragment = new NotificationsFragment();
@@ -98,7 +72,9 @@ public class NotificationsFragment extends Fragment {
             // TODO replace testFile.csv with game.getAgentFileName
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
-
+        if(showListView != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -108,13 +84,7 @@ public class NotificationsFragment extends Fragment {
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
         showListView = fragView.findViewById(R.id.refresh_notification_button);
         createListViewAdapter();
-        showListView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                updateMessages();
-                createListViewAdapter();
-            }
-        });
+        refreshListener();
         return fragView;
     }
 
@@ -123,6 +93,19 @@ public class NotificationsFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    private void refreshListener(){
+        showListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayToast("Refreshing notifications...");
+                updateMessages();
+                adapter.notifyDataSetChanged();
+
+                //createListViewAdapter();
+            }
+        });
     }
 
     @Override
@@ -140,16 +123,6 @@ public class NotificationsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -157,20 +130,19 @@ public class NotificationsFragment extends Fragment {
 
 
     private void createListViewAdapter(){
-        ListView notificationListView = fragView.findViewById(R.id.notifications_ListView);
-        NotificationListViewAdapter adapter = new NotificationListViewAdapter<>(this.getContext(),
+        notificationListView = fragView.findViewById(R.id.notifications_ListView);
+        adapter = new NotificationListViewAdapter<>(this.getContext(),
                 R.layout.notifcation_item_view, inboxEmails);
         notificationListView.setAdapter(adapter);
         setUpItemClickListener(notificationListView);
     }
 
-    private void setUpItemClickListener(ListView listView){
+    private void setUpItemClickListener(final ListView listView){
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("I am clicked", "I was clicked");
                 Email emailBody = inboxEmails.get(position);
                 toNotificationContentActivity(emailBody);
             }
@@ -184,6 +156,9 @@ public class NotificationsFragment extends Fragment {
         startActivity(forwardIntent);
     }
 
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
+
     public void updateMessages(){
         new Thread(new Runnable() {
             @Override
@@ -195,48 +170,35 @@ public class NotificationsFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                inboxEmails = EmailServer.get().getInboxList();
+                ArrayList<Email> emails = EmailServer.get().getInboxList();
+                inboxEmails.clear();
+                inboxEmails.addAll(emails);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+//                Log.d("ADAPTER", ""+inboxEmails.size());
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                });
+
+
+
             }
         }).start();
     }
 
-//    private void getAllEmails() {
-//        final Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                refreshEmails();
-//                EmailServer emailServer = EmailServer.get();
-//                ArrayList<Email> filteredEmails = emailServer.getEmailsSubjectBeginsWith(year);
-//                unread_filtered_emails.clear();
-//                unread_filtered_emails.addAll(filteredEmails);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        incomingEmailListViewAdapter.notifyDataSetChanged();
-//                        setToRefreshable();
-//                        verifyAllAgentsButton.setEnabled(true);
-//                    }
-//                });
-//            }
-//        });
-//        thread.start();
-//    }
 
-    private void refreshEmails(){
-        try {
-            EmailServer.get().refreshInboxMessages();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void displayToast(String message){
+        Context context = getContext();
+        CharSequence text = message;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
-
-
-//    @Override
-//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-////        notificationListView = (ListView) view.findViewById(R.id.notifications_ListView);
-//    }
-
 }

@@ -7,10 +7,6 @@
     tools:context=".uipages.NotificationsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="422dp"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
 
     <Button
         android:id="@+id/refresh_notification_button"
@@ -22,6 +18,7 @@
         android:id="@+id/notifications_ListView"
         android:layout_width="match_parent"
         android:background="@color/colorPrimary"
+        android:listSelector="@android:color/darker_gray"
         android:layout_height="match_parent" />
 
 

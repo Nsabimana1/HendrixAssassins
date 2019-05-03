@@ -14,9 +14,6 @@
         android:padding="10dp"
         android:background="@color/colorPrimaryDark">
 
-
-
-
         <android.support.v7.widget.CardView
             android:layout_width="579dp"
             android:layout_height="91dp"

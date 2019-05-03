@@ -147,6 +147,9 @@
                     android:id="@+id/confirm_kill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/filter_button_theme"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
                     android:text="Confirm Kill" />
 
                 <Space
@@ -159,6 +162,9 @@
                     android:layout_width="137dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/filter_button_theme"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
                     android:text="View Record" />
 
                 <Space
@@ -166,10 +172,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <ImageButton
+                <Button
                     android:id="@+id/reply_button"
                     android:layout_width="77dp"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/filter_button_theme"
+                    android:text="Reply"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
                     app:srcCompat="@android:drawable/ic_menu_send" />
 
                 <Space

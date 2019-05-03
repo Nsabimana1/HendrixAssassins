@@ -19,6 +19,7 @@ import com.example.hendrixassassins.agent.AgentList;
 import com.example.hendrixassassins.agent.AgentStatus;
 import com.example.hendrixassassins.email.Email;
 import com.example.hendrixassassins.email.GMailSender;
+import com.example.hendrixassassins.email.GmailLogin;
 import com.example.hendrixassassins.game.Game;
 import com.example.hendrixassassins.game.GameMethods;
 import com.example.hendrixassassins.uipages.DialogBoxes.ChangeNameDialogFragment;
@@ -96,7 +97,9 @@ public class AgentProfileActivity extends AppCompatActivity implements
         AgentTotalPoints.setText(String.valueOf(agent.getPointsTotal()));
         AgentPersonalKills.setText(String.valueOf(agent.getPersonalKills()));
         agentStatusCurrent.setText(agent.getStatus().toString());
-        currentTarget.setText(agent.getCurrentTarget().getName());
+        if(agent.getCurrentTarget() != null) {
+            currentTarget.setText(agent.getCurrentTarget().getName());
+        }
     }
 
     private void updateAgentListFile(){
