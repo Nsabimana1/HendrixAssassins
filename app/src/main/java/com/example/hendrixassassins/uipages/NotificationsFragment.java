@@ -76,6 +76,7 @@ public class NotificationsFragment extends Fragment {
         }
         if(showListView != null) {
             updateMessages();
+
 //            adapter.notifyDataSetChanged();
         }
     }
@@ -83,6 +84,8 @@ public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        displayToast("Refreshing notifications...");
+
         // Inflate the layout for this fragment
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
         showListView = fragView.findViewById(R.id.refresh_notification_button);
@@ -193,13 +196,9 @@ public class NotificationsFragment extends Fragment {
                     });
                 }
 
-//                Log.d("ADAPTER", ""+inboxEmails.size());
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                });
+
+
+
 
 
 
