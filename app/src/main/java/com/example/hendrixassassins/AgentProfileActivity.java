@@ -111,6 +111,7 @@ public class AgentProfileActivity extends AppCompatActivity implements
     // navigate off screen  //
     // // // // // // // // //
 
+
     @Override
     public void onBackPressed() {
 
@@ -145,9 +146,9 @@ public class AgentProfileActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 Intent intent = new Intent(AgentProfileActivity.this, EmailSenderActivity.class);
                 Log.d("EMAIL", agent.getEmail());
-                new Email("", "", "");
-                
-                intent.putExtra("clickedUserEmail", );
+                Email email = new Email("", "", "");
+                email.setSender(agent.getEmail());
+                intent.putExtra("clickedUserEmail", email);
                 startActivity(intent);
                 finish();
             }
