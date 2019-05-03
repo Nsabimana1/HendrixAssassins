@@ -50,11 +50,11 @@ public class NotificationsFragment extends Fragment {
     private ListView notificationListView;
     private  NotificationListViewAdapter adapter;
 
+
     public NotificationsFragment() {
 
-        // updateMessages();
-
     }
+
 
     // TODO: Rename and change types and number of parameters
     public static NotificationsFragment newInstance(String param1, String param2) {
@@ -75,9 +75,10 @@ public class NotificationsFragment extends Fragment {
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
         if(showListView != null) {
-            updateMessages();
+                updateMessages();
 
 //            adapter.notifyDataSetChanged();
+
         }
     }
 
@@ -147,13 +148,11 @@ public class NotificationsFragment extends Fragment {
     private void setUpItemClickListener(final ListView listView){
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Email emailBody = inboxEmails.get(position);
-                toNotificationContentActivity(emailBody);
-            }
-
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Email emailBody = inboxEmails.get(position);
+            toNotificationContentActivity(emailBody);
+        }
         });
     }
 
@@ -180,12 +179,14 @@ public class NotificationsFragment extends Fragment {
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
 
+
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         adapter.notifyDataSetChanged();
                     }
                 });
+
 
                 if(adapter != null){
                     mHandler.post(new Runnable() {
@@ -196,30 +197,11 @@ public class NotificationsFragment extends Fragment {
                     });
                 }
 
-
-
-
-
-
-
-
             }
         }).start();
     }
 
-    private void refreshListView(){
-        updateMessages();
-        Log.d("ADAPTER", ""+ inboxEmails.size());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-
-
+    
     public void displayToast(String message){
         Context context = getContext();
         CharSequence text = message;
