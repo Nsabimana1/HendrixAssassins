@@ -220,7 +220,9 @@ public class AgentProfileActivity extends AppCompatActivity implements
     }
 
     private void purgeAgent(Agent agentToPurge) {
-
+        reassignAgentWithTarget(agentToPurge);
+        agentToPurge.setStatus(AgentStatus.PURGED);
+        sendNotificationEmail(agentToPurge, getPurgedEmail(agentToPurge));
     }
 
     private void killAgent(Agent agentToKill) {
@@ -237,7 +239,9 @@ public class AgentProfileActivity extends AppCompatActivity implements
     }
 
     private void withdrawAgent(Agent agentToWithdraw) {
-
+        reassignAgentWithTarget(agentToWithdraw);
+        agentToWithdraw.setStatus(AgentStatus.WITHDRAWN);
+        sendNotificationEmail(agentToWithdraw, getWithdrawnEmail(agentToWithdraw));
     }
 
     private void thawAgent(Agent agentToThaw) {
@@ -280,14 +284,28 @@ public class AgentProfileActivity extends AppCompatActivity implements
                 writeFrozenEmail(frozenAgent));
     }
 
-    private Email getDeadEmail(Agent frozenAgent) {
-        return new Email(frozenAgent.getEmail(), "Killed Notification",
-                writeDeadEmail(frozenAgent));
+    private Email getWithdrawnEmail(Agent withdrawnAgent) {
+        return new Email(withdrawnAgent.getEmail(), "Withdrawn Notification",
+                writeWithdrawnEmail(withdrawnAgent));
     }
 
-    private Email getPurgedEmail(Agent frozenAgent) {
-        return new Email(frozenAgent.getEmail(), "Purged Notification",
-                writePurgedEmail(frozenAgent));
+    private Email getDeadEmail(Agent deadAgent) {
+        return new Email(deadAgent.getEmail(), "Killed Notification",
+                writeDeadEmail(deadAgent));
+    }
+
+    private Email getPurgedEmail(Agent purgedAgent) {
+        return new Email(purgedAgent.getEmail(), "Purged Notification",
+                writePurgedEmail(purgedAgent));
+    }
+
+    private String writeWithdrawnEmail(Agent agent){
+        Log.e("OOO", agent.getEmail());
+        Log.e("OOO", agent.getCurrentTargetEmail());
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "You have been withdrawn from the game. \n\n";
+        String signoff = "Sad to see you go,\nThe Handler";
+        return salutation + body + signoff;
     }
 
     private String writeFrozenEmail(Agent agent){
