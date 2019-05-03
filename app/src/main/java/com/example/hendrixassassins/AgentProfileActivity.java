@@ -128,6 +128,7 @@ public class AgentProfileActivity extends AppCompatActivity implements
 
     public void goBackToFragment(View view) {
         Intent userListView = new Intent(AgentProfileActivity.this, HomeActivity.class);
+        userListView.putExtra("email", game.getEmail());
         startActivity(userListView);
     }
 
@@ -276,6 +277,17 @@ public class AgentProfileActivity extends AppCompatActivity implements
         String signoff = "Happy hunting,\nThe Handler";
         return salutation + body + signoff;
     }
+
+    private String writePurgedEmail(Agent agent){
+        Log.e("OOO", agent.getEmail());
+        Log.e("OOO", agent.getCurrentTargetEmail());
+        String salutation = "Dear Agent " + agent.getName() + ",\n\n";
+        String body = "You have been Purged for not killing your target in time. \n\n";
+        String signoff = "See you in the afterlife,\nThe Handler";
+        return salutation + body + signoff;
+    }
+
+
 
     private void sendNotificationEmail(Agent agent, Email email){
         final Email message = email;
