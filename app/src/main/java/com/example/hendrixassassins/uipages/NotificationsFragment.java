@@ -51,7 +51,6 @@ public class NotificationsFragment extends Fragment {
     private  NotificationListViewAdapter adapter;
 
     public NotificationsFragment() {
-        updateMessages();
     }
 
     // TODO: Rename and change types and number of parameters
@@ -73,7 +72,8 @@ public class NotificationsFragment extends Fragment {
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
         if(showListView != null) {
-            adapter.notifyDataSetChanged();
+            updateMessages();
+//            adapter.notifyDataSetChanged();
         }
     }
 
@@ -83,6 +83,7 @@ public class NotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         fragView = inflater.inflate(R.layout.fragment_notifications, container, false);
         showListView = fragView.findViewById(R.id.refresh_notification_button);
+        updateMessages();
         createListViewAdapter();
         refreshListener();
         return fragView;
@@ -100,9 +101,7 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 displayToast("Refreshing notifications...");
-                refreshListView();
-
-//                updateMessages();
+                updateMessages();
 //                adapter.notifyDataSetChanged();
 
 //                createListViewAdapter();
@@ -160,7 +159,6 @@ public class NotificationsFragment extends Fragment {
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
-
     public void updateMessages(){
         new Thread(new Runnable() {
             @Override
@@ -172,9 +170,6 @@ public class NotificationsFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-<<<<<<< HEAD
-                inboxEmails = EmailServer.get().getInboxList();
-=======
                 ArrayList<Email> emails = EmailServer.get().getInboxList();
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
@@ -184,17 +179,6 @@ public class NotificationsFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     }
                 });
-//                Log.d("ADAPTER", ""+inboxEmails.size());
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                });
-
-
-
->>>>>>> 74c3cc613b7c6fb7e5d425ec36dd7204219dd935
             }
         }).start();
     }
