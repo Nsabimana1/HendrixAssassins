@@ -71,7 +71,7 @@ public class NotificationsFragment extends Fragment {
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
         if(showListView != null) {
-            createListViewAdapter();
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -99,6 +99,7 @@ public class NotificationsFragment extends Fragment {
             public void onClick(View view) {
                 displayToast("Refreshing notifications...");
                 updateMessages();
+                adapter.notifyDataSetChanged();
 
                 //createListViewAdapter();
             }
@@ -165,13 +166,13 @@ public class NotificationsFragment extends Fragment {
                     e.printStackTrace();
                 }
                 inboxEmails = EmailServer.get().getInboxList();
-                Log.d("ADAPTER", ""+inboxEmails.size());
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+//                Log.d("ADAPTER", ""+inboxEmails.size());
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                });
 
 
             }
