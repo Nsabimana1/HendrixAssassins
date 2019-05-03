@@ -64,6 +64,8 @@ public class Email implements Serializable {
 
     public String getSender() {return sender;}
 
+    public void setSender(String email)  { this.sender = email;}
+
     public String getSubject() {return subject;}
 
     public String getBody() {return body;}
