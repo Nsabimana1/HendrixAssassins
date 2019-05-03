@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +73,7 @@ public class NotificationsFragment extends Fragment {
             agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
         if(showListView != null) {
-            createListViewAdapter();
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -99,6 +101,7 @@ public class NotificationsFragment extends Fragment {
             public void onClick(View view) {
                 displayToast("Refreshing notifications...");
                 updateMessages();
+                adapter.notifyDataSetChanged();
 
                 //createListViewAdapter();
             }
@@ -153,6 +156,7 @@ public class NotificationsFragment extends Fragment {
         startActivity(forwardIntent);
     }
 
+
     public void updateMessages(){
         new Thread(new Runnable() {
             @Override
@@ -165,13 +169,6 @@ public class NotificationsFragment extends Fragment {
                     e.printStackTrace();
                 }
                 inboxEmails = EmailServer.get().getInboxList();
-                Log.d("ADAPTER", ""+inboxEmails.size());
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
 
 
             }
