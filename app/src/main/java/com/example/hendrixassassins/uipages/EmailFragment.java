@@ -174,8 +174,8 @@ public class EmailFragment extends Fragment {
     }
 
     private void clearTemplate(){
-        emailBodyView.setText("");
-        emailSubjectView.setText("");
+        emailBodyView.clearComposingText();
+        emailSubjectView.clearComposingText();
     }
 
     private void sendEmail(Email email){
@@ -185,7 +185,7 @@ public class EmailFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    displayToast("Email Sent (:");
+                    displayToast("Email Sent :)");
                 }});
             clearTemplate();
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.hendrixassassins.R;
 
@@ -27,6 +28,8 @@ public class SettingsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private View viewGetter;
+    private Button exportCSVButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +68,10 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        viewGetter = inflater.inflate(R.layout.fragment_settings, container, false);
+        setUpUiComponents();
+        exportCSVFileButtonListener();
+        return viewGetter;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -102,5 +108,20 @@ public class SettingsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    private void setUpUiComponents(){
+        exportCSVButton = viewGetter.findViewById(R.id.export_file_button);
+    }
+
+    private void exportCSVFileButtonListener(){
+        exportCSVButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /// write the code here
+                exportCSVButton.setText("I am clicked");
+            }
+        });
     }
 }
