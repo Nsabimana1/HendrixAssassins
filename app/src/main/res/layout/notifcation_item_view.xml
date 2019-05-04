@@ -26,7 +26,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="211dp"
         android:text="TextView"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/white"
         android:textSize="15sp" />
 
     <TextView
@@ -38,7 +38,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="29dp"
         android:text="TextView"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
 </RelativeLayout>
