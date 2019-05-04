@@ -50,18 +50,8 @@ public class NotificationsFragment extends Fragment {
     private ListView notificationListView;
     private  NotificationListViewAdapter adapter;
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 47031790cebd94773def6ba2f3e266da02152947
-    public NotificationsFragment() {
-
-    }
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 47031790cebd94773def6ba2f3e266da02152947
+    public NotificationsFragment() { }
     // TODO: Rename and change types and number of parameters
     public static NotificationsFragment newInstance(String param1, String param2) {
         NotificationsFragment fragment = new NotificationsFragment();
@@ -82,9 +72,6 @@ public class NotificationsFragment extends Fragment {
         }
         if(showListView != null) {
                 updateMessages();
-
-//            adapter.notifyDataSetChanged();
-
         }
     }
 
@@ -115,9 +102,6 @@ public class NotificationsFragment extends Fragment {
             public void onClick(View view) {
                 displayToast("Refreshing notifications...");
                 updateMessages();
-//                adapter.notifyDataSetChanged();
-
-//                createListViewAdapter();
             }
         });
     }
@@ -184,20 +168,7 @@ public class NotificationsFragment extends Fragment {
                 ArrayList<Email> emails = EmailServer.get().getInboxList();
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 47031790cebd94773def6ba2f3e266da02152947
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-<<<<<<< HEAD
-=======
-
+                
                 if(adapter != null){
                     mHandler.post(new Runnable() {
                         @Override
@@ -206,7 +177,6 @@ public class NotificationsFragment extends Fragment {
                         }
                     });
                 }
->>>>>>> 47031790cebd94773def6ba2f3e266da02152947
             }
         }).start();
     }
