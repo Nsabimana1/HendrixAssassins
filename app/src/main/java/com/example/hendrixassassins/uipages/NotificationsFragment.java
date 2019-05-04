@@ -168,7 +168,7 @@ public class NotificationsFragment extends Fragment {
                 ArrayList<Email> emails = EmailServer.get().getInboxList();
                 inboxEmails.clear();
                 inboxEmails.addAll(emails);
-                
+
                 if(adapter != null){
                     mHandler.post(new Runnable() {
                         @Override

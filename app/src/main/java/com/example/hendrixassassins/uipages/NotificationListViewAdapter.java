@@ -25,6 +25,7 @@ public class NotificationListViewAdapter<E> extends ArrayAdapter<E> {
     }
 
     static class ViewHolder {
+        TextView emailSenderInitials;
         TextView emailSender;
         TextView emailSubject;
     }
@@ -38,11 +39,15 @@ public class NotificationListViewAdapter<E> extends ArrayAdapter<E> {
 
         ViewHolder viewHolder = new ViewHolder();
 
+        TextView emailSenderInitials = convertView.findViewById(R.id.emailSender_initials);
         TextView emailSender = convertView.findViewById(R.id.emailSender);
         TextView emailSubject = convertView.findViewById(R.id.emailSubject);
+        viewHolder.emailSenderInitials = emailSenderInitials;
         viewHolder.emailSender = emailSender;
         viewHolder.emailSubject = emailSubject;
         convertView.setTag(viewHolder);
+
+        emailSenderInitials.setText(notification.getSender().substring(0, 1));
         emailSender.setText(notification.getSender());
         emailSubject.setText(notification.getSubject());
         return convertView;
