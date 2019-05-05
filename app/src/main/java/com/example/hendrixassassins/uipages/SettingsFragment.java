@@ -11,6 +11,8 @@ import android.widget.Button;
 
 import com.example.hendrixassassins.R;
 
+import java.util.GregorianCalendar;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -29,7 +31,7 @@ public class SettingsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private View viewGetter;
-    private Button exportCSVButton;
+    private Button exportCSVButton, purgeButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,6 +73,7 @@ public class SettingsFragment extends Fragment {
         viewGetter = inflater.inflate(R.layout.fragment_settings, container, false);
         setUpUiComponents();
         exportCSVFileButtonListener();
+        purgeListener();
         return viewGetter;
     }
 
@@ -113,6 +116,7 @@ public class SettingsFragment extends Fragment {
 
     private void setUpUiComponents(){
         exportCSVButton = viewGetter.findViewById(R.id.export_file_button);
+        purgeButton = viewGetter.findViewById(R.id.purge);
     }
 
     private void exportCSVFileButtonListener(){
@@ -124,4 +128,17 @@ public class SettingsFragment extends Fragment {
             }
         });
     }
+
+    private void purgeListener(){
+        purgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GregorianCalendar now = new GregorianCalendar();
+                //purge(now);
+                purgeButton.setText("Purge Completed");
+            }
+        });
+    }
+
+
 }
