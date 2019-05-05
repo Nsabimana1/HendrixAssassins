@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private static final AgentFileHelper agentFileHelper = new AgentFileHelper();;
+    private static final AgentFileHelper agentFileHelper = new AgentFileHelper();
     private OnFragmentInteractionListener mListener;
     private AgentList agentList;
     private Game game;
