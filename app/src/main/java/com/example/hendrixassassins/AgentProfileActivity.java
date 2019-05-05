@@ -101,6 +101,7 @@ public class AgentProfileActivity extends AppCompatActivity implements
         if(agent.getCurrentTarget() != null) {
             currentTarget.setText(agent.getCurrentTarget().getName());
         }
+        else currentTarget.setClickable(false);
     }
 
     private void updateAgentListFile(){
@@ -260,7 +261,7 @@ public class AgentProfileActivity extends AppCompatActivity implements
             int index = 0;
             while (livingAgents.getAllAgents().get(index).getDrawNumber() < frozenAgent.getDrawNumber())
                 index++;
-            thawAgentHelper(frozenAgent, index, livingAgents);
+            thawAgentHelper(frozenAgent, index + 1, livingAgents);
         }
     }
 
@@ -268,7 +269,10 @@ public class AgentProfileActivity extends AppCompatActivity implements
         frozenAgent.setCurrentTarget(livingAgents.getAllAgents().get(index).getCurrentTarget());
         livingAgents.getAllAgents().get(index).setCurrentTarget(frozenAgent);
         frozenAgent.setStatus(AgentStatus.ALIVE);
+        Log.e("III", frozenAgent.getCurrentTargetEmail());
         sendTargetEmail(frozenAgent);
+        currentTarget.setText(frozenAgent.getCurrentTarget().getName());
+        currentTarget.setClickable(true);
     }
 
     public void freezeAgent(Agent agentToFreeze){
