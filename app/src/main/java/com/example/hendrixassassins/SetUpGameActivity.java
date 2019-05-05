@@ -166,8 +166,7 @@ public class SetUpGameActivity extends AppCompatActivity {
                 verifyAllAgentsButton.setVisibility(View.INVISIBLE);
                 createGameButton.setEnabled(true);
                 initializeAgentList();
-                //TODO uncomment this to send emails
-                // sendVerificationEmails();
+                sendVerificationEmails();
                 unread_filtered_emails.clear();
                 incomingEmailListViewAdapter.notifyDataSetChanged();
             }
@@ -182,7 +181,6 @@ public class SetUpGameActivity extends AppCompatActivity {
                 try {
                     //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
 
-                    // TODO uncomment this to send emails again:
                     sender.sendMail(message);
                 } catch (AuthenticationFailedException e) {
                     e.printStackTrace();
@@ -233,11 +231,9 @@ public class SetUpGameActivity extends AppCompatActivity {
                 /*
                 This is how we get to the Home Activity after we have created the game
                  */
-                // TODO set game status to PrePurge and rewrite game file.
                 setGameToStarted();
                 initializeAgentTargets();
-                //TODO uncomment this to send emails
-                // sendTargetEmails();
+                sendTargetEmails();
                 gotoHomeIntent();
             }
         });
