@@ -131,6 +131,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="35dp" />
+
             <TextView
                 android:id="@+id/emailAgentTag"
                 android:layout_width="match_parent"
@@ -139,36 +144,21 @@
                 android:textAlignment="center"
                 android:textColor="@color/white" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
             <ImageButton
                 android:id="@+id/sendEmailAgent"
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
+                android:scaleType="fitCenter"
                 android:background="@color/colorPrimary"
                 android:onClick="sendEmailAgentButtonListener"
                 android:src="@drawable/ic_email_white_24dp"
                 android:text="email" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="35dp" />
 
-            <TextView
-                android:id="@+id/removeAgentTag"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Remove Agent"
-                android:textAlignment="center"
-                android:textColor="@color/white" />
-
-
-            <ImageButton
-                android:id="@+id/removeAgent"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:onClick="removeAgentButtonListener"
-                android:background="@color/colorPrimary"
-                android:src="@drawable/ic_delete_black_24dp"
-                android:text="remove" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
