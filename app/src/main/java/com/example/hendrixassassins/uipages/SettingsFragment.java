@@ -4,14 +4,23 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.hendrixassassins.R;
+import com.example.hendrixassassins.agent.Agent;
+import com.example.hendrixassassins.agent.AgentFileHelper;
+import com.example.hendrixassassins.agent.AgentList;
+import com.example.hendrixassassins.email.Email;
+import com.example.hendrixassassins.email.GMailSender;
+import com.example.hendrixassassins.game.Game;
 
 import java.util.GregorianCalendar;
+
+import javax.mail.AuthenticationFailedException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,14 +33,16 @@ import java.util.GregorianCalendar;
 public class SettingsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private View viewGetter;
     private Button exportCSVButton, purgeButton;
+    private Game game;
+    private AgentList agentList;
+    private static final AgentFileHelper agentFileHelper = new AgentFileHelper();
+    private static final String ARG_PARAM1 = "email";
 
     private OnFragmentInteractionListener mListener;
 
@@ -52,7 +63,6 @@ public class SettingsFragment extends Fragment {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,8 +71,11 @@ public class SettingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String handlerEmail = getArguments().getString(ARG_PARAM1);
+
+            game = new Game(handlerEmail);
+            // TODO replace testFile.csv with game.getAgentFileName
+            agentList = agentFileHelper.readFromFile(game.getAgentFileName(), this.getContext());
         }
     }
 
@@ -123,8 +136,8 @@ public class SettingsFragment extends Fragment {
         exportCSVButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /// write the code here
-                exportCSVButton.setText("I am clicked");
+                sendCSVEmail();
+                exportCSVButton.setText("CSV sent");
             }
         });
     }
@@ -140,5 +153,33 @@ public class SettingsFragment extends Fragment {
         });
     }
 
+    private void sendCSVEmail(){
+        final Email message = getCSVEmail();
+        Log.e("QQQ", message.getBody());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //GMailSender sender = new GMailSender("HendrixAssassinsApp", "AssassinsTest1");
+                    // TODO uncomment this to send emails again:
+                    GMailSender sender = new GMailSender();
+                    sender.sendMail(message);
+                } catch (AuthenticationFailedException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private Email getCSVEmail(){
+        return new Email(game.getEmail(), "CSV of Agents",
+                writeCSVEmail());
+    }
+
+    private String writeCSVEmail(){
+        return agentFileHelper.getAgentListFileString(agentList);
+    }
 
 }
