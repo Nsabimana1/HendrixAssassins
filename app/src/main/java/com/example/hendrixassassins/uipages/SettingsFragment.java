@@ -38,7 +38,7 @@ public class SettingsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private View viewGetter;
-    private Button exportCSVButton, purgeButton;
+    private Button exportCSVButton;
     private Game game;
     private AgentList agentList;
     private static final AgentFileHelper agentFileHelper = new AgentFileHelper();
@@ -86,7 +86,6 @@ public class SettingsFragment extends Fragment {
         viewGetter = inflater.inflate(R.layout.fragment_settings, container, false);
         setUpUiComponents();
         exportCSVFileButtonListener();
-        purgeListener();
         return viewGetter;
     }
 
@@ -129,7 +128,6 @@ public class SettingsFragment extends Fragment {
 
     private void setUpUiComponents(){
         exportCSVButton = viewGetter.findViewById(R.id.export_file_button);
-        purgeButton = viewGetter.findViewById(R.id.purge);
     }
 
     private void exportCSVFileButtonListener(){
@@ -142,16 +140,6 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-    private void purgeListener(){
-        purgeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GregorianCalendar now = new GregorianCalendar();
-                //purge(now);
-                purgeButton.setText("Purge Completed");
-            }
-        });
-    }
 
     private void sendCSVEmail(){
         final Email message = getCSVEmail();
