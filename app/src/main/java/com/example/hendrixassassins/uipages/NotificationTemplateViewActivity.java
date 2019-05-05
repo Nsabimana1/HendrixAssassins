@@ -127,7 +127,7 @@ public class NotificationTemplateViewActivity extends AppCompatActivity {
                 Agent target = killer.getCurrentTarget();
                 Email confirmKillEmail = new Email(target.getEmail(), "Please confirm kill.",
                         "Dear Agent " + target.getName() + ",\n\n" +
-                                killer.getName() + " has reported that you have been elimitaed.\n" +
+                                killer.getName() + " has reported that you have been eliminated.\n" +
                                 "Please reply to this email to confirm or dispute your death.\n\n" +
                                 "With deepest regrets,\n" +
                                 "The Handler");
