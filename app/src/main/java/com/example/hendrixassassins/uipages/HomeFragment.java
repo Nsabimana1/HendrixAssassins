@@ -261,11 +261,11 @@ public class HomeFragment extends Fragment {
         clearFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                statusFilter.setSelection(0);
-                killsFilter.setSelection(0);
-                pointsFilter.setSelection(0);
-                alphabeticalFilter.setSelection(0);
-                createListViewAdapter(agentList);
+//                statusFilter.setSelection(0);
+//                killsFilter.setSelection(0);
+//                pointsFilter.setSelection(0);
+//                alphabeticalFilter.setSelection(0);
+//                createListViewAdapter(agentList);
             }
         });
     }

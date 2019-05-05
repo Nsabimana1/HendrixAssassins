@@ -85,7 +85,6 @@ public class AgentProfileActivity extends AppCompatActivity implements
         agentStatusCurrent = findViewById(R.id.agentStatus);
         changeAgentName = findViewById(R.id.changeAgentName);
         sendEmailAgent = findViewById(R.id.sendEmailAgent);
-        removeAgent = findViewById(R.id.removeAgent);
         editPlayerStatus = findViewById(R.id.editPlayerStatus);
         agentEmailHistory = findViewById(R.id.agentEmailHistory);
         agentKillHistory = findViewById(R.id.agentKillHistory);
